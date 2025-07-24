@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { QuickActions } from "@/components/dashboard/QuickActions";
+import { POSInterface } from "@/components/pos/POSInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -39,10 +40,15 @@ const Index = () => {
         );
       case "pos":
         return (
-          <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Point of Sale</h1>
-            <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-              <p className="text-muted-foreground">POS Module - Coming Soon</p>
+          <div className="space-y-6 h-full">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Point of Sale</h1>
+              <p className="text-muted-foreground mt-2">
+                Process transactions, manage cart, and handle payments.
+              </p>
+            </div>
+            <div className="h-[calc(100vh-200px)]">
+              <POSInterface />
             </div>
           </div>
         );

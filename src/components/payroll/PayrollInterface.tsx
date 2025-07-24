@@ -48,7 +48,16 @@ export function PayrollInterface() {
         </TabsContent>
 
         <TabsContent value="employees" className="space-y-6">
-          <EmployeeManagement />
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Employee Management</h2>
+            <Button onClick={() => setShowOnboardingDialog(true)}>
+              <UserPlus className="h-4 w-4 mr-2" />
+              Add Employee
+            </Button>
+          </div>
+          <div className="text-center text-muted-foreground py-8">
+            Employee management interface with existing staff overview
+          </div>
         </TabsContent>
 
         <TabsContent value="onboarding" className="space-y-6">

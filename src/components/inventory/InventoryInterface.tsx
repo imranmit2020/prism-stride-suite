@@ -4,17 +4,34 @@ import { InventoryOverview } from "./InventoryOverview";
 import { InventoryTable, InventoryItem } from "./InventoryTable";
 import { SmartReorder } from "./SmartReorder";
 import { AIInsights } from "./AIInsights";
+import { AddProductDialog } from "./AddProductDialog";
+import { ImportExportActions } from "./ImportExportActions";
 import { useToast } from "@/hooks/use-toast";
 
 export function InventoryInterface() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const { toast } = useToast();
 
   const handleAddProduct = () => {
-    toast({
-      title: "Add Product",
-      description: "Product form would open here (to be implemented)"
-    });
+    setShowAddDialog(true);
+  };
+
+  const handleAddNewProduct = (product: Omit<InventoryItem, 'id'>) => {
+    const newProduct: InventoryItem = {
+      ...product,
+      id: Date.now().toString()
+    };
+    setInventory(prev => [...prev, newProduct]);
+  };
+
+  const handleImportProducts = (products: Omit<InventoryItem, 'id'>[]) => {
+    const newProducts: InventoryItem[] = products.map((product, index) => ({
+      ...product,
+      id: `${Date.now()}-${index}`
+    }));
+    setInventory(prev => [...prev, ...newProducts]);
   };
 
   const handleEditProduct = (item: InventoryItem) => {
@@ -34,11 +51,12 @@ export function InventoryInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="reorders">Smart Reorders</TabsTrigger>
           <TabsTrigger value="insights">AI Insights</TabsTrigger>
+          <TabsTrigger value="import-export">Import/Export</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -59,7 +77,20 @@ export function InventoryInterface() {
         <TabsContent value="insights" className="space-y-6">
           <AIInsights />
         </TabsContent>
+
+        <TabsContent value="import-export" className="space-y-6">
+          <ImportExportActions 
+            inventory={inventory}
+            onImportProducts={handleImportProducts}
+          />
+        </TabsContent>
       </Tabs>
+
+      <AddProductDialog 
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+        onAddProduct={handleAddNewProduct}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { POSInterface } from "@/components/pos/POSInterface";
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
+import { AccountingInterface } from "@/components/accounting/AccountingInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -81,10 +82,13 @@ const Index = () => {
       case "accounting":
         return (
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Accounting</h1>
-            <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-              <p className="text-muted-foreground">Accounting Module - Coming Soon</p>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Accounting</h1>
+              <p className="text-muted-foreground mt-2">
+                Complete financial management with invoicing, expenses, and reporting.
+              </p>
             </div>
+            <AccountingInterface />
           </div>
         );
       case "analytics":

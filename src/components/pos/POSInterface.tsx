@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Search, Scan } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductGrid, Product } from "./ProductGrid";
 import { Cart, CartItem } from "./Cart";
 import { CategoryFilter } from "./CategoryFilter";
 import { PaymentModal } from "./PaymentModal";
+import { AIRecommendations } from "./AIRecommendations";
 import { useToast } from "@/hooks/use-toast";
 
 // Mock data - replace with real data from your backend
@@ -27,6 +29,7 @@ export function POSInterface() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [showPayment, setShowPayment] = useState(false);
+  const [activeTab, setActiveTab] = useState("pos");
   const { toast } = useToast();
 
   const categories = [...new Set(mockProducts.map(p => p.category))];
@@ -122,53 +125,68 @@ export function POSInterface() {
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.08; // Including 8% tax
 
   return (
-    <div className="h-full flex gap-6">
-      {/* Left Panel - Products */}
-      <div className="flex-1 space-y-4">
-        {/* Search and Scan */}
-        <div className="flex gap-3">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products or scan barcode..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+    <div className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="pos">Point of Sale</TabsTrigger>
+          <TabsTrigger value="ai">AI Assistant</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="pos" className="space-y-6">
+          <div className="h-full flex gap-6">
+            {/* Left Panel - Products */}
+            <div className="flex-1 space-y-4">
+              {/* Search and Scan */}
+              <div className="flex gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search products or scan barcode..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <Button variant="outline" size="default">
+                  <Scan className="h-4 w-4 mr-2" />
+                  Scan
+                </Button>
+              </div>
+
+              {/* Categories */}
+              <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+              />
+
+              {/* Product Grid */}
+              <div className="flex-1 overflow-y-auto">
+                <ProductGrid
+                  products={filteredProducts}
+                  onAddToCart={addToCart}
+                  selectedCategory={selectedCategory}
+                />
+              </div>
+            </div>
+
+            {/* Right Panel - Cart */}
+            <div className="w-80">
+              <Cart
+                items={cartItems}
+                onUpdateQuantity={updateQuantity}
+                onRemoveItem={removeFromCart}
+                onCheckout={handleCheckout}
+                onClearCart={clearCart}
+              />
+            </div>
           </div>
-          <Button variant="outline" size="default">
-            <Scan className="h-4 w-4 mr-2" />
-            Scan
-          </Button>
-        </div>
+        </TabsContent>
 
-        {/* Categories */}
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
-
-        {/* Product Grid */}
-        <div className="flex-1 overflow-y-auto">
-          <ProductGrid
-            products={filteredProducts}
-            onAddToCart={addToCart}
-            selectedCategory={selectedCategory}
-          />
-        </div>
-      </div>
-
-      {/* Right Panel - Cart */}
-      <div className="w-80">
-        <Cart
-          items={cartItems}
-          onUpdateQuantity={updateQuantity}
-          onRemoveItem={removeFromCart}
-          onCheckout={handleCheckout}
-          onClearCart={clearCart}
-        />
-      </div>
+        <TabsContent value="ai" className="space-y-6">
+          <AIRecommendations />
+        </TabsContent>
+      </Tabs>
 
       {/* Payment Modal */}
       <PaymentModal

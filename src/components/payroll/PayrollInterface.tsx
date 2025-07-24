@@ -4,6 +4,7 @@ import { PayrollOverview } from "./PayrollOverview";
 import { EmployeeManagement, Employee } from "./EmployeeManagement";
 import { PayrollProcessing } from "./PayrollProcessing";
 import { PayrollRecords } from "./PayrollRecords";
+import { AIPayrollInsights } from "./AIPayrollInsights";
 import { useToast } from "@/hooks/use-toast";
 
 export function PayrollInterface() {
@@ -27,11 +28,12 @@ export function PayrollInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="employees">Employees</TabsTrigger>
           <TabsTrigger value="processing">Processing</TabsTrigger>
           <TabsTrigger value="records">Records</TabsTrigger>
+          <TabsTrigger value="ai">AI Insights</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -51,6 +53,10 @@ export function PayrollInterface() {
 
         <TabsContent value="records" className="space-y-6">
           <PayrollRecords />
+        </TabsContent>
+
+        <TabsContent value="ai" className="space-y-6">
+          <AIPayrollInsights />
         </TabsContent>
       </Tabs>
     </div>

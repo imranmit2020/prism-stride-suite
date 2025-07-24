@@ -4,6 +4,7 @@ import { AccountingOverview } from "./AccountingOverview";
 import { InvoiceManagement, Invoice } from "./InvoiceManagement";
 import { ExpenseTracking, Expense } from "./ExpenseTracking";
 import { FinancialReports } from "./FinancialReports";
+import { AIFinancialInsights } from "./AIFinancialInsights";
 import { useToast } from "@/hooks/use-toast";
 
 export function AccountingInterface() {
@@ -41,11 +42,12 @@ export function AccountingInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsTrigger value="ai">AI Insights</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -68,6 +70,10 @@ export function AccountingInterface() {
 
         <TabsContent value="reports" className="space-y-6">
           <FinancialReports />
+        </TabsContent>
+
+        <TabsContent value="ai" className="space-y-6">
+          <AIFinancialInsights />
         </TabsContent>
       </Tabs>
     </div>

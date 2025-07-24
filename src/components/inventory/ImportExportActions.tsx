@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Download, FileText, AlertCircle } from "lucide-react";
+import { Upload, Download, FileText, AlertCircle, CheckCircle, Sparkles, Brain } from "lucide-react";
 import { InventoryItem } from "./InventoryTable";
 
 interface ImportExportActionsProps {
@@ -13,10 +15,139 @@ interface ImportExportActionsProps {
   onImportProducts: (products: Omit<InventoryItem, 'id'>[]) => void;
 }
 
+// AI-powered data validation and cleaning
+const aiValidateAndCleanData = (products: any[]) => {
+  const cleaned = products.map((product, index) => {
+    const issues: string[] = [];
+    const suggestions: string[] = [];
+    
+    // Name validation and cleaning
+    let name = product.name?.toString().trim() || `Product ${index + 1}`;
+    if (name.length < 3) {
+      issues.push("Name too short");
+      name = `Product ${index + 1}`;
+    }
+    
+    // SKU validation and generation
+    let sku = product.sku?.toString().trim() || '';
+    if (!sku || sku.length < 3) {
+      sku = `AI-${name.substring(0, 3).toUpperCase()}-${Date.now()}-${index}`;
+      suggestions.push("Generated SKU automatically");
+    }
+    
+    // Category validation and AI suggestion
+    let category = product.category?.toString().trim() || '';
+    if (!category) {
+      category = aiCategorizeProduct(name);
+      suggestions.push(`Suggested category: ${category}`);
+    }
+    
+    // Numeric validation with smart defaults
+    const currentStock = Math.max(0, parseInt(product.currentStock) || 0);
+    const minStock = Math.max(0, parseInt(product.minStock) || Math.floor(currentStock * 0.2));
+    const maxStock = Math.max(minStock * 2, parseInt(product.maxStock) || Math.max(100, currentStock * 5));
+    const reorderPoint = Math.max(minStock, parseInt(product.reorderPoint) || Math.floor((minStock + maxStock) * 0.3));
+    
+    // Price validation
+    const unitCost = Math.max(0, parseFloat(product.unitCost) || 0);
+    let sellingPrice = Math.max(0, parseFloat(product.sellingPrice) || 0);
+    
+    if (sellingPrice === 0 && unitCost > 0) {
+      sellingPrice = Math.round(unitCost * 2.2 * 100) / 100; // 120% markup
+      suggestions.push(`Suggested selling price: $${sellingPrice}`);
+    }
+    
+    if (sellingPrice < unitCost && unitCost > 0) {
+      issues.push("Selling price below cost");
+    }
+    
+    // Supplier validation
+    let supplier = product.supplier?.toString().trim() || '';
+    if (!supplier) {
+      supplier = aiSuggestSupplier(category);
+      suggestions.push(`Suggested supplier: ${supplier}`);
+    }
+    
+    return {
+      original: product,
+      cleaned: {
+        name,
+        sku,
+        category,
+        currentStock,
+        minStock,
+        maxStock,
+        reorderPoint,
+        unitCost,
+        sellingPrice,
+        supplier,
+        lastRestocked: product.lastRestocked || new Date().toISOString().split('T')[0],
+        demand7Days: Math.max(0, parseInt(product.demand7Days) || 0),
+        demand30Days: Math.max(0, parseInt(product.demand30Days) || 0),
+        aiPrediction: {
+          nextWeekDemand: Math.max(0, parseInt(product.aiNextWeekDemand) || currentStock),
+          confidence: Math.min(100, Math.max(0, parseInt(product.aiConfidence) || 75)),
+          recommendation: product.aiRecommendation || "Imported product - review data"
+        }
+      },
+      issues,
+      suggestions
+    };
+  });
+  
+  return cleaned;
+};
+
+// AI duplicate detection
+const aiDetectDuplicates = (products: any[]) => {
+  const duplicates: number[] = [];
+  const seen = new Set();
+  
+  products.forEach((product, index) => {
+    const key = `${product.name.toLowerCase()}-${product.sku.toLowerCase()}`;
+    if (seen.has(key)) {
+      duplicates.push(index);
+    } else {
+      seen.add(key);
+    }
+  });
+  
+  return duplicates;
+};
+
+// Helper functions from AddProductDialog
+const aiCategorizeProduct = (name: string): string => {
+  const lowerName = name.toLowerCase();
+  if (lowerName.includes('coffee') || lowerName.includes('tea') || lowerName.includes('drink')) return 'Beverages';
+  if (lowerName.includes('croissant') || lowerName.includes('muffin') || lowerName.includes('pastry')) return 'Pastries';
+  if (lowerName.includes('sandwich') || lowerName.includes('burger') || lowerName.includes('salad')) return 'Food';
+  if (lowerName.includes('milk') || lowerName.includes('cream') || lowerName.includes('cheese')) return 'Dairy';
+  if (lowerName.includes('cup') || lowerName.includes('napkin') || lowerName.includes('supply')) return 'Supplies';
+  if (lowerName.includes('machine') || lowerName.includes('equipment')) return 'Equipment';
+  return 'Food';
+};
+
+const aiSuggestSupplier = (category: string): string => {
+  const suppliers: Record<string, string[]> = {
+    'Beverages': ['Premium Coffee Co.', 'Tea & More Ltd'],
+    'Pastries': ['French Bakery Supply', 'Sweet Delights Co.'],
+    'Food': ['Fresh Foods Ltd', 'Gourmet Suppliers Inc'],
+    'Dairy': ['Dairy Fresh Co.', 'Organic Dairy Ltd'],
+    'Supplies': ['Restaurant Supply Co.', 'Food Service Solutions'],
+    'Equipment': ['Kitchen Equipment Ltd', 'Commercial Solutions']
+  };
+  
+  const categorySuppliers = suppliers[category] || ['Generic Supplier Co.'];
+  return categorySuppliers[0];
+};
+
 export function ImportExportActions({ inventory, onImportProducts }: ImportExportActionsProps) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);
+  const [importProgress, setImportProgress] = useState(0);
+  const [validationResults, setValidationResults] = useState<any[]>([]);
+  const [showValidation, setShowValidation] = useState(false);
 
   const handleExportCSV = () => {
     if (inventory.length === 0) {
@@ -99,8 +230,11 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
     }
 
     setImporting(true);
+    setImportProgress(0);
+    setShowValidation(false);
 
     try {
+      setImportProgress(20);
       const text = await file.text();
       const lines = text.trim().split("\n");
       
@@ -108,6 +242,7 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
         throw new Error("CSV file must contain headers and at least one data row");
       }
 
+      setImportProgress(40);
       const headers = lines[0].split(",").map(h => h.trim().replace(/"/g, ""));
       const requiredHeaders = ["Name", "SKU", "Category"];
       
@@ -119,46 +254,59 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
         throw new Error(`Missing required columns: ${missingHeaders.join(", ")}`);
       }
 
-      const products: Omit<InventoryItem, 'id'>[] = [];
-      
+      setImportProgress(60);
+      // Parse raw data
+      const rawProducts = [];
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(",").map(v => v.trim().replace(/"/g, ""));
-        
-        if (values.length < 3) continue; // Skip invalid rows
+        if (values.length < 3) continue;
 
-        const product: Omit<InventoryItem, 'id'> = {
-          name: values[0] || `Product ${i}`,
-          sku: values[1] || `SKU-${Date.now()}-${i}`,
-          category: values[2] || "Uncategorized",
-          currentStock: parseInt(values[3]) || 0,
-          minStock: parseInt(values[4]) || 0,
-          maxStock: parseInt(values[5]) || 100,
-          reorderPoint: parseInt(values[6]) || 0,
-          unitCost: parseFloat(values[7]) || 0,
-          sellingPrice: parseFloat(values[8]) || 0,
-          supplier: values[9] || "Unknown",
-          lastRestocked: values[10] || new Date().toISOString().split('T')[0],
-          demand7Days: parseInt(values[11]) || 0,
-          demand30Days: parseInt(values[12]) || 0,
-          aiPrediction: {
-            nextWeekDemand: parseInt(values[13]) || 0,
-            confidence: parseInt(values[14]) || 75,
-            recommendation: values[15] || "Imported product - review data"
-          }
+        const product = {
+          name: values[0],
+          sku: values[1],
+          category: values[2],
+          currentStock: values[3],
+          minStock: values[4],
+          maxStock: values[5],
+          reorderPoint: values[6],
+          unitCost: values[7],
+          sellingPrice: values[8],
+          supplier: values[9],
+          lastRestocked: values[10],
+          demand7Days: values[11],
+          demand30Days: values[12],
+          aiNextWeekDemand: values[13],
+          aiConfidence: values[14],
+          aiRecommendation: values[15]
         };
-        
-        products.push(product);
+        rawProducts.push(product);
       }
 
-      if (products.length === 0) {
-        throw new Error("No valid products found in CSV file");
-      }
+      setImportProgress(80);
+      // AI validation and cleaning
+      const validatedProducts = aiValidateAndCleanData(rawProducts);
+      const duplicateIndices = aiDetectDuplicates(validatedProducts.map(p => p.cleaned));
+      
+      // Mark duplicates
+      validatedProducts.forEach((product, index) => {
+        if (duplicateIndices.includes(index)) {
+          product.issues.push("Potential duplicate");
+        }
+      });
 
-      onImportProducts(products);
+      setValidationResults(validatedProducts);
+      setShowValidation(true);
+      setImportProgress(100);
+
+      const cleanedProducts = validatedProducts.map(p => p.cleaned);
+      const totalIssues = validatedProducts.reduce((sum, p) => sum + p.issues.length, 0);
+      const totalSuggestions = validatedProducts.reduce((sum, p) => sum + p.suggestions.length, 0);
+
+      onImportProducts(cleanedProducts);
       
       toast({
-        title: "Import Successful",
-        description: `Imported ${products.length} products from CSV`
+        title: "AI Import Complete",
+        description: `Imported ${cleanedProducts.length} products. ${totalSuggestions} AI suggestions applied, ${totalIssues} issues detected.`
       });
 
     } catch (error) {
@@ -169,6 +317,7 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
       });
     } finally {
       setImporting(false);
+      setTimeout(() => setImportProgress(0), 2000);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -236,14 +385,15 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <FileText className="h-5 w-5" />
-          Import / Export
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Brain className="h-5 w-5 text-primary" />
+            AI-Powered Import / Export
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
         {/* Export Section */}
         <div className="space-y-3">
           <Label className="text-base font-medium">Export Inventory</Label>
@@ -274,7 +424,6 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
               <FileText className="h-4 w-4 mr-2" />
               Download Template
             </Button>
-            
             <div className="relative">
               <Input
                 ref={fileInputRef}
@@ -291,25 +440,93 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
                 className="w-full sm:w-auto"
               >
                 <Upload className="h-4 w-4 mr-2" />
-                {importing ? "Importing..." : "Import CSV"}
+                {importing ? "Processing..." : "AI Smart Import"}
               </Button>
             </div>
           </div>
 
+          {importing && importProgress > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>AI Processing...</span>
+                <span>{importProgress}%</span>
+              </div>
+              <Progress value={importProgress} className="w-full" />
+            </div>
+          )}
+
           <div className="flex items-start gap-2 p-3 rounded-lg bg-muted">
-            <AlertCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <Sparkles className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
             <div className="text-sm text-muted-foreground">
-              <p className="font-medium mb-1">Import Guidelines:</p>
+              <p className="font-medium mb-1 text-primary">AI-Enhanced Import Features:</p>
               <ul className="space-y-1 text-xs">
-                <li>• CSV file must include Name, SKU, and Category columns</li>
-                <li>• Numeric fields will default to 0 if empty or invalid</li>
-                <li>• Dates should be in YYYY-MM-DD format</li>
-                <li>• Duplicate SKUs will be skipped during import</li>
+                <li>• Automatic data validation and cleaning</li>
+                <li>• Smart category detection and SKU generation</li>
+                <li>• Duplicate detection and price optimization</li>
+                <li>• Missing data completion with AI suggestions</li>
+                <li>• Supplier matching and stock level optimization</li>
               </ul>
             </div>
           </div>
         </div>
       </CardContent>
     </Card>
+
+    {/* AI Validation Results */}
+    {showValidation && validationResults.length > 0 && (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-green-500" />
+            AI Validation Results
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary">
+                {validationResults.length} Products Processed
+              </Badge>
+              <Badge variant="outline" className="text-green-600">
+                {validationResults.reduce((sum, p) => sum + p.suggestions.length, 0)} AI Improvements
+              </Badge>
+              <Badge variant="outline" className="text-orange-600">
+                {validationResults.reduce((sum, p) => sum + p.issues.length, 0)} Issues Detected
+              </Badge>
+            </div>
+
+            <div className="max-h-60 overflow-y-auto space-y-2">
+              {validationResults.slice(0, 10).map((result, index) => (
+                <div key={index} className="p-3 border rounded-lg text-sm">
+                  <div className="font-medium">{result.cleaned.name}</div>
+                  {result.suggestions.length > 0 && (
+                    <div className="mt-1">
+                      <span className="text-green-600 text-xs">✓ AI Suggestions: </span>
+                      <span className="text-xs text-muted-foreground">
+                        {result.suggestions.join(", ")}
+                      </span>
+                    </div>
+                  )}
+                  {result.issues.length > 0 && (
+                    <div className="mt-1">
+                      <span className="text-orange-600 text-xs">⚠ Issues: </span>
+                      <span className="text-xs text-muted-foreground">
+                        {result.issues.join(", ")}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+              {validationResults.length > 10 && (
+                <div className="text-center text-sm text-muted-foreground">
+                  +{validationResults.length - 10} more products processed...
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )}
+    </div>
   );
 }

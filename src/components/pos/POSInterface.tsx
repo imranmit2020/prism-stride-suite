@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Scan } from "lucide-react";
+import { Search, Scan, Users, Gift } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +8,8 @@ import { Cart, CartItem } from "./Cart";
 import { CategoryFilter } from "./CategoryFilter";
 import { PaymentModal } from "./PaymentModal";
 import { AIRecommendations } from "./AIRecommendations";
+import { CustomerManagementDialog } from "./CustomerManagementDialog";
+import { LoyaltyProgramDialog } from "./LoyaltyProgramDialog";
 import { useToast } from "@/hooks/use-toast";
 
 // Mock data - replace with real data from your backend
@@ -29,6 +31,8 @@ export function POSInterface() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [showPayment, setShowPayment] = useState(false);
+  const [showCustomerDialog, setShowCustomerDialog] = useState(false);
+  const [showLoyaltyDialog, setShowLoyaltyDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("pos");
   const { toast } = useToast();
 
@@ -122,13 +126,29 @@ export function POSInterface() {
     });
   };
 
+  const handleSaveCustomer = (customer: any) => {
+    toast({
+      title: "Customer Added",
+      description: `${customer.name} has been added to the system`
+    });
+  };
+
+  const handleSaveLoyaltyProgram = (program: any) => {
+    toast({
+      title: "Loyalty Program Created",
+      description: `${program.name} is now active`
+    });
+  };
+
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.08; // Including 8% tax
 
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="pos">Point of Sale</TabsTrigger>
+          <TabsTrigger value="customers">Customers</TabsTrigger>
+          <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
           <TabsTrigger value="ai">AI Assistant</TabsTrigger>
         </TabsList>
 
@@ -183,6 +203,32 @@ export function POSInterface() {
           </div>
         </TabsContent>
 
+        <TabsContent value="customers" className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Customer Management</h2>
+            <Button onClick={() => setShowCustomerDialog(true)}>
+              <Users className="h-4 w-4 mr-2" />
+              Add Customer
+            </Button>
+          </div>
+          <div className="text-center text-muted-foreground py-8">
+            Customer list and management tools will be displayed here
+          </div>
+        </TabsContent>
+
+        <TabsContent value="loyalty" className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Loyalty Program</h2>
+            <Button onClick={() => setShowLoyaltyDialog(true)}>
+              <Gift className="h-4 w-4 mr-2" />
+              Create Program
+            </Button>
+          </div>
+          <div className="text-center text-muted-foreground py-8">
+            Loyalty program management tools will be displayed here
+          </div>
+        </TabsContent>
+
         <TabsContent value="ai" className="space-y-6">
           <AIRecommendations />
         </TabsContent>
@@ -195,6 +241,18 @@ export function POSInterface() {
         items={cartItems}
         total={total}
         onPaymentComplete={handlePaymentComplete}
+      />
+
+      <CustomerManagementDialog
+        open={showCustomerDialog}
+        onOpenChange={setShowCustomerDialog}
+        onSaveCustomer={handleSaveCustomer}
+      />
+
+      <LoyaltyProgramDialog
+        open={showLoyaltyDialog}
+        onOpenChange={setShowLoyaltyDialog}
+        onSaveProgram={handleSaveLoyaltyProgram}
       />
     </div>
   );

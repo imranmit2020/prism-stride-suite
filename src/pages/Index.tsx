@@ -7,6 +7,7 @@ import { POSInterface } from "@/components/pos/POSInterface";
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
+import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -94,10 +95,13 @@ const Index = () => {
       case "analytics":
         return (
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
-            <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-              <p className="text-muted-foreground">Analytics Module - Coming Soon</p>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI Analytics</h1>
+              <p className="text-muted-foreground mt-2">
+                Advanced AI-powered business intelligence and predictive analytics.
+              </p>
             </div>
+            <AnalyticsInterface />
           </div>
         );
       case "reports":

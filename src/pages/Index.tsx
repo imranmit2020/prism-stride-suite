@@ -4,6 +4,7 @@ import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { POSInterface } from "@/components/pos/POSInterface";
+import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -55,10 +56,13 @@ const Index = () => {
       case "inventory":
         return (
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Inventory Management</h1>
-            <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-              <p className="text-muted-foreground">Inventory Module - Coming Soon</p>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Inventory Management</h1>
+              <p className="text-muted-foreground mt-2">
+                AI-powered inventory management with smart reorders and demand forecasting.
+              </p>
             </div>
+            <InventoryInterface />
           </div>
         );
       case "payroll":

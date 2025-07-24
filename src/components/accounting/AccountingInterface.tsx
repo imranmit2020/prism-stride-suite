@@ -56,7 +56,10 @@ export function AccountingInterface() {
         <TabsContent value="smart-invoice" className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Smart Invoice Processing</h2>
-            <Button onClick={() => setShowInvoiceDialog(true)}>
+            <Button onClick={() => {
+              console.log('Invoice button clicked');
+              setShowInvoiceDialog(true);
+            }}>
               <FileText className="h-4 w-4 mr-2" />
               Process Invoice
             </Button>
@@ -64,12 +67,20 @@ export function AccountingInterface() {
           <div className="text-center text-muted-foreground py-8">
             AI-powered invoice processing with OCR extraction, fraud detection, and smart categorization
           </div>
+          {showInvoiceDialog && (
+            <div className="p-4 bg-green-100 rounded">
+              Dialog state: Invoice dialog is open
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="expenses" className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Smart Expense Management</h2>
-            <Button onClick={() => setShowExpenseDialog(true)}>
+            <Button onClick={() => {
+              console.log('Expense button clicked');
+              setShowExpenseDialog(true);
+            }}>
               <Receipt className="h-4 w-4 mr-2" />
               Add Expense
             </Button>
@@ -77,6 +88,11 @@ export function AccountingInterface() {
           <div className="text-center text-muted-foreground py-8">
             AI-powered expense processing with receipt OCR, smart categorization, and compliance checking
           </div>
+          {showExpenseDialog && (
+            <div className="p-4 bg-blue-100 rounded">
+              Dialog state: Expense dialog is open
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="reports" className="space-y-6">

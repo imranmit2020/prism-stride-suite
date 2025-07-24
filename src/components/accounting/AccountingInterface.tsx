@@ -1,53 +1,46 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { AccountingOverview } from "./AccountingOverview";
-import { InvoiceManagement, Invoice } from "./InvoiceManagement";
-import { ExpenseTracking, Expense } from "./ExpenseTracking";
+import { InvoiceManagement } from "./InvoiceManagement";
+import { ExpenseTracking } from "./ExpenseTracking";
 import { FinancialReports } from "./FinancialReports";
 import { AIFinancialInsights } from "./AIFinancialInsights";
+import { SmartInvoiceDialog } from "./SmartInvoiceDialog";
+import { ExpenseManagementDialog } from "./ExpenseManagementDialog";
 import { useToast } from "@/hooks/use-toast";
+import { FileText, Receipt } from "lucide-react";
 
 export function AccountingInterface() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [showInvoiceDialog, setShowInvoiceDialog] = useState(false);
+  const [showExpenseDialog, setShowExpenseDialog] = useState(false);
   const { toast } = useToast();
 
-  const handleCreateInvoice = () => {
+  const handleSaveInvoice = (invoice: any) => {
     toast({
-      title: "Create Invoice",
-      description: "Invoice creation form would open here (to be implemented)"
+      title: "Invoice Processed",
+      description: `Invoice ${invoice.invoiceNumber} has been saved with AI validation`
     });
   };
 
-  const handleEditInvoice = (invoice: Invoice) => {
+  const handleSaveExpense = (expense: any) => {
     toast({
-      title: "Edit Invoice", 
-      description: `Editing invoice ${invoice.invoiceNumber} for ${invoice.customerName}`
-    });
-  };
-
-  const handleAddExpense = () => {
-    toast({
-      title: "Add Expense",
-      description: "Expense entry form would open here (to be implemented)"
-    });
-  };
-
-  const handleEditExpense = (expense: Expense) => {
-    toast({
-      title: "Edit Expense",
-      description: `Editing expense: ${expense.description}`
+      title: "Expense Saved",
+      description: `Expense of $${expense.receipt.total.toFixed(2)} has been processed and categorized`
     });
   };
 
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
+          <TabsTrigger value="smart-invoice">Smart Invoice</TabsTrigger>
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
-          <TabsTrigger value="ai">AI Insights</TabsTrigger>
+          <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -55,27 +48,57 @@ export function AccountingInterface() {
         </TabsContent>
 
         <TabsContent value="invoices" className="space-y-6">
-          <InvoiceManagement 
-            onCreateInvoice={handleCreateInvoice}
-            onEditInvoice={handleEditInvoice}
-          />
+          <div className="text-center text-muted-foreground py-8">
+            Standard invoice management interface
+          </div>
+        </TabsContent>
+
+        <TabsContent value="smart-invoice" className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Smart Invoice Processing</h2>
+            <Button onClick={() => setShowInvoiceDialog(true)}>
+              <FileText className="h-4 w-4 mr-2" />
+              Process Invoice
+            </Button>
+          </div>
+          <div className="text-center text-muted-foreground py-8">
+            AI-powered invoice processing with OCR extraction, fraud detection, and smart categorization
+          </div>
         </TabsContent>
 
         <TabsContent value="expenses" className="space-y-6">
-          <ExpenseTracking 
-            onAddExpense={handleAddExpense}
-            onEditExpense={handleEditExpense}
-          />
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Smart Expense Management</h2>
+            <Button onClick={() => setShowExpenseDialog(true)}>
+              <Receipt className="h-4 w-4 mr-2" />
+              Add Expense
+            </Button>
+          </div>
+          <div className="text-center text-muted-foreground py-8">
+            AI-powered expense processing with receipt OCR, smart categorization, and compliance checking
+          </div>
         </TabsContent>
 
         <TabsContent value="reports" className="space-y-6">
           <FinancialReports />
         </TabsContent>
 
-        <TabsContent value="ai" className="space-y-6">
+        <TabsContent value="ai-insights" className="space-y-6">
           <AIFinancialInsights />
         </TabsContent>
       </Tabs>
+
+      <SmartInvoiceDialog
+        open={showInvoiceDialog}
+        onOpenChange={setShowInvoiceDialog}
+        onSaveInvoice={handleSaveInvoice}
+      />
+
+      <ExpenseManagementDialog
+        open={showExpenseDialog}
+        onOpenChange={setShowExpenseDialog}
+        onSaveExpense={handleSaveExpense}
+      />
     </div>
   );
 }

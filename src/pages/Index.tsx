@@ -5,6 +5,7 @@ import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { POSInterface } from "@/components/pos/POSInterface";
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
+import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -68,10 +69,13 @@ const Index = () => {
       case "payroll":
         return (
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Payroll</h1>
-            <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-              <p className="text-muted-foreground">Payroll Module - Coming Soon</p>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Payroll Management</h1>
+              <p className="text-muted-foreground mt-2">
+                Comprehensive payroll processing with employee management and tax calculations.
+              </p>
             </div>
+            <PayrollInterface />
           </div>
         );
       case "accounting":

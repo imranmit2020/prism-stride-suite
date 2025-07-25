@@ -4,9 +4,9 @@ import { AIUserBehaviorPredictor } from "./AIUserBehaviorPredictor";
 import { AIFeatureAdoptionProphet } from "./AIFeatureAdoptionProphet";
 import { AIPricingOptimizationEngine } from "./AIPricingOptimizationEngine";
 import { AICustomerSuccessPredictor } from "./AICustomerSuccessPredictor";
+import { AIRetentionAlchemist } from "./AIRetentionAlchemist";
 import {
-  AIProductMarketFitAnalyzer,
-  AIRetentionAlchemist
+  AIProductMarketFitAnalyzer
 } from "./AISaaSComponents";
 
 export function SaaSInterface() {

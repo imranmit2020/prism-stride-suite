@@ -50,7 +50,8 @@ const homeMenuItems = [
   { id: "inventory", label: "Home Inventory", icon: Package },
   { id: "accounting", label: "Personal Finance", icon: Wallet },
   { id: "payroll", label: "Income Tracking", icon: Calculator },
-  { id: "reports", label: "Reports", icon: BarChart3 },
+  { id: "analytics", label: "Personal Analytics", icon: BarChart3 },
+  { id: "reports", label: "Reports", icon: FileText },
   { id: "settings", label: "Settings", icon: Settings },
 ];
 

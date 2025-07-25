@@ -22,11 +22,11 @@ export function PersonalIncomeInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="sources">Income Sources</TabsTrigger>
-          <TabsTrigger value="taxes">Tax Tracking</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
+          <TabsTrigger value="sources" className="px-3 py-2 text-xs font-medium">Income Sources</TabsTrigger>
+          <TabsTrigger value="taxes" className="px-3 py-2 text-xs font-medium">Tax Tracking</TabsTrigger>
+          <TabsTrigger value="reports" className="px-3 py-2 text-xs font-medium">Reports</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

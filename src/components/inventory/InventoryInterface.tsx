@@ -54,15 +54,17 @@ export function InventoryInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-7">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="ai-demand">AI Demand Prophet</TabsTrigger>
-          <TabsTrigger value="ai-theft">AI Theft Detection</TabsTrigger>
-          <TabsTrigger value="ai-shelf">AI Shelf Life</TabsTrigger>
-          <TabsTrigger value="reorders">Smart Reorders</TabsTrigger>
-          <TabsTrigger value="import-export">Import/Export</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="inline-flex h-12 items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground min-w-max">
+            <TabsTrigger value="overview" className="px-4 py-2 text-sm font-medium">Overview</TabsTrigger>
+            <TabsTrigger value="products" className="px-4 py-2 text-sm font-medium">Products</TabsTrigger>
+            <TabsTrigger value="ai-demand" className="px-4 py-2 text-sm font-medium">AI Demand Prophet</TabsTrigger>
+            <TabsTrigger value="ai-theft" className="px-4 py-2 text-sm font-medium">AI Theft Detection</TabsTrigger>
+            <TabsTrigger value="ai-shelf" className="px-4 py-2 text-sm font-medium">AI Shelf Life</TabsTrigger>
+            <TabsTrigger value="reorders" className="px-4 py-2 text-sm font-medium">Smart Reorders</TabsTrigger>
+            <TabsTrigger value="import-export" className="px-4 py-2 text-sm font-medium">Import/Export</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="overview" className="space-y-6">
           <InventoryOverview />

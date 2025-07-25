@@ -6,6 +6,7 @@ import { PersonalBudgetAnalytics } from "./PersonalBudgetAnalytics";
 import { PersonalIncomeAnalytics } from "./PersonalIncomeAnalytics";
 import { PersonalFinancialHealth } from "./PersonalFinancialHealth";
 import { PersonalSpendingPatterns } from "./PersonalSpendingPatterns";
+import { PersonalExpiryMatrix } from "./PersonalExpiryMatrix";
 
 export function PersonalFinanceAnalyticsInterface() {
   const [activeTab, setActiveTab] = useState("expenses");
@@ -29,6 +30,7 @@ export function PersonalFinanceAnalyticsInterface() {
           <TabsTrigger value="income" className="px-3 py-2 text-xs font-medium">Income Trends</TabsTrigger>
           <TabsTrigger value="health" className="px-3 py-2 text-xs font-medium">Financial Health</TabsTrigger>
           <TabsTrigger value="patterns" className="px-3 py-2 text-xs font-medium">Spending Patterns</TabsTrigger>
+          <TabsTrigger value="expiry" className="px-3 py-2 text-xs font-medium">Expiry Matrix</TabsTrigger>
         </TabsList>
 
         <TabsContent value="expenses" className="space-y-6">
@@ -53,6 +55,10 @@ export function PersonalFinanceAnalyticsInterface() {
 
         <TabsContent value="patterns" className="space-y-6">
           <PersonalSpendingPatterns />
+        </TabsContent>
+
+        <TabsContent value="expiry" className="space-y-6">
+          <PersonalExpiryMatrix />
         </TabsContent>
       </Tabs>
     </div>

@@ -51,15 +51,15 @@ export function PayrollInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="ai-performance">AI Performance</TabsTrigger>
-          <TabsTrigger value="ai-salary">AI Salary</TabsTrigger>
-          <TabsTrigger value="ai-theft">AI Time Theft</TabsTrigger>
-          <TabsTrigger value="employees">Employees</TabsTrigger>
-          <TabsTrigger value="onboarding">Onboarding</TabsTrigger>
-          <TabsTrigger value="scheduling">Scheduling</TabsTrigger>
-          <TabsTrigger value="processing">Processing</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
+          <TabsTrigger value="ai-performance" className="px-3 py-2 text-xs font-medium">AI Performance</TabsTrigger>
+          <TabsTrigger value="ai-salary" className="px-3 py-2 text-xs font-medium">AI Salary</TabsTrigger>
+          <TabsTrigger value="ai-theft" className="px-3 py-2 text-xs font-medium">AI Time Theft</TabsTrigger>
+          <TabsTrigger value="employees" className="px-3 py-2 text-xs font-medium">Employees</TabsTrigger>
+          <TabsTrigger value="onboarding" className="px-3 py-2 text-xs font-medium">Onboarding</TabsTrigger>
+          <TabsTrigger value="scheduling" className="px-3 py-2 text-xs font-medium">Scheduling</TabsTrigger>
+          <TabsTrigger value="processing" className="px-3 py-2 text-xs font-medium">Processing</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

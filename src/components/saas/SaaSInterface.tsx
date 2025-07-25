@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AIUserBehaviorPredictor } from "./AIUserBehaviorPredictor";
 import { AIFeatureAdoptionProphet } from "./AIFeatureAdoptionProphet";
+import { AIPricingOptimizationEngine } from "./AIPricingOptimizationEngine";
+import { AICustomerSuccessPredictor } from "./AICustomerSuccessPredictor";
 import {
-  AIPricingOptimizationEngine,
-  AICustomerSuccessPredictor,
   AIProductMarketFitAnalyzer,
   AIRetentionAlchemist
 } from "./AISaaSComponents";

@@ -3,11 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AIRelationshipProphet } from "./AIRelationshipProphet";
 import { AIDealProbabilityEngine } from "./AIDealProbabilityEngine";
 import { AICustomerLifetimeJourney } from "./AICustomerLifetimeJourney";
-import {
-  AIEmotionalIntelligenceTracker,
-  AIChurnPreventionOracle,
-  AIRevenueOpportunityScanner
-} from "./AICRMComponents";
+import { AIEmotionalIntelligenceTracker } from "./AIEmotionalIntelligenceTracker";
+import { AIChurnPreventionOracle } from "./AIChurnPreventionOracle";
+import { AIRevenueOpportunityScanner } from "./AIRevenueOpportunityScanner";
 
 export function CRMInterface() {
   const [activeTab, setActiveTab] = useState("prophet");

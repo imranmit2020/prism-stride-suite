@@ -9,6 +9,9 @@ import { AIFinancialInsights } from "./AIFinancialInsights";
 import { AITaxAuditShield } from "./AITaxAuditShield";
 import { AIFraudPatternGenesis } from "./AIFraudPatternGenesis";
 import { AICashFlowProphet } from "./AICashFlowProphet";
+import { AILanguageIntelligence } from "./AILanguageIntelligence";
+import { AICurrencyProphet } from "./AICurrencyProphet";
+import { AITaxQuantumEngine } from "./AITaxQuantumEngine";
 import { SmartInvoiceDialog } from "./SmartInvoiceDialog";
 import { ExpenseManagementDialog } from "./ExpenseManagementDialog";
 import { useToast } from "@/hooks/use-toast";
@@ -37,7 +40,7 @@ export function AccountingInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-9">
+        <TabsList className="grid w-full grid-cols-12">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
           <TabsTrigger value="smart-invoice">Smart Invoice</TabsTrigger>
@@ -47,6 +50,9 @@ export function AccountingInterface() {
           <TabsTrigger value="audit-shield">Audit Shield</TabsTrigger>
           <TabsTrigger value="fraud-genesis">Fraud Genesis</TabsTrigger>
           <TabsTrigger value="cash-prophet">Cash Prophet</TabsTrigger>
+          <TabsTrigger value="language-ai">Language AI</TabsTrigger>
+          <TabsTrigger value="currency-ai">Currency AI</TabsTrigger>
+          <TabsTrigger value="tax-quantum">Tax Quantum</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -119,6 +125,18 @@ export function AccountingInterface() {
 
         <TabsContent value="cash-prophet" className="space-y-6">
           <AICashFlowProphet />
+        </TabsContent>
+
+        <TabsContent value="language-ai" className="space-y-6">
+          <AILanguageIntelligence />
+        </TabsContent>
+
+        <TabsContent value="currency-ai" className="space-y-6">
+          <AICurrencyProphet />
+        </TabsContent>
+
+        <TabsContent value="tax-quantum" className="space-y-6">
+          <AITaxQuantumEngine />
         </TabsContent>
       </Tabs>
 

@@ -7,10 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Sparkles, Target, TrendingUp, Users, MessageSquare, Eye, Brain, Zap, DollarSign } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function AIMarketingGenius() {
+  const { formatCurrency } = useGlobalization();
   const [campaignData, setCampaignData] = useState({
     name: "",
     objective: "",
@@ -48,10 +50,10 @@ export function AIMarketingGenius() {
       ]
     },
     channelOptimization: [
-      { channel: "LinkedIn Ads", allocation: 35, roi: 420, reach: "1.2M", cost: "$0.89" },
-      { channel: "Google Ads", allocation: 30, roi: 380, reach: "2.1M", cost: "$1.23" },
-      { channel: "Facebook/Meta", allocation: 20, roi: 290, reach: "3.4M", cost: "$0.67" },
-      { channel: "Email Marketing", allocation: 15, roi: 560, reach: "180K", cost: "$0.12" }
+      { channel: "LinkedIn Ads", allocation: 35, roi: 420, reach: "1.2M", cost: 0.89 },
+      { channel: "Google Ads", allocation: 30, roi: 380, reach: "2.1M", cost: 1.23 },
+      { channel: "Facebook/Meta", allocation: 20, roi: 290, reach: "3.4M", cost: 0.67 },
+      { channel: "Email Marketing", allocation: 15, roi: 560, reach: "180K", cost: 0.12 }
     ],
     timeOptimization: {
       bestLaunchTime: "Tuesday 2:00 PM EST",
@@ -153,7 +155,7 @@ export function AIMarketingGenius() {
                   id="budget"
                   value={campaignData.budget}
                   onChange={(e) => setCampaignData({...campaignData, budget: e.target.value})}
-                  placeholder="$10,000"
+                  placeholder={formatCurrency(10000)}
                 />
               </div>
               <div>
@@ -317,7 +319,7 @@ export function AIMarketingGenius() {
                   </div>
                   <div>
                     <span className="text-muted-foreground">CPC: </span>
-                    <span className="font-semibold">{channel.cost}</span>
+                    <span className="font-semibold">{formatCurrency(channel.cost)}</span>
                   </div>
                 </div>
                 <Progress value={channel.allocation} className="h-2" />

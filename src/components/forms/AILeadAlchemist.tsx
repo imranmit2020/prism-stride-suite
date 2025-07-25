@@ -7,10 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Sparkles, Target, TrendingUp, Zap, Brain, DollarSign, Clock, MessageSquare, User } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function AILeadAlchemist() {
+  const { formatCurrency } = useGlobalization();
   const [leadData, setLeadData] = useState({
     name: "",
     email: "",
@@ -204,7 +206,7 @@ export function AILeadAlchemist() {
                   id="budget"
                   value={leadData.budget}
                   onChange={(e) => setLeadData({...leadData, budget: e.target.value})}
-                  placeholder="$10,000 - $50,000"
+                  placeholder={`${formatCurrency(10000)} - ${formatCurrency(50000)}`}
                 />
               </div>
               <div>

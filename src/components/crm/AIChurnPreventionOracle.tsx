@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, AlertTriangle, Shield, TrendingDown, Zap, Target } from "lucide-react";
 
 export function AIChurnPreventionOracle() {
+  const { formatCurrency } = useGlobalization();
   const [customerData, setCustomerData] = useState({
     customerId: "",
     accountValue: "",
@@ -101,7 +103,7 @@ export function AIChurnPreventionOracle() {
                 id="account-value"
                 value={customerData.accountValue}
                 onChange={(e) => setCustomerData({...customerData, accountValue: e.target.value})}
-                placeholder="e.g., $50,000/year"
+                placeholder={`e.g., ${formatCurrency(50000)}/year`}
               />
             </div>
           </div>

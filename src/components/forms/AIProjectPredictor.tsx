@@ -7,10 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Target, Brain, Calendar, Users, DollarSign, AlertTriangle, CheckCircle, TrendingUp, Zap } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function AIProjectPredictor() {
+  const { formatCurrency } = useGlobalization();
   const [projectData, setProjectData] = useState({
     name: "",
     description: "",
@@ -29,7 +31,7 @@ export function AIProjectPredictor() {
     budgetAccuracy: 89,
     timelineReliability: 85,
     predictions: {
-      actualBudget: "$143,200",
+      actualBudget: 143200,
       actualTimeline: "4.2 months",
       teamOptimal: "6-8 people",
       deliveryDate: "March 15, 2024",
@@ -131,7 +133,7 @@ export function AIProjectPredictor() {
                   id="budget"
                   value={projectData.budget}
                   onChange={(e) => setProjectData({...projectData, budget: e.target.value})}
-                  placeholder="$100,000"
+                  placeholder={formatCurrency(100000)}
                 />
               </div>
               <div>
@@ -240,7 +242,7 @@ export function AIProjectPredictor() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Actual Budget:</span>
-                    <span className="font-semibold">{predictions.predictions.actualBudget}</span>
+                    <span className="font-semibold">{formatCurrency(predictions.predictions.actualBudget)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Actual Timeline:</span>

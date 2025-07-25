@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, Target, TrendingUp, AlertTriangle, DollarSign, Calendar } from "lucide-react";
 
 export function AIDealProbabilityEngine() {
+  const { formatCurrency } = useGlobalization();
   const [dealData, setDealData] = useState({
     dealName: "",
     value: "",
@@ -91,7 +93,7 @@ export function AIDealProbabilityEngine() {
                 id="value"
                 value={dealData.value}
                 onChange={(e) => setDealData({...dealData, value: e.target.value})}
-                placeholder="e.g., $150,000"
+                placeholder={`e.g., ${formatCurrency(150000)}`}
               />
             </div>
             <div>

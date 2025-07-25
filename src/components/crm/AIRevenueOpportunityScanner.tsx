@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, DollarSign, TrendingUp, Target, Zap, Eye } from "lucide-react";
 
 export function AIRevenueOpportunityScanner() {
+  const { formatCurrency } = useGlobalization();
   const [accountData, setAccountData] = useState({
     accountId: "",
     currentRevenue: "",
@@ -110,7 +112,7 @@ export function AIRevenueOpportunityScanner() {
                 id="current-revenue"
                 value={accountData.currentRevenue}
                 onChange={(e) => setAccountData({...accountData, currentRevenue: e.target.value})}
-                placeholder="e.g., $125,000"
+                placeholder={`e.g., ${formatCurrency(125000)}`}
               />
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ import { AlertTriangle, Shield, TrendingDown, Eye, Globe, Lock, DollarSign, Cloc
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function AIVendorRiskAssessment() {
+  const { formatCurrency } = useGlobalization();
   const [vendorData, setVendorData] = useState({
     name: "",
     website: "",
@@ -170,7 +172,7 @@ export function AIVendorRiskAssessment() {
                 id="contract-value"
                 value={vendorData.contractValue}
                 onChange={(e) => setVendorData({...vendorData, contractValue: e.target.value})}
-                placeholder="$50,000"
+                placeholder={formatCurrency(50000)}
               />
             </div>
 

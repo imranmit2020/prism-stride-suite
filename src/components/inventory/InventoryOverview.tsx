@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -10,14 +11,15 @@ import {
   Brain
 } from "lucide-react";
 
-const inventoryStats = [
+const inventoryStatsRaw = [
   {
     title: "Total Products",
     value: "847",
     change: "+12",
     trend: "up",
     icon: Package,
-    description: "items in catalog"
+    description: "items in catalog",
+    type: "number"
   },
   {
     title: "Low Stock Alerts",
@@ -26,15 +28,17 @@ const inventoryStats = [
     trend: "up",
     icon: AlertTriangle,
     description: "need attention",
-    variant: "destructive"
+    variant: "destructive",
+    type: "number"
   },
   {
     title: "Inventory Value",
-    value: "$156,430",
+    value: 156430,
     change: "+8.2%",
     trend: "up",
     icon: DollarSign,
-    description: "total value"
+    description: "total value",
+    type: "currency"
   },
   {
     title: "AI Accuracy",
@@ -42,7 +46,8 @@ const inventoryStats = [
     change: "+2.1%",
     trend: "up",
     icon: Brain,
-    description: "prediction accuracy"
+    description: "prediction accuracy",
+    type: "number"
   }
 ];
 
@@ -54,6 +59,13 @@ const demandForecast = [
 ];
 
 export function InventoryOverview() {
+  const { formatCurrency } = useGlobalization();
+  
+  // Convert raw inventory data to formatted data
+  const inventoryStats = inventoryStatsRaw.map(stat => ({
+    ...stat,
+    value: stat.type === "currency" ? formatCurrency(stat.value as number) : stat.value
+  }));
   const getStatusColor = (status: string) => {
     switch (status) {
       case "critical": return "bg-destructive";

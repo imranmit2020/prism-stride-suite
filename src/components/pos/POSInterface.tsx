@@ -3,6 +3,7 @@ import { Search, Scan, Users, Gift } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { ProductGrid, Product } from "./ProductGrid";
 import { Cart, CartItem } from "./Cart";
 import { CategoryFilter } from "./CategoryFilter";
@@ -30,6 +31,7 @@ const mockProducts: Product[] = [
 ];
 
 export function POSInterface() {
+  const { formatCurrency } = useGlobalization();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   Users, 
   DollarSign, 
@@ -9,30 +10,33 @@ import {
   AlertTriangle
 } from "lucide-react";
 
-const payrollStats = [
+const payrollStatsRaw = [
   {
     title: "Total Employees",
     value: "156",
     change: "+8",
     trend: "up",
     icon: Users,
-    description: "active employees"
+    description: "active employees",
+    type: "number"
   },
   {
     title: "Monthly Payroll",
-    value: "$284,560",
+    value: 284560,
     change: "+12.3%",
     trend: "up", 
     icon: DollarSign,
-    description: "total monthly cost"
+    description: "total monthly cost",
+    type: "currency"
   },
   {
     title: "Avg. Salary",
-    value: "$4,250",
+    value: 4250,
     change: "+5.2%",
     trend: "up",
     icon: TrendingUp,
-    description: "per employee/month"
+    description: "per employee/month",
+    type: "currency"
   },
   {
     title: "Next Payroll",
@@ -40,7 +44,8 @@ const payrollStats = [
     change: "On schedule",
     trend: "neutral",
     icon: Calendar,
-    description: "until processing"
+    description: "until processing",
+    type: "number"
   }
 ];
 
@@ -100,6 +105,13 @@ const upcomingPayroll = [
 ];
 
 export function PayrollOverview() {
+  const { formatCurrency } = useGlobalization();
+  
+  // Convert raw payroll data to formatted data
+  const payrollStats = payrollStatsRaw.map(stat => ({
+    ...stat,
+    value: stat.type === "currency" ? formatCurrency(stat.value as number) : stat.value
+  }));
   const getStatusColor = (status: string) => {
     switch (status) {
       case "scheduled": return "bg-success text-success-foreground";
@@ -159,12 +171,12 @@ export function PayrollOverview() {
                       {dept.employees} employees
                     </span>
                   </div>
-                  <div className="text-right">
-                    <div className="font-medium">${dept.totalCost.toLocaleString()}</div>
-                    <div className="text-sm text-muted-foreground">
-                      Avg: ${dept.avgSalary.toLocaleString()}
-                    </div>
-                  </div>
+                   <div className="text-right">
+                     <div className="font-medium">{formatCurrency(dept.totalCost)}</div>
+                     <div className="text-sm text-muted-foreground">
+                       Avg: {formatCurrency(dept.avgSalary)}
+                     </div>
+                   </div>
                 </div>
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs text-muted-foreground">
@@ -200,8 +212,8 @@ export function PayrollOverview() {
                     {payroll.employees} employees • {new Date(payroll.date).toLocaleDateString()}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="font-bold text-lg">${payroll.amount.toLocaleString()}</div>
+                 <div className="text-right">
+                   <div className="font-bold text-lg">{formatCurrency(payroll.amount)}</div>
                   {payroll.status === "pending_approval" && (
                     <div className="flex items-center gap-1 text-xs text-warning">
                       <AlertTriangle className="h-3 w-3" />

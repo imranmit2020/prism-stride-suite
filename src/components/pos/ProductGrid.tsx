@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Plus } from "lucide-react";
 
 export interface Product {
@@ -20,6 +21,7 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, onAddToCart, selectedCategory }: ProductGridProps) {
+  const { formatCurrency } = useGlobalization();
   const filteredProducts = selectedCategory === "all" 
     ? products 
     : products.filter(p => p.category === selectedCategory);
@@ -50,7 +52,7 @@ export function ProductGrid({ products, onAddToCart, selectedCategory }: Product
             
             <div className="flex items-center justify-between mb-2">
               <span className="text-lg font-bold text-primary">
-                ${product.price.toFixed(2)}
+                {formatCurrency(product.price)}
               </span>
               <Badge variant="secondary" className="text-xs">
                 {product.stock} left

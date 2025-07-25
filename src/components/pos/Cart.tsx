@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
 import { Product } from "./ProductGrid";
 
@@ -18,6 +19,7 @@ interface CartProps {
 }
 
 export function Cart({ items, onUpdateQuantity, onRemoveItem, onCheckout, onClearCart }: CartProps) {
+  const { formatCurrency } = useGlobalization();
   const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + tax;
@@ -53,7 +55,7 @@ export function Cart({ items, onUpdateQuantity, onRemoveItem, onCheckout, onClea
                       {item.name}
                     </h4>
                     <p className="text-sm text-muted-foreground">
-                      ${item.price.toFixed(2)} each
+                      {formatCurrency(item.price)} each
                     </p>
                   </div>
                   
@@ -100,16 +102,16 @@ export function Cart({ items, onUpdateQuantity, onRemoveItem, onCheckout, onClea
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatCurrency(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax (8%):</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>{formatCurrency(tax)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total:</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{formatCurrency(total)}</span>
                 </div>
               </div>
               
@@ -119,7 +121,7 @@ export function Cart({ items, onUpdateQuantity, onRemoveItem, onCheckout, onClea
                   className="w-full"
                   size="lg"
                 >
-                  Checkout - ${total.toFixed(2)}
+                  Checkout - {formatCurrency(total)}
                 </Button>
                 
                 <Button 

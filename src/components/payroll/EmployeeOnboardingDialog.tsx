@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -200,6 +201,7 @@ const useVoiceRecognition = () => {
 };
 
 export function EmployeeOnboardingDialog({ open, onOpenChange, employee, onSaveEmployee }: EmployeeOnboardingDialogProps) {
+  const { formatCurrency } = useGlobalization();
   const { toast } = useToast();
   const { isListening, transcript, startListening, setTranscript } = useVoiceRecognition();
   const [activeTab, setActiveTab] = useState("personal");
@@ -287,7 +289,7 @@ export function EmployeeOnboardingDialog({ open, onOpenChange, employee, onSaveE
                 cultureFit: 75 + Math.floor(Math.random() * 20),
                 recommendations: [
                   marketData.median > formData.compensation.baseSalary ? 
-                    `Consider salary adjustment to $${marketData.median.toLocaleString()} (market median)` :
+                    `Consider salary adjustment to ${formatCurrency(marketData.median)} (market median)` :
                     'Salary is competitive with market rates',
                   retentionRisk > 60 ? 'High retention risk - consider additional benefits' : 'Low retention risk',
                   'Strong candidate for leadership development program',
@@ -906,19 +908,19 @@ export function EmployeeOnboardingDialog({ open, onOpenChange, employee, onSaveE
                         <div className="text-center">
                           <p className="text-sm text-muted-foreground">Market Range</p>
                           <p className="text-lg font-semibold">
-                            ${formData.aiMetrics.marketSalaryRange.min.toLocaleString()} - ${formData.aiMetrics.marketSalaryRange.max.toLocaleString()}
+                            {formatCurrency(formData.aiMetrics.marketSalaryRange.min)} - {formatCurrency(formData.aiMetrics.marketSalaryRange.max)}
                           </p>
                         </div>
                         <div className="text-center">
                           <p className="text-sm text-muted-foreground">Market Median</p>
                           <p className="text-lg font-semibold text-primary">
-                            ${formData.aiMetrics.marketSalaryRange.median.toLocaleString()}
+                            {formatCurrency(formData.aiMetrics.marketSalaryRange.median)}
                           </p>
                         </div>
                         <div className="text-center">
                           <p className="text-sm text-muted-foreground">Current Salary</p>
                           <p className="text-lg font-semibold">
-                            ${formData.compensation.baseSalary.toLocaleString()}
+                            {formatCurrency(formData.compensation.baseSalary)}
                           </p>
                         </div>
                       </div>

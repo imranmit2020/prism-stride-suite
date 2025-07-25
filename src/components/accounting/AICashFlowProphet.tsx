@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { TrendingUp, Gem, Waves, Brain, Zap, Eye } from "lucide-react";
 
 interface CashFlowPrediction {
@@ -40,6 +41,7 @@ interface CashFlowScenario {
 }
 
 export function AICashFlowProphet() {
+  const { formatCurrency } = useGlobalization();
   const [predictions] = useState<CashFlowPrediction[]>([
     {
       id: "1",
@@ -190,7 +192,7 @@ export function AICashFlowProphet() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-700">${totalNetFlow.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-blue-700">{formatCurrency(totalNetFlow)}</div>
             <p className="text-sm text-blue-600 mt-1">90-Day Quantum Prediction</p>
           </CardContent>
         </Card>
@@ -255,7 +257,7 @@ export function AICashFlowProphet() {
                 </div>
                 <div className="text-right">
                   <div className={`text-xl font-bold ${prediction.netFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    ${prediction.netFlow.toLocaleString()}
+                    {formatCurrency(prediction.netFlow)}
                   </div>
                   <Badge variant="outline" className={getRiskColor(prediction.riskLevel)}>
                     {prediction.riskLevel.toUpperCase()} RISK
@@ -266,11 +268,11 @@ export function AICashFlowProphet() {
               <div className="grid grid-cols-3 gap-4 text-sm">
                 <div>
                   <span className="text-muted-foreground">Predicted Inflow:</span>
-                  <p className="font-medium text-green-600">${prediction.predictedInflow.toLocaleString()}</p>
+                  <p className="font-medium text-green-600">{formatCurrency(prediction.predictedInflow)}</p>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Predicted Outflow:</span>
-                  <p className="font-medium text-red-600">${prediction.predictedOutflow.toLocaleString()}</p>
+                  <p className="font-medium text-red-600">{formatCurrency(prediction.predictedOutflow)}</p>
                 </div>
                 <div>
                   <span className="text-muted-foreground">AI Confidence:</span>
@@ -368,7 +370,7 @@ export function AICashFlowProphet() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-muted-foreground">Net Impact:</span>
-                  <p className="font-medium text-green-600">${scenario.netImpact.toLocaleString()}</p>
+                  <p className="font-medium text-green-600">{formatCurrency(scenario.netImpact)}</p>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Key Triggers:</span>

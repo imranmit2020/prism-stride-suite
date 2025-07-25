@@ -139,9 +139,9 @@ const Index = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">AI Product Lifecycle Tracking</h1>
+              <h1 className="text-3xl font-bold text-foreground">AI Inventory Tracking System</h1>
               <p className="text-muted-foreground mt-2">
-                End-to-end intelligent product management with revolutionary AI insights.
+                Comprehensive inventory lifecycle management with intelligent AI insights.
               </p>
             </div>
             <ProductTrackingInterface />

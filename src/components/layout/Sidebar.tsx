@@ -22,7 +22,7 @@ const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: Home },
   { id: "pos", label: "Point of Sale", icon: ShoppingCart },
   { id: "inventory", label: "Inventory", icon: Package },
-  { id: "product-tracking", label: "Product Tracking", icon: Route },
+  { id: "product-tracking", label: "Inventory Tracking", icon: Route },
   { id: "payroll", label: "Payroll", icon: Users },
   { id: "accounting", label: "Accounting", icon: Calculator },
   { id: "marketing", label: "AI Marketing", icon: TrendingUp },

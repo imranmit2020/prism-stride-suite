@@ -144,7 +144,7 @@ export function RecentActivity() {
             </Badge>
           </CardTitle>
           <CardDescription>
-            Live feed of AI decisions, optimizations, and insights happening across your business
+            Live feed of AI decisions, optimizations, and insights happening in your home
           </CardDescription>
         </CardHeader>
         <CardContent>

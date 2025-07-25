@@ -124,6 +124,85 @@ const emergingOpportunities = [
 ];
 
 export function QuickActions({ onActionClick, isHomeMode = false }: QuickActionsProps) {
+  if (isHomeMode) {
+    return (
+      <div className="space-y-6">
+        {/* Home Quick Actions */}
+        <Card className="card-enhanced">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-100 rounded-xl">
+                <Plus className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <CardTitle className="text-xl">Quick Home Actions</CardTitle>
+                <CardDescription>Common tasks for home management</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3 md:grid-cols-2">
+              <Button variant="outline" className="h-20 flex flex-col gap-1" onClick={() => onActionClick('accounting')}>
+                <DollarSign className="h-5 w-5" />
+                <span className="text-sm">Track Expense</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex flex-col gap-1" onClick={() => onActionClick('payroll')}>
+                <TrendingUp className="h-5 w-5" />
+                <span className="text-sm">Log Income</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex flex-col gap-1" onClick={() => onActionClick('inventory')}>
+                <Package className="h-5 w-5" />
+                <span className="text-sm">Check Inventory</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex flex-col gap-1" onClick={() => onActionClick('analytics')}>
+                <BarChart3 className="h-5 w-5" />
+                <span className="text-sm">View Budget</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* AI Chat Assistant */}
+        <Card className="card-glass">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                <MessageSquare className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <CardTitle>Ask AI About Home</CardTitle>
+                <CardDescription>Your personal home assistant</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200/50">
+                <p className="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Try asking:</p>
+                <ul className="text-xs text-blue-700 dark:text-blue-400 space-y-1">
+                  <li>• "How can I save money this month?"</li>
+                  <li>• "What groceries do I need to buy?"</li>
+                  <li>• "When should I pay my bills?"</li>
+                </ul>
+              </div>
+              
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Ask your personal AI helper..."
+                  className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
+                />
+                <Button size="sm" className="bg-gradient-primary hover:shadow-lg transition-all duration-300">
+                  <Wand2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* AI Quick Actions */}
@@ -319,7 +398,7 @@ export function QuickActions({ onActionClick, isHomeMode = false }: QuickActions
             <div className="flex gap-2">
               <input 
                 type="text" 
-                placeholder={isHomeMode ? "Ask your personal AI helper..." : "Ask your business AI advisor..."}
+                placeholder="Ask your business AI advisor..."
                 className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
               />
               <Button size="sm" className="bg-gradient-primary hover:shadow-lg transition-all duration-300">

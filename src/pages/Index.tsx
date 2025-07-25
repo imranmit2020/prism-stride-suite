@@ -78,9 +78,15 @@ const Index = () => {
         );
       case "pos":
         if (isHomeMode) {
-          // POS doesn't make sense for home use, redirect to inventory
-          setActiveModule("inventory");
-          return null;
+          // For home mode, redirect to inventory with a useEffect
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Redirecting to Home Inventory...</h1>
+                <p className="text-muted-foreground mt-2">Point of Sale is not available in Personal Mode.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6 h-full">
@@ -182,9 +188,20 @@ const Index = () => {
         );
       case "marketing":
         if (isHomeMode) {
-          // Redirect to more relevant module for home users
-          setActiveModule("accounting");
-          return null;
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Personal Finance</h1>
+                <p className="text-muted-foreground mt-2">
+                  Marketing tools are not available in Personal Mode. Use Personal Finance instead.
+                </p>
+              </div>
+              <div className="card-enhanced p-6">
+                <h3 className="text-lg font-semibold mb-4">Personal Finance Management</h3>
+                <p className="text-muted-foreground">Switch to Accounting module for personal finance tools.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6">
@@ -199,9 +216,20 @@ const Index = () => {
         );
       case "crm":
         if (isHomeMode) {
-          // Redirect to more relevant module for home users
-          setActiveModule("accounting");
-          return null;
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Personal Contacts</h1>
+                <p className="text-muted-foreground mt-2">
+                  CRM tools are not available in Personal Mode. Use Personal Finance for expense tracking.
+                </p>
+              </div>
+              <div className="card-enhanced p-6">
+                <h3 className="text-lg font-semibold mb-4">Contact Management</h3>
+                <p className="text-muted-foreground">Basic contact management for personal use coming soon.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6">
@@ -216,9 +244,20 @@ const Index = () => {
         );
       case "product-tracking":
         if (isHomeMode) {
-          // Redirect to inventory for home users
-          setActiveModule("inventory");
-          return null;
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Home Inventory Tracking</h1>
+                <p className="text-muted-foreground mt-2">
+                  Advanced product tracking is not available in Personal Mode. Use basic Home Inventory instead.
+                </p>
+              </div>
+              <div className="card-enhanced p-6">
+                <h3 className="text-lg font-semibold mb-4">Simple Home Tracking</h3>
+                <p className="text-muted-foreground">Use the Home Inventory module for household item tracking.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6">
@@ -233,9 +272,20 @@ const Index = () => {
         );
       case "user-management":
         if (isHomeMode) {
-          // Redirect to settings for home users
-          setActiveModule("settings");
-          return null;
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Account Settings</h1>
+                <p className="text-muted-foreground mt-2">
+                  User management is not available in Personal Mode. Use Settings for account preferences.
+                </p>
+              </div>
+              <div className="card-enhanced p-6">
+                <h3 className="text-lg font-semibold mb-4">Personal Account</h3>
+                <p className="text-muted-foreground">Manage your personal account settings and preferences.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6">
@@ -250,9 +300,20 @@ const Index = () => {
         );
       case "saas":
         if (isHomeMode) {
-          // Redirect to analytics for home users
-          setActiveModule("analytics");
-          return null;
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Personal Analytics</h1>
+                <p className="text-muted-foreground mt-2">
+                  SaaS tools are not available in Personal Mode. Use Personal Analytics for insights.
+                </p>
+              </div>
+              <div className="card-enhanced p-6">
+                <h3 className="text-lg font-semibold mb-4">Personal Insights</h3>
+                <p className="text-muted-foreground">View your personal financial and usage analytics.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6">
@@ -297,9 +358,20 @@ const Index = () => {
         );
       case "forms":
         if (isHomeMode) {
-          // Redirect to settings for home users
-          setActiveModule("settings");
-          return null;
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Personal Forms</h1>
+                <p className="text-muted-foreground mt-2">
+                  AI Forms are not available in Personal Mode. Use Settings for personal preferences.
+                </p>
+              </div>
+              <div className="card-enhanced p-6">
+                <h3 className="text-lg font-semibold mb-4">Personal Forms</h3>
+                <p className="text-muted-foreground">Basic forms for personal use coming soon.</p>
+              </div>
+            </div>
+          );
         }
         return (
           <div className="space-y-6">

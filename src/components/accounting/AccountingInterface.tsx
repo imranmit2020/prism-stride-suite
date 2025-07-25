@@ -70,10 +70,7 @@ export function AccountingInterface() {
         <TabsContent value="smart-invoice" className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Smart Invoice Processing</h2>
-            <Button onClick={() => {
-              console.log('Invoice button clicked');
-              setShowInvoiceDialog(true);
-            }}>
+            <Button onClick={() => setShowInvoiceDialog(true)}>
               <FileText className="h-4 w-4 mr-2" />
               Process Invoice
             </Button>
@@ -91,10 +88,7 @@ export function AccountingInterface() {
         <TabsContent value="expenses" className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Smart Expense Management</h2>
-            <Button onClick={() => {
-              console.log('Expense button clicked');
-              setShowExpenseDialog(true);
-            }}>
+            <Button onClick={() => setShowExpenseDialog(true)}>
               <Receipt className="h-4 w-4 mr-2" />
               Add Expense
             </Button>

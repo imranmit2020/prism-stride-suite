@@ -142,6 +142,26 @@ export function AIFeatureAdoptionProphet() {
               ))}
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-primary" />
+                Optimization Strategies
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {adoptionPrediction.optimizations.map((optimization, index) => (
+                <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">{optimization.strategy}</div>
+                    <div className="text-sm text-muted-foreground">Impact: {optimization.impact} • Effort: {optimization.effort}</div>
+                  </div>
+                  <Badge variant="outline">{optimization.impact}</Badge>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </>
       )}
     </div>

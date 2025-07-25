@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, Clock, Eye, AlertTriangle, Shield, Target } from "lucide-react";
 
 export function AITimeTheftDetective() {
+  const { formatCurrency } = useGlobalization();
   const [detectionData, setDetectionData] = useState({
     totalEmployees: 247,
     suspiciousActivities: 8,
@@ -26,7 +28,7 @@ export function AITimeTheftDetective() {
         confidence: 94,
         frequency: "Daily",
         timeStolen: "2.3 hours/day",
-        costImpact: "$89/day",
+        costImpact: formatCurrency(89) + "/day",
         evidence: ["Different biometric patterns", "Location inconsistencies", "Timing anomalies"],
         recommendation: "Immediate investigation + biometric verification"
       },
@@ -37,7 +39,7 @@ export function AITimeTheftDetective() {
         confidence: 87,
         frequency: "3x/week",
         timeStolen: "1.7 hours/week",
-        costImpact: "$67/week",
+        costImpact: formatCurrency(67) + "/week",
         evidence: ["Break duration anomalies", "Location tracking gaps", "Productivity dips"],
         recommendation: "Manager coaching + monitoring increase"
       },
@@ -48,7 +50,7 @@ export function AITimeTheftDetective() {
         confidence: 91,
         frequency: "2x/week", 
         timeStolen: "3.2 hours/week",
-        costImpact: "$134/week",
+        costImpact: formatCurrency(134) + "/week",
         evidence: ["Activity tracking gaps", "System idle time", "Response delays"],
         recommendation: "Productivity tool deployment + check-ins"
       }
@@ -89,28 +91,28 @@ export function AITimeTheftDetective() {
         description: "AI predicts theft before it happens",
         effectiveness: 89,
         implementation: "Real-time alerts to managers",
-        savings: "$45,000/year"
+        savings: formatCurrency(45000) + "/year"
       },
       {
         strategy: "Behavioral Conditioning",
         description: "Subtle deterrents based on AI analysis", 
         effectiveness: 76,
         implementation: "Personalized notifications",
-        savings: "$28,000/year"
+        savings: formatCurrency(28000) + "/year"
       },
       {
         strategy: "Gamification Incentives",
         description: "Reward accurate time tracking",
         effectiveness: 84,
         implementation: "Time accuracy leaderboards",
-        savings: "$67,000/year"
+        savings: formatCurrency(67000) + "/year"
       }
     ],
     timeTheftCategories: [
-      { category: "Buddy Punching", frequency: 23, cost: "$12,400/month", detection: 96 },
-      { category: "Extended Breaks", frequency: 34, cost: "$8,900/month", detection: 89 },
-      { category: "Personal Activities", frequency: 45, cost: "$15,600/month", detection: 92 },
-      { category: "Ghost Employees", frequency: 2, cost: "$34,000/month", detection: 99 }
+      { category: "Buddy Punching", frequency: 23, cost: formatCurrency(12400) + "/month", detection: 96 },
+      { category: "Extended Breaks", frequency: 34, cost: formatCurrency(8900) + "/month", detection: 89 },
+      { category: "Personal Activities", frequency: 45, cost: formatCurrency(15600) + "/month", detection: 92 },
+      { category: "Ghost Employees", frequency: 2, cost: formatCurrency(34000) + "/month", detection: 99 }
     ],
     aiCountermeasures: [
       {

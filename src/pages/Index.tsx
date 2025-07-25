@@ -160,19 +160,10 @@ const Index = () => {
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Personal Analytics</h1>
                 <p className="text-muted-foreground mt-2">
-                  Track your personal spending patterns, income trends, and household metrics.
+                  Revolutionary AI-powered insights into your personal life patterns, optimization, and future potential.
                 </p>
               </div>
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">Monthly Spending Analysis</h3>
-                  <p className="text-muted-foreground">Coming soon - Personal expense analytics</p>
-                </div>
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">Income Trends</h3>
-                  <p className="text-muted-foreground">Coming soon - Personal income tracking</p>
-                </div>
-              </div>
+              <PersonalAnalyticsInterface />
             </div>
           );
         }

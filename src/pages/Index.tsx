@@ -9,7 +9,7 @@ import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
-import { PersonalAnalyticsInterface } from "@/components/personal-analytics/PersonalAnalyticsInterface";
+import { PersonalFinanceAnalyticsInterface } from "@/components/personal-analytics/PersonalFinanceAnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
 import { FormsInterface } from "@/components/forms/FormsInterface";
@@ -163,7 +163,7 @@ const Index = () => {
                   Revolutionary AI-powered insights into your personal life patterns, optimization, and future potential.
                 </p>
               </div>
-              <PersonalAnalyticsInterface />
+              <PersonalFinanceAnalyticsInterface />
             </div>
           );
         }
@@ -175,7 +175,7 @@ const Index = () => {
                 Advanced AI-powered business intelligence and predictive analytics.
               </p>
             </div>
-            <PersonalAnalyticsInterface />
+            <PersonalFinanceAnalyticsInterface />
           </div>
         );
       case "marketing":

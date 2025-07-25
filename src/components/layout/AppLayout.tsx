@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { TenantBranding } from "./TenantBranding";
@@ -54,32 +53,30 @@ export function AppLayout({
   return (
     <>
       <TenantBranding tenant={currentTenant} />
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full bg-background">
-          <Sidebar 
-            onModuleChange={onModuleChange} 
-            activeModule={currentModule}
-            isHomeMode={isHomeMode}
-            onHomeModeChange={onHomeModeChange}
+      <div className="min-h-screen flex w-full bg-background">
+        <Sidebar 
+          onModuleChange={onModuleChange} 
+          activeModule={currentModule}
+          isHomeMode={isHomeMode}
+          onHomeModeChange={onHomeModeChange}
+        />
+        <div className="flex-1 flex flex-col ml-64">
+          <Header 
+            onTenantChange={handleTenantChange}
+            currentUser={{
+              name: "John Smith",
+              email: "john@company.com",
+              role: "Administrator",
+              tenant: currentTenant.name
+            }}
           />
-          <SidebarInset className="flex-1 flex flex-col">
-            <Header 
-              onTenantChange={handleTenantChange}
-              currentUser={{
-                name: "John Smith",
-                email: "john@company.com",
-                role: "Administrator",
-                tenant: currentTenant.name
-              }}
-            />
-            <main className="flex-1 overflow-auto">
-              <div className="container mx-auto py-6 px-6">
-                {children}
-              </div>
-            </main>
-          </SidebarInset>
+          <main className="flex-1 overflow-auto">
+            <div className="container mx-auto py-6 px-6">
+              {children}
+            </div>
+          </main>
         </div>
-      </SidebarProvider>
+      </div>
     </>
   );
 }

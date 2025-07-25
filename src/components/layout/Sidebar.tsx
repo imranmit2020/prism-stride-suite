@@ -67,7 +67,7 @@ export function Sidebar({
   const handleChange = onModuleChange || onTabChange || (() => {});
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
-    <div className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-lg">
+    <div className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm fixed left-0 top-0 z-40">
       {/* Logo/Brand */}
       <div className="p-6 border-b border-border bg-card">
         <div className="flex items-center gap-3 mb-4">

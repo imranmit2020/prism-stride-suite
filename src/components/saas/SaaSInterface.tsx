@@ -5,9 +5,7 @@ import { AIFeatureAdoptionProphet } from "./AIFeatureAdoptionProphet";
 import { AIPricingOptimizationEngine } from "./AIPricingOptimizationEngine";
 import { AICustomerSuccessPredictor } from "./AICustomerSuccessPredictor";
 import { AIRetentionAlchemist } from "./AIRetentionAlchemist";
-import {
-  AIProductMarketFitAnalyzer
-} from "./AISaaSComponents";
+import { AIProductMarketFitAnalyzer } from "./AIProductMarketFitAnalyzer";
 
 export function SaaSInterface() {
   const [activeTab, setActiveTab] = useState("behavior");

@@ -10,12 +10,6 @@ export function UserManagementInterface() {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-border pb-4">
-        <h1 className="text-2xl font-bold text-foreground">User Management</h1>
-        <p className="text-muted-foreground">
-          Manage users, roles, and permissions across your organization
-        </p>
-      </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1">

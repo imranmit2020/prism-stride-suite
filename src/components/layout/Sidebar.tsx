@@ -67,9 +67,7 @@ export function Sidebar({
   const handleChange = onModuleChange || onTabChange || (() => {});
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
-    <div className="h-screen w-64 bg-gradient-to-br from-background via-background/95 to-background/90 border-r border-border/30 flex flex-col shadow-2xl backdrop-blur-sm lg:block hidden">
-      {/* Mobile overlay - shown on smaller screens */}
-      <div className="lg:hidden fixed inset-0 z-50 bg-black/20 backdrop-blur-sm" />
+    <div className="h-screen w-64 bg-gradient-to-br from-background via-background/95 to-background/90 border-r border-border/30 flex flex-col shadow-2xl backdrop-blur-sm">
       {/* Logo/Brand */}
       <div className="p-6 border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="flex items-center gap-2 mb-3">

@@ -4,6 +4,9 @@ import { InventoryOverview } from "./InventoryOverview";
 import { InventoryTable, InventoryItem } from "./InventoryTable";
 import { SmartReorder } from "./SmartReorder";
 import { AIInsights } from "./AIInsights";
+import { AIDemandProphet } from "./AIDemandProphet";
+import { AITheftDetectionOracle } from "./AITheftDetectionOracle";
+import { AIShelfLifeOptimizer } from "./AIShelfLifeOptimizer";
 import { AddProductDialog } from "./AddProductDialog";
 import { ImportExportActions } from "./ImportExportActions";
 import { useToast } from "@/hooks/use-toast";
@@ -51,11 +54,13 @@ export function InventoryInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="products">Products</TabsTrigger>
+          <TabsTrigger value="ai-demand">AI Demand Prophet</TabsTrigger>
+          <TabsTrigger value="ai-theft">AI Theft Detection</TabsTrigger>
+          <TabsTrigger value="ai-shelf">AI Shelf Life</TabsTrigger>
           <TabsTrigger value="reorders">Smart Reorders</TabsTrigger>
-          <TabsTrigger value="insights">AI Insights</TabsTrigger>
           <TabsTrigger value="import-export">Import/Export</TabsTrigger>
         </TabsList>
 
@@ -70,11 +75,20 @@ export function InventoryInterface() {
           />
         </TabsContent>
 
-        <TabsContent value="reorders" className="space-y-6">
-          <SmartReorder onProcessReorder={handleProcessReorder} />
+        <TabsContent value="ai-demand" className="space-y-6">
+          <AIDemandProphet />
         </TabsContent>
 
-        <TabsContent value="insights" className="space-y-6">
+        <TabsContent value="ai-theft" className="space-y-6">
+          <AITheftDetectionOracle />
+        </TabsContent>
+
+        <TabsContent value="ai-shelf" className="space-y-6">
+          <AIShelfLifeOptimizer />
+        </TabsContent>
+
+        <TabsContent value="reorders" className="space-y-6">
+          <SmartReorder onProcessReorder={handleProcessReorder} />
           <AIInsights />
         </TabsContent>
 

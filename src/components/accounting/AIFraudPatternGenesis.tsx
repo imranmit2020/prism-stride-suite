@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Skull, Radar, Zap, Brain, Shield, AlertTriangle } from "lucide-react";
 
 interface FraudPattern {
@@ -31,6 +32,7 @@ interface BehavioralAnomaly {
 }
 
 export function AIFraudPatternGenesis() {
+  const { formatCurrency } = useGlobalization();
   const [fraudPatterns] = useState<FraudPattern[]>([
     {
       id: "1",
@@ -142,7 +144,7 @@ export function AIFraudPatternGenesis() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-700">${totalExposure.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-red-700">{formatCurrency(totalExposure)}</div>
             <p className="text-sm text-red-600 mt-1">Detected Loss Risk</p>
           </CardContent>
         </Card>
@@ -211,7 +213,7 @@ export function AIFraudPatternGenesis() {
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-red-600">
-                    ${pattern.estimatedLoss.toLocaleString()}
+                    {formatCurrency(pattern.estimatedLoss)}
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {pattern.transactions} transactions

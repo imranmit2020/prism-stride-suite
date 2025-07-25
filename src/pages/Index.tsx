@@ -22,6 +22,9 @@ import { SaaSInterface } from "@/components/saas/SaaSInterface";
 import { ProductTrackingInterface } from "@/components/product-tracking/ProductTrackingInterface";
 import { UserManagementInterface } from "@/components/user-management/UserManagementInterface";
 import { AuthContainer } from "@/components/auth/AuthContainer";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MessageSquare, Wand2 } from "lucide-react";
 
 const Index = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
@@ -70,6 +73,44 @@ const Index = () => {
               <div className="xl:col-span-2 space-y-6 lg:space-y-8">
                 <QuickActions onActionClick={handleQuickAction} isHomeMode={isHomeMode} />
                 <RecentActivity isHomeMode={isHomeMode} />
+                {isHomeMode && (
+                  <Card className="card-glass">
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+                          <MessageSquare className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <CardTitle>Ask AI About Home</CardTitle>
+                          <CardDescription>Your personal home assistant</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200/50">
+                          <p className="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Try asking:</p>
+                          <ul className="text-xs text-blue-700 dark:text-blue-400 space-y-1">
+                            <li>• "How can I save money this month?"</li>
+                            <li>• "What groceries do I need to buy?"</li>
+                            <li>• "When should I pay my bills?"</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <input 
+                            type="text" 
+                            placeholder="Ask your personal AI helper..."
+                            className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
+                          />
+                          <Button size="sm" className="bg-gradient-primary hover:shadow-lg transition-all duration-300">
+                            <Wand2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
               {!isHomeMode && (
                 <div className="card-glass p-6 lg:p-8">

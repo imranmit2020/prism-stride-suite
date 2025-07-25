@@ -30,28 +30,28 @@ export function PersonalIncomeAnalytics() {
       value: "$5,995",
       detail: "Total across all sources",
       icon: DollarSign,
-      color: "text-success"
+      color: "text-green-600"
     },
     {
       title: "Best Performing Source",
       value: "Investments",
       detail: "+25% growth this month",
       icon: TrendingUp,
-      color: "text-success"
+      color: "text-emerald-600"
     },
     {
       title: "Target Achievement",
       value: "88.2%",
       detail: "Of monthly income goal",
       icon: Target,
-      color: "text-primary"
+      color: "text-blue-600"
     },
     {
       title: "Income Stability",
       value: "High",
       detail: "85% from stable sources",
       icon: ChartBar,
-      color: "text-blue-500"
+      color: "text-teal-600"
     }
   ];
 
@@ -118,7 +118,7 @@ export function PersonalIncomeAnalytics() {
           <Card key={index}>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <insight.icon className="h-4 w-4 text-primary" />
+                <insight.icon className="h-4 w-4 text-green-600" />
                 {insight.title}
               </CardTitle>
             </CardHeader>
@@ -286,7 +286,7 @@ export function PersonalIncomeAnalytics() {
                 <div key={index} className="text-center space-y-2">
                   <div className="text-xs text-muted-foreground">{trend.month}</div>
                   <div 
-                    className="bg-primary rounded w-full"
+                    className="bg-green-500 rounded w-full"
                     style={{ 
                       height: `${incomeTrends.length > 0 ? (trend.amount / Math.max(...incomeTrends.map(t => t.amount))) * 100 : 20}px`,
                       minHeight: "20px"

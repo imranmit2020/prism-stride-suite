@@ -225,34 +225,34 @@ export function PersonalExpiryMatrix() {
             {expiringItems
               .sort((a, b) => a.daysLeft - b.daysLeft)
               .map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                <div className="flex items-center gap-3">
-                  {getStatusIcon(item.daysLeft)}
-                  <item.icon className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <h4 className="font-medium">{item.item}</h4>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>{item.location}</span>
-                      <span>•</span>
-                      <span>Expires: {item.expiryDate}</span>
+                <div key={index} className="flex items-center justify-between p-4 border rounded-lg bg-card hover:bg-muted/50 transition-colors shadow-sm">
+                  <div className="flex items-center gap-3">
+                    {getStatusIcon(item.daysLeft)}
+                    <item.icon className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <h4 className="font-medium text-foreground">{item.item}</h4>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>{item.location}</span>
+                        <span>•</span>
+                        <span>Expires: {item.expiryDate}</span>
+                      </div>
                     </div>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {item.category}
+                    </Badge>
+                    <Badge variant={getStatusColor(item.status)}>
+                      {item.daysLeft === 0 ? "Today" : 
+                       item.daysLeft === 1 ? "1 day" : 
+                       `${item.daysLeft} days`}
+                    </Badge>
+                    <Button size="sm" variant="outline">
+                      {item.daysLeft <= 3 ? "Replace" : "Extend"}
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">
-                    {item.category}
-                  </Badge>
-                  <Badge variant={getStatusColor(item.status)}>
-                    {item.daysLeft === 0 ? "Today" : 
-                     item.daysLeft === 1 ? "1 day" : 
-                     `${item.daysLeft} days`}
-                  </Badge>
-                  <Button size="sm" variant="outline">
-                    {item.daysLeft <= 3 ? "Replace" : "Extend"}
-                  </Button>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </CardContent>
       </Card>

@@ -13,6 +13,7 @@ import { PersonalFinanceAnalyticsInterface } from "@/components/personal-analyti
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { PersonalReportsInterface } from "@/components/reports/PersonalReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
+import { HomeManagerSettings } from "@/components/settings/HomeManagerSettings";
 import { FormsInterface } from "@/components/forms/FormsInterface";
 import { MarketingInterface } from "@/components/marketing/MarketingInterface";
 import { CRMInterface } from "@/components/crm/CRMInterface";
@@ -373,16 +374,7 @@ const Index = () => {
               </p>
             </div>
             {isHomeMode ? (
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
-                  <p className="text-muted-foreground">Update your personal information</p>
-                </div>
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">Notifications</h3>
-                  <p className="text-muted-foreground">Manage alert preferences</p>
-                </div>
-              </div>
+              <HomeManagerSettings />
             ) : (
               <SettingsInterface />
             )}

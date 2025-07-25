@@ -13,6 +13,7 @@ import {
   PieChart
 } from "lucide-react";
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 
 const reportTypes = [
   { id: "profit_loss", name: "Profit & Loss Statement", description: "Revenue, expenses, and net income" },
@@ -71,6 +72,7 @@ const monthlyTrends = [
 ];
 
 export function FinancialReports() {
+  const { formatCurrency } = useGlobalization();
   const [selectedReport, setSelectedReport] = useState("profit_loss");
   const [selectedPeriod, setSelectedPeriod] = useState("current_month");
 
@@ -87,20 +89,20 @@ export function FinancialReports() {
         <CardContent className="space-y-3">
           <div className="flex justify-between">
             <span>Sales Revenue</span>
-            <span className="font-medium">${profitLossData.revenue.salesRevenue.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.revenue.salesRevenue)}</span>
           </div>
           <div className="flex justify-between">
             <span>Service Revenue</span>
-            <span className="font-medium">${profitLossData.revenue.serviceRevenue.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.revenue.serviceRevenue)}</span>
           </div>
           <div className="flex justify-between">
             <span>Other Income</span>
-            <span className="font-medium">${profitLossData.revenue.other.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.revenue.other)}</span>
           </div>
           <div className="border-t pt-2">
             <div className="flex justify-between font-bold text-lg">
               <span>Total Revenue</span>
-              <span className="text-success">${profitLossData.revenue.total.toLocaleString()}</span>
+              <span className="text-success">{formatCurrency(profitLossData.revenue.total)}</span>
             </div>
           </div>
         </CardContent>
@@ -117,36 +119,36 @@ export function FinancialReports() {
         <CardContent className="space-y-3">
           <div className="flex justify-between">
             <span>Cost of Goods Sold</span>
-            <span className="font-medium">${profitLossData.expenses.costOfGoods.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.costOfGoods)}</span>
           </div>
           <div className="flex justify-between">
             <span>Salaries & Wages</span>
-            <span className="font-medium">${profitLossData.expenses.salariesWages.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.salariesWages)}</span>
           </div>
           <div className="flex justify-between">
             <span>Rent</span>
-            <span className="font-medium">${profitLossData.expenses.rent.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.rent)}</span>
           </div>
           <div className="flex justify-between">
             <span>Utilities</span>
-            <span className="font-medium">${profitLossData.expenses.utilities.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.utilities)}</span>
           </div>
           <div className="flex justify-between">
             <span>Marketing</span>
-            <span className="font-medium">${profitLossData.expenses.marketing.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.marketing)}</span>
           </div>
           <div className="flex justify-between">
             <span>Insurance</span>
-            <span className="font-medium">${profitLossData.expenses.insurance.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.insurance)}</span>
           </div>
           <div className="flex justify-between">
             <span>Other Expenses</span>
-            <span className="font-medium">${profitLossData.expenses.other.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(profitLossData.expenses.other)}</span>
           </div>
           <div className="border-t pt-2">
             <div className="flex justify-between font-bold text-lg">
               <span>Total Expenses</span>
-              <span className="text-destructive">${profitLossData.expenses.total.toLocaleString()}</span>
+              <span className="text-destructive">{formatCurrency(profitLossData.expenses.total)}</span>
             </div>
           </div>
         </CardContent>
@@ -163,7 +165,7 @@ export function FinancialReports() {
         <CardContent>
           <div className="flex justify-between items-center text-2xl font-bold">
             <span>Net Income</span>
-            <span className="text-primary">${profitLossData.netIncome.toLocaleString()}</span>
+            <span className="text-primary">{formatCurrency(profitLossData.netIncome)}</span>
           </div>
           <div className="mt-2 text-sm text-muted-foreground">
             Profit Margin: {((profitLossData.netIncome / profitLossData.revenue.total) * 100).toFixed(1)}%
@@ -186,24 +188,24 @@ export function FinancialReports() {
         <CardContent className="space-y-3">
           <div className="flex justify-between">
             <span>Cash & Cash Equivalents</span>
-            <span className="font-medium">${balanceSheetData.assets.cash.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.assets.cash)}</span>
           </div>
           <div className="flex justify-between">
             <span>Accounts Receivable</span>
-            <span className="font-medium">${balanceSheetData.assets.accountsReceivable.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.assets.accountsReceivable)}</span>
           </div>
           <div className="flex justify-between">
             <span>Inventory</span>
-            <span className="font-medium">${balanceSheetData.assets.inventory.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.assets.inventory)}</span>
           </div>
           <div className="flex justify-between">
             <span>Equipment</span>
-            <span className="font-medium">${balanceSheetData.assets.equipment.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.assets.equipment)}</span>
           </div>
           <div className="border-t pt-2">
             <div className="flex justify-between font-bold text-lg">
               <span>Total Assets</span>
-              <span>${balanceSheetData.assets.total.toLocaleString()}</span>
+              <span>{formatCurrency(balanceSheetData.assets.total)}</span>
             </div>
           </div>
         </CardContent>
@@ -220,20 +222,20 @@ export function FinancialReports() {
         <CardContent className="space-y-3">
           <div className="flex justify-between">
             <span>Accounts Payable</span>
-            <span className="font-medium">${balanceSheetData.liabilities.accountsPayable.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.liabilities.accountsPayable)}</span>
           </div>
           <div className="flex justify-between">
             <span>Accrued Expenses</span>
-            <span className="font-medium">${balanceSheetData.liabilities.accrued.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.liabilities.accrued)}</span>
           </div>
           <div className="flex justify-between">
             <span>Long-term Loans</span>
-            <span className="font-medium">${balanceSheetData.liabilities.loans.toLocaleString()}</span>
+            <span className="font-medium">{formatCurrency(balanceSheetData.liabilities.loans)}</span>
           </div>
           <div className="border-t pt-2">
             <div className="flex justify-between font-bold text-lg">
               <span>Total Liabilities</span>
-              <span>${balanceSheetData.liabilities.total.toLocaleString()}</span>
+              <span>{formatCurrency(balanceSheetData.liabilities.total)}</span>
             </div>
           </div>
         </CardContent>
@@ -250,7 +252,7 @@ export function FinancialReports() {
         <CardContent>
           <div className="flex justify-between font-bold text-lg">
             <span>Total Equity</span>
-            <span>${balanceSheetData.equity.total.toLocaleString()}</span>
+            <span>{formatCurrency(balanceSheetData.equity.total)}</span>
           </div>
         </CardContent>
       </Card>
@@ -268,9 +270,9 @@ export function FinancialReports() {
             <div className="flex items-center justify-between">
               <h4 className="font-medium">{month.month} 2024</h4>
               <div className="flex items-center gap-4 text-sm">
-                <span className="text-success">Rev: ${month.revenue.toLocaleString()}</span>
-                <span className="text-destructive">Exp: ${month.expenses.toLocaleString()}</span>
-                <span className="text-primary font-medium">Profit: ${month.profit.toLocaleString()}</span>
+                <span className="text-success">Rev: {formatCurrency(month.revenue)}</span>
+                <span className="text-destructive">Exp: {formatCurrency(month.expenses)}</span>
+                <span className="text-primary font-medium">Profit: {formatCurrency(month.profit)}</span>
               </div>
             </div>
           </div>

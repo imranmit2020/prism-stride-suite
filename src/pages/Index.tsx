@@ -15,6 +15,7 @@ import { MarketingInterface } from "@/components/marketing/MarketingInterface";
 import { CRMInterface } from "@/components/crm/CRMInterface";
 import { SaaSInterface } from "@/components/saas/SaaSInterface";
 import { ProductTrackingInterface } from "@/components/product-tracking/ProductTrackingInterface";
+import { UserManagementInterface } from "@/components/user-management/UserManagementInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -145,6 +146,18 @@ const Index = () => {
               </p>
             </div>
             <ProductTrackingInterface />
+          </div>
+        );
+      case "user-management":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">User Management</h1>
+              <p className="text-muted-foreground mt-2">
+                Manage users, roles, and permissions across your organization.
+              </p>
+            </div>
+            <UserManagementInterface />
           </div>
         );
       case "saas":

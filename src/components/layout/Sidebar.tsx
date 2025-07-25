@@ -25,6 +25,7 @@ const menuItems = [
   { id: "product-tracking", label: "Inventory Tracking", icon: Route },
   { id: "payroll", label: "Payroll", icon: Users },
   { id: "accounting", label: "Accounting", icon: Calculator },
+  { id: "user-management", label: "User Management", icon: Users },
   { id: "marketing", label: "AI Marketing", icon: TrendingUp },
   { id: "crm", label: "AI CRM", icon: Users },
   { id: "saas", label: "AI SaaS", icon: BarChart3 },

@@ -16,9 +16,11 @@ import { CRMInterface } from "@/components/crm/CRMInterface";
 import { SaaSInterface } from "@/components/saas/SaaSInterface";
 import { ProductTrackingInterface } from "@/components/product-tracking/ProductTrackingInterface";
 import { UserManagementInterface } from "@/components/user-management/UserManagementInterface";
+import { AuthContainer } from "@/components/auth/AuthContainer";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -26,6 +28,10 @@ const Index = () => {
 
   const handleQuickAction = (action: string) => {
     setActiveTab(action);
+  };
+
+  const handleAuthenticated = (userType: string) => {
+    setIsAuthenticated(true);
   };
 
   const renderContent = () => {
@@ -217,6 +223,11 @@ const Index = () => {
         );
     }
   };
+
+  // Show authentication screens if not authenticated
+  if (!isAuthenticated) {
+    return <AuthContainer onAuthenticated={handleAuthenticated} />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex w-full">

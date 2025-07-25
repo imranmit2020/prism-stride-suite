@@ -150,19 +150,19 @@ export function POSInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="pos">Point of Sale</TabsTrigger>
-          <TabsTrigger value="ai-intelligence">AI Intelligence</TabsTrigger>
-          <TabsTrigger value="ai-pricing">AI Pricing</TabsTrigger>
-          <TabsTrigger value="ai-security">AI Security</TabsTrigger>
-          <TabsTrigger value="customers">Customers</TabsTrigger>
-          <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-auto p-1">
+          <TabsTrigger value="pos" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Point of Sale</TabsTrigger>
+          <TabsTrigger value="ai-intelligence" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Intelligence</TabsTrigger>
+          <TabsTrigger value="ai-pricing" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Pricing</TabsTrigger>
+          <TabsTrigger value="ai-security" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Security</TabsTrigger>
+          <TabsTrigger value="customers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Customers</TabsTrigger>
+          <TabsTrigger value="loyalty" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Loyalty</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="pos" className="space-y-6">
-          <div className="h-full flex gap-6">
+        <TabsContent value="pos" className="space-y-6 mt-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 h-[calc(100vh-16rem)]">
             {/* Left Panel - Products */}
-            <div className="flex-1 space-y-4">
+            <div className="xl:col-span-2 space-y-4 flex flex-col">
               {/* Search and Scan */}
               <div className="flex gap-3">
                 <div className="relative flex-1">
@@ -171,10 +171,10 @@ export function POSInterface() {
                     placeholder="Search products or scan barcode..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-12"
                   />
                 </div>
-                <Button variant="outline" size="default">
+                <Button variant="outline" size="default" className="h-12">
                   <Scan className="h-4 w-4 mr-2" />
                   Scan
                 </Button>
@@ -198,7 +198,7 @@ export function POSInterface() {
             </div>
 
             {/* Right Panel - Cart */}
-            <div className="w-80">
+            <div className="xl:col-span-1">
               <Cart
                 items={cartItems}
                 onUpdateQuantity={updateQuantity}

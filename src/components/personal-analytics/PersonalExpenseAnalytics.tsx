@@ -2,9 +2,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Receipt, TrendingUp, TrendingDown, DollarSign, ShoppingCart, Home } from "lucide-react";
+import { useState } from "react";
 
 export function PersonalExpenseAnalytics() {
+  const [selectedTimeRange, setSelectedTimeRange] = useState("6months");
+
   const monthlyExpenses = [
     { category: "Groceries", amount: 1247, budget: 1200, change: 3.9, trend: "up" },
     { category: "Transportation", amount: 456, budget: 500, change: -8.8, trend: "down" },
@@ -41,14 +45,46 @@ export function PersonalExpenseAnalytics() {
     }
   ];
 
-  const spendingTrends = [
-    { month: "Oct", amount: 2194 },
-    { month: "Nov", amount: 2456 },
-    { month: "Dec", amount: 2687 },
-    { month: "Jan", amount: 2234 },
-    { month: "Feb", amount: 2456 },
-    { month: "Mar", amount: 2189 }
-  ];
+  const spendingTrendsData = {
+    "3months": [
+      { month: "Jan", amount: 2234 },
+      { month: "Feb", amount: 2456 },
+      { month: "Mar", amount: 2189 }
+    ],
+    "6months": [
+      { month: "Oct", amount: 2194 },
+      { month: "Nov", amount: 2456 },
+      { month: "Dec", amount: 2687 },
+      { month: "Jan", amount: 2234 },
+      { month: "Feb", amount: 2456 },
+      { month: "Mar", amount: 2189 }
+    ],
+    "12months": [
+      { month: "Apr", amount: 2089 },
+      { month: "May", amount: 2234 },
+      { month: "Jun", amount: 2456 },
+      { month: "Jul", amount: 2187 },
+      { month: "Aug", amount: 2334 },
+      { month: "Sep", amount: 2445 },
+      { month: "Oct", amount: 2194 },
+      { month: "Nov", amount: 2456 },
+      { month: "Dec", amount: 2687 },
+      { month: "Jan", amount: 2234 },
+      { month: "Feb", amount: 2456 },
+      { month: "Mar", amount: 2189 }
+    ]
+  };
+
+  const spendingTrends = spendingTrendsData[selectedTimeRange as keyof typeof spendingTrendsData];
+  
+  const getTimeRangeLabel = () => {
+    switch (selectedTimeRange) {
+      case "3months": return "3-Month";
+      case "6months": return "6-Month";
+      case "12months": return "12-Month";
+      default: return "6-Month";
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -118,21 +154,37 @@ export function PersonalExpenseAnalytics() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
-            6-Month Spending Trend
-          </CardTitle>
-          <CardDescription>
-            Track your total monthly expenses over time
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                {getTimeRangeLabel()} Spending Trend
+              </CardTitle>
+              <CardDescription>
+                Track your total monthly expenses over time
+              </CardDescription>
+            </div>
+            <Select value={selectedTimeRange} onValueChange={setSelectedTimeRange}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3months">3 Months</SelectItem>
+                <SelectItem value="6months">6 Months</SelectItem>
+                <SelectItem value="12months">12 Months</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
               <span>Average Monthly Spending:</span>
-              <span className="font-medium">$2,369</span>
+              <span className="font-medium">
+                ${Math.round(spendingTrends.reduce((sum, trend) => sum + trend.amount, 0) / spendingTrends.length).toLocaleString()}
+              </span>
             </div>
-            <div className="grid grid-cols-6 gap-2">
+            <div className={`grid gap-2 ${spendingTrends.length <= 3 ? 'grid-cols-3' : spendingTrends.length <= 6 ? 'grid-cols-6' : 'grid-cols-12'}`}>
               {spendingTrends.map((trend, index) => (
                 <div key={index} className="text-center space-y-2">
                   <div className="text-xs text-muted-foreground">{trend.month}</div>

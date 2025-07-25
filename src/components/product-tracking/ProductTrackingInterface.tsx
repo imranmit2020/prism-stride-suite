@@ -19,9 +19,9 @@ export function ProductTrackingInterface() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            AI Product Lifecycle Tracking
+            AI Inventory Tracking System
           </h1>
-          <p className="text-muted-foreground">End-to-end intelligent product management with revolutionary AI insights</p>
+          <p className="text-muted-foreground">Comprehensive inventory lifecycle management with intelligent AI insights</p>
         </div>
       </div>
 

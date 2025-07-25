@@ -40,19 +40,19 @@ export function AccountingInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-12">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="invoices">Invoices</TabsTrigger>
-          <TabsTrigger value="smart-invoice">Smart Invoice</TabsTrigger>
-          <TabsTrigger value="expenses">Expenses</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-          <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
-          <TabsTrigger value="audit-shield">Audit Shield</TabsTrigger>
-          <TabsTrigger value="fraud-genesis">Fraud Genesis</TabsTrigger>
-          <TabsTrigger value="cash-prophet">Cash Prophet</TabsTrigger>
-          <TabsTrigger value="language-ai">Language AI</TabsTrigger>
-          <TabsTrigger value="currency-ai">Currency AI</TabsTrigger>
-          <TabsTrigger value="tax-quantum">Tax Quantum</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full">
+          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
+          <TabsTrigger value="invoices" className="px-3 py-2 text-xs font-medium">Invoices</TabsTrigger>
+          <TabsTrigger value="smart-invoice" className="px-3 py-2 text-xs font-medium">Smart Invoice</TabsTrigger>
+          <TabsTrigger value="expenses" className="px-3 py-2 text-xs font-medium">Expenses</TabsTrigger>
+          <TabsTrigger value="reports" className="px-3 py-2 text-xs font-medium">Reports</TabsTrigger>
+          <TabsTrigger value="ai-insights" className="px-3 py-2 text-xs font-medium">AI Insights</TabsTrigger>
+          <TabsTrigger value="audit-shield" className="px-3 py-2 text-xs font-medium">Audit AI</TabsTrigger>
+          <TabsTrigger value="fraud-genesis" className="px-3 py-2 text-xs font-medium">Fraud AI</TabsTrigger>
+          <TabsTrigger value="cash-prophet" className="px-3 py-2 text-xs font-medium">Cash AI</TabsTrigger>
+          <TabsTrigger value="language-ai" className="px-3 py-2 text-xs font-medium">Language AI</TabsTrigger>
+          <TabsTrigger value="currency-ai" className="px-3 py-2 text-xs font-medium">Currency AI</TabsTrigger>
+          <TabsTrigger value="tax-quantum" className="px-3 py-2 text-xs font-medium">Tax AI</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

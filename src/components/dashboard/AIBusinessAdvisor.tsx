@@ -1,0 +1,280 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { 
+  Brain, 
+  Zap, 
+  TrendingUp, 
+  MessageSquare, 
+  Target,
+  Sparkles,
+  Activity,
+  Clock,
+  CheckCircle,
+  ArrowRight,
+  DollarSign,
+  Users,
+  AlertTriangle,
+  Star
+} from "lucide-react";
+
+export function RecentActivity() {
+  const aiActivities = [
+    {
+      type: "AI Optimization",
+      title: "Automated inventory reorder for top-selling products",
+      description: "AI detected low stock levels and automatically placed orders for 12 items",
+      value: "+$23,400 potential revenue saved",
+      time: "2 minutes ago",
+      confidence: 96,
+      icon: Zap,
+      status: "completed",
+      impact: "High"
+    },
+    {
+      type: "Predictive Alert",
+      title: "Customer churn risk identified",
+      description: "AI flagged 8 high-value customers showing early churn signals",
+      value: "$45,600 at risk",
+      time: "5 minutes ago", 
+      confidence: 89,
+      icon: AlertTriangle,
+      status: "action-needed",
+      impact: "High"
+    },
+    {
+      type: "Market Intelligence",
+      title: "Competitor price change detected",
+      description: "Rival company reduced prices by 12% - recommendation generated",
+      value: "Strategy adjustment needed",
+      time: "12 minutes ago",
+      confidence: 94,
+      icon: Target,
+      status: "pending",
+      impact: "Medium"
+    },
+    {
+      type: "AI Insights",
+      title: "New market opportunity discovered",
+      description: "AI identified underserved segment with 340K potential customers",
+      value: "$890K revenue opportunity",
+      time: "18 minutes ago",
+      confidence: 87,
+      icon: Star,
+      status: "opportunity",
+      impact: "Very High"
+    },
+    {
+      type: "Process Automation",
+      title: "Invoice processing accelerated",
+      description: "AI processed 47 invoices in 3 minutes with 99.8% accuracy",
+      value: "6.5 hours saved",
+      time: "25 minutes ago",
+      confidence: 99,
+      icon: CheckCircle,
+      status: "completed",
+      impact: "Medium"
+    },
+    {
+      type: "Customer Insight",
+      title: "Personalization engine updated",
+      description: "AI refined customer preferences for 1,247 users",
+      value: "+23% engagement predicted",
+      time: "35 minutes ago",
+      confidence: 91,
+      icon: Brain,
+      status: "completed",
+      impact: "High"
+    }
+  ];
+
+  const aiConversations = [
+    {
+      question: "What's our biggest revenue opportunity this quarter?",
+      answer: "AI analysis shows expanding to the Gen-Z segment could generate $340K additional revenue with 78% confidence. The market is showing 67% increased engagement from 18-24 demographics.",
+      time: "3 minutes ago",
+      confidence: 94
+    },
+    {
+      question: "How can we reduce customer acquisition costs?",
+      answer: "Optimize your LinkedIn ads budget allocation. AI predicts shifting 35% to video content will reduce CAC by $23 while increasing conversion by 18%.",
+      time: "8 minutes ago", 
+      confidence: 88
+    },
+    {
+      question: "Which products should we discontinue?",
+      answer: "Product SKU-4471 shows declining trend with 89% probability of negative ROI next quarter. Recommend phasing out within 60 days while promoting alternatives.",
+      time: "15 minutes ago",
+      confidence: 92
+    }
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'bg-green-100 text-green-800';
+      case 'action-needed': return 'bg-red-100 text-red-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'opportunity': return 'bg-blue-100 text-blue-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getImpactColor = (impact: string) => {
+    switch (impact) {
+      case 'Very High': return 'bg-red-500';
+      case 'High': return 'bg-orange-500';
+      case 'Medium': return 'bg-yellow-500';
+      case 'Low': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* AI Activity Stream */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Activity className="h-5 w-5 text-blue-600" />
+            AI Activity Stream
+            <Badge variant="outline" className="ml-auto">
+              <Brain className="h-3 w-3 mr-1" />
+              Real-time
+            </Badge>
+          </CardTitle>
+          <CardDescription>
+            Live feed of AI decisions, optimizations, and insights happening across your business
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {aiActivities.map((activity, index) => {
+              const Icon = activity.icon;
+              return (
+                <div key={index} className="flex items-start gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <div className={`p-2 rounded-full ${
+                    activity.status === 'completed' ? 'bg-green-100' :
+                    activity.status === 'action-needed' ? 'bg-red-100' :
+                    activity.status === 'opportunity' ? 'bg-blue-100' :
+                    'bg-yellow-100'
+                  }`}>
+                    <Icon className={`h-4 w-4 ${
+                      activity.status === 'completed' ? 'text-green-600' :
+                      activity.status === 'action-needed' ? 'text-red-600' :
+                      activity.status === 'opportunity' ? 'text-blue-600' :
+                      'text-yellow-600'
+                    }`} />
+                  </div>
+                  
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">{activity.type}</Badge>
+                      <div className={`w-2 h-2 rounded-full ${getImpactColor(activity.impact)}`} title={`${activity.impact} Impact`} />
+                      <span className="text-xs text-muted-foreground">{activity.confidence}% confidence</span>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-sm">{activity.title}</h4>
+                      <p className="text-sm text-muted-foreground">{activity.description}</p>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Badge className={getStatusColor(activity.status)} variant="outline">
+                          {activity.status.replace('-', ' ')}
+                        </Badge>
+                        <span className="text-sm font-semibold text-green-600">{activity.value}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {activity.time}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {activity.status === 'action-needed' && (
+                    <Button size="sm" variant="outline">
+                      <ArrowRight className="h-3 w-3 mr-1" />
+                      Act
+                    </Button>
+                  )}
+                  
+                  {activity.status === 'opportunity' && (
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      <Star className="h-3 w-3 mr-1" />
+                      Explore
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* AI Business Advisor Chat */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-purple-600" />
+            AI Business Advisor
+            <Badge variant="outline" className="ml-auto">
+              <Sparkles className="h-3 w-3 mr-1 animate-pulse" />
+              Always Available
+            </Badge>
+          </CardTitle>
+          <CardDescription>
+            Ask your AI anything about your business - get instant expert insights
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {aiConversations.map((conv, index) => (
+              <div key={index} className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                    <Users className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <div className="flex-1 p-3 bg-blue-50 rounded-lg">
+                    <p className="text-sm font-medium">{conv.question}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                    <Brain className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <div className="flex-1 p-3 bg-purple-50 rounded-lg">
+                    <p className="text-sm">{conv.answer}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge variant="outline" className="text-xs">
+                        {conv.confidence}% confident
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">{conv.time}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {index < aiConversations.length - 1 && <div className="border-t my-4" />}
+              </div>
+            ))}
+            
+            <div className="pt-4 border-t">
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Ask your AI business advisor anything..."
+                  className="flex-1 px-3 py-2 border rounded-lg text-sm"
+                />
+                <Button size="sm">
+                  <Sparkles className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

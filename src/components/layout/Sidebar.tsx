@@ -8,20 +8,27 @@ import {
   Settings,
   Home,
   FileText,
-  Route
+  Route,
+  Building,
+  User,
+  Wallet,
+  Receipt
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   activeModule?: string;
   onModuleChange?: (module: string) => void;
+  isHomeMode?: boolean;
+  onHomeModeChange?: (isHome: boolean) => void;
   // Legacy props for backward compatibility
   activeTab?: string;
   onTabChange?: (tab: string) => void;
 }
 
-const menuItems = [
+const businessMenuItems = [
   { id: "dashboard", label: "Dashboard", icon: Home },
   { id: "pos", label: "Point of Sale", icon: ShoppingCart },
   { id: "inventory", label: "Inventory", icon: Package },
@@ -38,20 +45,51 @@ const menuItems = [
   { id: "settings", label: "AI Settings", icon: Settings },
 ];
 
-export function Sidebar({ activeModule, onModuleChange, activeTab, onTabChange }: SidebarProps) {
+const homeMenuItems = [
+  { id: "dashboard", label: "Home Dashboard", icon: Home },
+  { id: "inventory", label: "Home Inventory", icon: Package },
+  { id: "accounting", label: "Personal Finance", icon: Wallet },
+  { id: "payroll", label: "Income Tracking", icon: Calculator },
+  { id: "reports", label: "Reports", icon: BarChart3 },
+  { id: "settings", label: "Settings", icon: Settings },
+];
+
+export function Sidebar({ 
+  activeModule, 
+  onModuleChange, 
+  isHomeMode = false, 
+  onHomeModeChange,
+  activeTab, 
+  onTabChange 
+}: SidebarProps) {
   // Use new prop names or fall back to legacy ones
   const currentActive = activeModule || activeTab || "dashboard";
   const handleChange = onModuleChange || onTabChange || (() => {});
+  const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
     <div className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm">
       {/* Logo/Brand */}
       <div className="p-6 border-b border-border bg-card">
-        <h1 className="text-xl font-bold text-foreground">
-          Prism Stride Suite
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Business Management Platform
+        <div className="flex items-center gap-2 mb-3">
+          {isHomeMode ? <Home className="h-5 w-5" /> : <Building className="h-5 w-5" />}
+          <h1 className="text-xl font-bold text-foreground">
+            {isHomeMode ? "Home Manager" : "Prism Stride Suite"}
+          </h1>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          {isHomeMode ? "Personal Management Platform" : "Business Management Platform"}
         </p>
+        
+        {/* Mode Toggle */}
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">
+            {isHomeMode ? "Personal" : "Business"}
+          </span>
+          <Switch 
+            checked={!isHomeMode} 
+            onCheckedChange={(checked) => onHomeModeChange?.(!checked)}
+          />
+        </div>
       </div>
 
       {/* Navigation */}

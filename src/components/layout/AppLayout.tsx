@@ -17,9 +17,17 @@ interface AppLayoutProps {
   children: React.ReactNode;
   currentModule?: string;
   onModuleChange?: (module: string) => void;
+  isHomeMode?: boolean;
+  onHomeModeChange?: (isHome: boolean) => void;
 }
 
-export function AppLayout({ children, currentModule, onModuleChange }: AppLayoutProps) {
+export function AppLayout({ 
+  children, 
+  currentModule, 
+  onModuleChange, 
+  isHomeMode = false, 
+  onHomeModeChange 
+}: AppLayoutProps) {
   const [currentTenant, setCurrentTenant] = useState<Tenant>({
     id: "acme",
     name: "Acme Corporation",
@@ -48,7 +56,12 @@ export function AppLayout({ children, currentModule, onModuleChange }: AppLayout
       <TenantBranding tenant={currentTenant} />
       <SidebarProvider>
         <div className="min-h-screen flex w-full bg-background">
-          <Sidebar onModuleChange={onModuleChange} activeModule={currentModule} />
+          <Sidebar 
+            onModuleChange={onModuleChange} 
+            activeModule={currentModule}
+            isHomeMode={isHomeMode}
+            onHomeModeChange={onHomeModeChange}
+          />
           <SidebarInset className="flex-1 flex flex-col">
             <Header 
               onTenantChange={handleTenantChange}

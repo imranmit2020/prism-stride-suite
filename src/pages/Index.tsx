@@ -22,6 +22,7 @@ import { AuthContainer } from "@/components/auth/AuthContainer";
 const Index = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isHomeMode, setIsHomeMode] = useState(false);
 
   const handleModuleChange = (module: string) => {
     setActiveModule(module);
@@ -35,6 +36,12 @@ const Index = () => {
     setIsAuthenticated(true);
   };
 
+  const handleHomeModeChange = (isHome: boolean) => {
+    setIsHomeMode(isHome);
+    // Reset to dashboard when switching modes
+    setActiveModule("dashboard");
+  };
+
   const renderContent = () => {
     switch (activeModule) {
       case "dashboard":
@@ -43,10 +50,13 @@ const Index = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold tracking-tight bg-gradient-hero bg-clip-text text-transparent">
-                  Business Dashboard
+                  {isHomeMode ? "Home Dashboard" : "Business Dashboard"}
                 </h1>
                 <p className="text-lg text-muted-foreground mt-2">
-                  Welcome back! Here's what's happening with your business today.
+                  {isHomeMode 
+                    ? "Welcome home! Here's your personal management overview."
+                    : "Welcome back! Here's what's happening with your business today."
+                  }
                 </p>
               </div>
             </div>
@@ -67,6 +77,11 @@ const Index = () => {
           </div>
         );
       case "pos":
+        if (isHomeMode) {
+          // POS doesn't make sense for home use, redirect to inventory
+          setActiveModule("inventory");
+          return null;
+        }
         return (
           <div className="space-y-6 h-full">
             <div>
@@ -84,9 +99,14 @@ const Index = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Inventory Management</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                {isHomeMode ? "Home Inventory" : "Inventory Management"}
+              </h1>
               <p className="text-muted-foreground mt-2">
-                AI-powered inventory management with smart reorders and demand forecasting.
+                {isHomeMode 
+                  ? "Track household items, pantry stock, and personal belongings."
+                  : "AI-powered inventory management with smart reorders and demand forecasting."
+                }
               </p>
             </div>
             <InventoryInterface />
@@ -96,9 +116,14 @@ const Index = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Payroll Management</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                {isHomeMode ? "Income Tracking" : "Payroll Management"}
+              </h1>
               <p className="text-muted-foreground mt-2">
-                Comprehensive payroll processing with employee management and tax calculations.
+                {isHomeMode 
+                  ? "Track multiple income sources, freelance payments, and tax withholdings."
+                  : "Comprehensive payroll processing with employee management and tax calculations."
+                }
               </p>
             </div>
             <PayrollInterface />
@@ -108,9 +133,14 @@ const Index = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Accounting</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                {isHomeMode ? "Personal Finance" : "Accounting"}
+              </h1>
               <p className="text-muted-foreground mt-2">
-                Complete financial management with invoicing, expenses, and reporting.
+                {isHomeMode 
+                  ? "Personal budget tracking, bill management, and expense categorization."
+                  : "Complete financial management with invoicing, expenses, and reporting."
+                }
               </p>
             </div>
             <AccountingInterface />
@@ -240,7 +270,12 @@ const Index = () => {
   }
 
   return (
-    <AppLayout currentModule={activeModule} onModuleChange={handleModuleChange}>
+    <AppLayout 
+      currentModule={activeModule} 
+      onModuleChange={handleModuleChange}
+      isHomeMode={isHomeMode}
+      onHomeModeChange={handleHomeModeChange}
+    >
       {renderContent()}
     </AppLayout>
   );

@@ -67,11 +67,13 @@ export function Sidebar({
   const handleChange = onModuleChange || onTabChange || (() => {});
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
-    <div className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm">
+    <div className="h-screen w-64 bg-gradient-to-b from-background to-background/95 border-r border-border/50 flex flex-col shadow-xl backdrop-blur-sm">
       {/* Logo/Brand */}
-      <div className="p-6 border-b border-border bg-card">
+      <div className="p-6 border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="flex items-center gap-2 mb-3">
-          {isHomeMode ? <Home className="h-5 w-5" /> : <Building className="h-5 w-5" />}
+          <div className="p-2 rounded-xl bg-gradient-primary">
+            {isHomeMode ? <Home className="h-5 w-5 text-white" /> : <Building className="h-5 w-5 text-white" />}
+          </div>
           <h1 className="text-xl font-bold text-foreground">
             {isHomeMode ? "Home Manager" : "Prism Stride Suite"}
           </h1>
@@ -81,20 +83,21 @@ export function Sidebar({
         </p>
         
         {/* Mode Toggle */}
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">
-            {isHomeMode ? "Personal" : "Business"}
+        <div className="flex items-center justify-between text-sm p-3 bg-muted/50 rounded-xl">
+          <span className="text-muted-foreground font-medium">
+            {isHomeMode ? "Personal Mode" : "Business Mode"}
           </span>
           <Switch 
             checked={!isHomeMode} 
             onCheckedChange={(checked) => onHomeModeChange?.(!checked)}
+            className="data-[state=checked]:bg-primary"
           />
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
-        {menuItems.map((item) => {
+      <nav className="flex-1 p-4 space-y-2">
+        {menuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = currentActive === item.id;
           
@@ -103,25 +106,46 @@ export function Sidebar({
               key={item.id}
               variant={isActive ? "default" : "ghost"}
               className={cn(
-                "w-full justify-start gap-3 h-12 text-sm font-medium transition-all duration-200",
+                "w-full justify-start gap-3 h-12 text-sm font-medium transition-all duration-300 relative overflow-hidden group",
                 isActive 
-                  ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90" 
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50 hover:shadow-sm"
+                  ? "bg-gradient-primary text-white shadow-lg hover:shadow-xl scale-[1.02] border-0" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent/80 hover:scale-[1.01] hover:shadow-md"
               )}
               onClick={() => handleChange(item.id)}
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <Icon className="h-5 w-5 flex-shrink-0" />
-              <span className="truncate">{item.label}</span>
+              {/* Background gradient for active state */}
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-90" />
+              )}
+              
+              <div className="relative flex items-center gap-3 w-full">
+                <Icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-200" />
+                <span className="truncate font-medium">{item.label}</span>
+                
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse" />
+                )}
+              </div>
+              
+              {/* Hover effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
           );
         })}
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-border bg-card">
-        <div className="text-xs text-muted-foreground text-center">
-          <div className="font-medium">Prism Stride Suite</div>
-          <div className="mt-1">Version 1.0.0</div>
+      <div className="p-4 border-t border-border/50 bg-card/30 backdrop-blur-sm">
+        <div className="text-xs text-muted-foreground text-center p-3 bg-gradient-to-r from-muted/50 to-muted/30 rounded-xl">
+          <div className="font-semibold text-foreground mb-1">
+            {isHomeMode ? "Home Manager" : "Prism Stride Suite"}
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span>Version 1.0.0</span>
+          </div>
         </div>
       </div>
     </div>

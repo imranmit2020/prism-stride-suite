@@ -6,6 +6,9 @@ import { InvoiceManagement } from "./InvoiceManagement";
 import { ExpenseTracking } from "./ExpenseTracking";
 import { FinancialReports } from "./FinancialReports";
 import { AIFinancialInsights } from "./AIFinancialInsights";
+import { AITaxAuditShield } from "./AITaxAuditShield";
+import { AIFraudPatternGenesis } from "./AIFraudPatternGenesis";
+import { AICashFlowProphet } from "./AICashFlowProphet";
 import { SmartInvoiceDialog } from "./SmartInvoiceDialog";
 import { ExpenseManagementDialog } from "./ExpenseManagementDialog";
 import { useToast } from "@/hooks/use-toast";
@@ -34,13 +37,16 @@ export function AccountingInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-9">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
           <TabsTrigger value="smart-invoice">Smart Invoice</TabsTrigger>
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
           <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
+          <TabsTrigger value="audit-shield">Audit Shield</TabsTrigger>
+          <TabsTrigger value="fraud-genesis">Fraud Genesis</TabsTrigger>
+          <TabsTrigger value="cash-prophet">Cash Prophet</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -101,6 +107,18 @@ export function AccountingInterface() {
 
         <TabsContent value="ai-insights" className="space-y-6">
           <AIFinancialInsights />
+        </TabsContent>
+
+        <TabsContent value="audit-shield" className="space-y-6">
+          <AITaxAuditShield />
+        </TabsContent>
+
+        <TabsContent value="fraud-genesis" className="space-y-6">
+          <AIFraudPatternGenesis />
+        </TabsContent>
+
+        <TabsContent value="cash-prophet" className="space-y-6">
+          <AICashFlowProphet />
         </TabsContent>
       </Tabs>
 

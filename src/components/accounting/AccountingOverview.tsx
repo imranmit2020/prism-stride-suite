@@ -118,13 +118,18 @@ const recentTransactions = [
 ];
 
 export function AccountingOverview() {
-  const { formatCurrency } = useGlobalization();
+  console.log("🧮 AccountingOverview rendering");
+  
+  try {
+    const { formatCurrency } = useGlobalization();
+    console.log("✅ Globalization context loaded");
 
-  // Convert raw financial data to formatted data
-  const financialStats = financialStatsRaw.map(stat => ({
-    ...stat,
-    value: formatCurrency(stat.value)
-  }));
+    // Convert raw financial data to formatted data
+    const financialStats = financialStatsRaw.map(stat => ({
+      ...stat,
+      value: formatCurrency(stat.value)
+    }));
+    console.log("✅ Financial stats formatted:", financialStats);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -146,6 +151,7 @@ export function AccountingOverview() {
   };
 
   const totalReceivable = accountsReceivable.reduce((sum, ar) => sum + ar.amount, 0);
+  console.log("💰 Total receivable:", totalReceivable);
 
   return (
     <div className="space-y-6">
@@ -153,7 +159,8 @@ export function AccountingOverview() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {financialStats.map((stat) => {
           const Icon = stat.icon;
-          return (
+  
+  return (
             <Card key={stat.title}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -287,4 +294,14 @@ export function AccountingOverview() {
       </Card>
     </div>
   );
+  } catch (error) {
+    console.error("❌ AccountingOverview error:", error);
+    return (
+      <div className="p-6 border rounded-lg">
+        <h3 className="text-lg font-semibold text-destructive mb-2">Error Loading Accounting Overview</h3>
+        <p className="text-muted-foreground">There was an error loading the accounting data. Please refresh the page.</p>
+        <pre className="mt-2 text-xs bg-muted p-2 rounded">{error?.toString()}</pre>
+      </div>
+    );
+  }
 }

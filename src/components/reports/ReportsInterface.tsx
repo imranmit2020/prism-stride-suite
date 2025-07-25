@@ -10,6 +10,8 @@ import { AIBehaviorPrediction } from "./AIBehaviorPrediction";
 import { useToast } from "@/hooks/use-toast";
 
 export function ReportsInterface() {
+  console.log("📋 ReportsInterface rendering");
+  
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
   const { toast } = useToast();

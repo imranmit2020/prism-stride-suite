@@ -12,6 +12,7 @@ import { SalesAnalytics } from "./SalesAnalytics";
 import { FinancialAnalytics } from "./FinancialAnalytics";
 
 export function AnalyticsInterface() {
+  console.log("📊 AnalyticsInterface rendering");
   const [activeTab, setActiveTab] = useState("insights");
 
   return (

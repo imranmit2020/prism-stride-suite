@@ -15,6 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 import { UserPlus, Calendar } from "lucide-react";
 
 export function PayrollInterface() {
+  console.log("👥 PayrollInterface rendering");
+  
   const [activeTab, setActiveTab] = useState("overview");
   const [showOnboardingDialog, setShowOnboardingDialog] = useState(false);
   const [showSchedulingDialog, setShowSchedulingDialog] = useState(false);

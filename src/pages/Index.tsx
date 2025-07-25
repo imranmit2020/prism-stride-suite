@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { QuickActions } from "@/components/dashboard/QuickActions";
+// import { AIBusinessAdvisor } from "@/components/dashboard/AIBusinessAdvisor";
 import { POSInterface } from "@/components/pos/POSInterface";
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
@@ -19,15 +20,15 @@ import { UserManagementInterface } from "@/components/user-management/UserManage
 import { AuthContainer } from "@/components/auth/AuthContainer";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeModule, setActiveModule] = useState("dashboard");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+  const handleModuleChange = (module: string) => {
+    setActiveModule(module);
   };
 
   const handleQuickAction = (action: string) => {
-    setActiveTab(action);
+    setActiveModule(action);
   };
 
   const handleAuthenticated = (userType: string) => {
@@ -35,23 +36,32 @@ const Index = () => {
   };
 
   const renderContent = () => {
-    switch (activeTab) {
+    switch (activeModule) {
       case "dashboard":
         return (
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-              <p className="text-muted-foreground mt-2">
-                Welcome back! Here's an overview of your business performance.
-              </p>
+          <div className="space-y-8 animate-fade-in">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold tracking-tight bg-gradient-hero bg-clip-text text-transparent">
+                  Business Dashboard
+                </h1>
+                <p className="text-lg text-muted-foreground mt-2">
+                  Welcome back! Here's what's happening with your business today.
+                </p>
+              </div>
             </div>
             <DashboardStats />
-            <div className="grid gap-6 lg:grid-cols-3">
-              <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-8">
+                <QuickActions onActionClick={handleQuickAction} />
                 <RecentActivity />
               </div>
               <div>
-                <QuickActions onActionClick={handleQuickAction} />
+                {/* <AIBusinessAdvisor /> */}
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">AI Business Advisor</h3>
+                  <p className="text-muted-foreground">AI-powered business insights coming soon...</p>
+                </div>
               </div>
             </div>
           </div>
@@ -230,14 +240,9 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex w-full">
-      <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
-      <main className="flex-1 p-6 overflow-x-auto">
-        <div className="max-w-full">
-          {renderContent()}
-        </div>
-      </main>
-    </div>
+    <AppLayout currentModule={activeModule} onModuleChange={handleModuleChange}>
+      {renderContent()}
+    </AppLayout>
   );
 };
 

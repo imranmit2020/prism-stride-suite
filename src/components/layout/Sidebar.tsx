@@ -14,8 +14,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  activeModule?: string;
+  onModuleChange?: (module: string) => void;
+  // Legacy props for backward compatibility
+  activeTab?: string;
+  onTabChange?: (tab: string) => void;
 }
 
 const menuItems = [
@@ -35,7 +38,10 @@ const menuItems = [
   { id: "settings", label: "AI Settings", icon: Settings },
 ];
 
-export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+export function Sidebar({ activeModule, onModuleChange, activeTab, onTabChange }: SidebarProps) {
+  // Use new prop names or fall back to legacy ones
+  const currentActive = activeModule || activeTab || "dashboard";
+  const handleChange = onModuleChange || onTabChange || (() => {});
   return (
     <div className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm">
       {/* Logo/Brand */}
@@ -52,7 +58,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeTab === item.id;
+          const isActive = currentActive === item.id;
           
           return (
             <Button
@@ -64,7 +70,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
                   ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90" 
                   : "text-muted-foreground hover:text-foreground hover:bg-accent/50 hover:shadow-sm"
               )}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => handleChange(item.id)}
             >
               <Icon className="h-5 w-5 flex-shrink-0" />
               <span className="truncate">{item.label}</span>

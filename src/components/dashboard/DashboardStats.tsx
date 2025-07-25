@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 
 export function DashboardStats() {
+  const { formatCurrency, t } = useGlobalization();
   const aiMetrics = {
     aiConfidence: 94,
     predictiveAccuracy: 97,
@@ -61,17 +63,17 @@ export function DashboardStats() {
 
   const kpis = [
     {
-      title: "AI Revenue Forecast",
-      value: "$847,230",
+      title: t('total_revenue'),
+      value: formatCurrency(847230),
       change: "+23.4%",
       trend: "up",
-      prediction: "$1.2M by Q2",
+      prediction: formatCurrency(1200000) + " by Q2",
       confidence: 94,
       icon: DollarSign,
       aiInsight: "AI detected seasonal surge pattern"
     },
     {
-      title: "Predictive Customer Growth",
+      title: t('customers'),
       value: "2,847",
       change: "+18.2%", 
       trend: "up",
@@ -135,7 +137,7 @@ export function DashboardStats() {
               <div className="text-sm text-muted-foreground">Prediction Accuracy</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{aiMetrics.automationSavings}</div>
+              <div className="text-2xl font-bold text-green-600">{formatCurrency(47230)}</div>
               <div className="text-sm text-muted-foreground">AI Savings Today</div>
             </div>
             <div className="text-center">
@@ -271,7 +273,7 @@ export function DashboardStats() {
               <div className="p-3 bg-green-50 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-semibold text-green-800">Emerging Market: Gen-Z Segment</span>
-                  <Badge className="bg-green-100 text-green-800">$340K Potential</Badge>
+                  <Badge className="bg-green-100 text-green-800">{formatCurrency(340000)} Potential</Badge>
                 </div>
                 <p className="text-sm text-green-700">AI detected 67% increase in engagement from 18-24 demographic</p>
                 <Progress value={78} className="mt-2" />
@@ -281,7 +283,7 @@ export function DashboardStats() {
               <div className="p-3 bg-blue-50 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-semibold text-blue-800">Product Expansion: AI Tools</span>
-                  <Badge className="bg-blue-100 text-blue-800">$890K Potential</Badge>
+                  <Badge className="bg-blue-100 text-blue-800">{formatCurrency(890000)} Potential</Badge>
                 </div>
                 <p className="text-sm text-blue-700">Market gap identified in AI automation for SMBs</p>
                 <Progress value={92} className="mt-2" />
@@ -291,7 +293,7 @@ export function DashboardStats() {
               <div className="p-3 bg-purple-50 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-semibold text-purple-800">Geographic: APAC Expansion</span>
-                  <Badge className="bg-purple-100 text-purple-800">$1.2M Potential</Badge>
+                  <Badge className="bg-purple-100 text-purple-800">{formatCurrency(1200000)} Potential</Badge>
                 </div>
                 <p className="text-sm text-purple-700">Optimal timing for Southeast Asia market entry</p>
                 <Progress value={84} className="mt-2" />

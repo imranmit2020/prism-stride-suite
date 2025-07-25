@@ -7,9 +7,9 @@ import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   Lightbulb, 
   Palette, 
-  Code, 
-  TestTube, 
   Factory, 
+  TestTube, 
+  Package, 
   Truck, 
   Store, 
   Users, 
@@ -20,7 +20,9 @@ import {
   TrendingUp,
   AlertTriangle,
   CheckCircle,
-  Clock
+  Clock,
+  ShoppingCart,
+  Target
 } from "lucide-react";
 
 interface LifecyclePhase {
@@ -61,16 +63,16 @@ export function ProductLifecycleTracker() {
   const { formatCurrency } = useGlobalization();
   
   const [product] = useState({
-    name: "Smart Home Hub Pro",
-    version: "2.0",
-    category: "IoT Device",
+    name: "EcoSmart Water Bottle",
+    version: "Pro Series",
+    category: "Consumer Goods",
     launchTarget: "Q2 2024"
   });
 
   const [lifecyclePhases] = useState<LifecyclePhase[]>([
     {
       id: "concept",
-      name: "Concept & Ideation",
+      name: "Market Research & Concept",
       icon: Lightbulb,
       status: "completed",
       progress: 100,
@@ -80,23 +82,23 @@ export function ProductLifecycleTracker() {
       aiPredictions: {
         riskScore: 15,
         successProbability: 92,
-        resourceOptimization: "Excellent market research phase with 92% validation score",
+        resourceOptimization: "Market research shows 92% consumer interest in sustainable drinkware",
         timelinePrediction: "Completed 3 days ahead of schedule"
       },
       tasks: [
-        { id: "1", name: "Market Research", status: "completed", aiRecommendation: "Market demand validated at 87% confidence" },
-        { id: "2", name: "Competitive Analysis", status: "completed", aiRecommendation: "Identified 3 key differentiators" },
-        { id: "3", name: "Feature Definition", status: "completed", aiRecommendation: "AI suggests focusing on voice integration" }
+        { id: "1", name: "Consumer Survey & Focus Groups", status: "completed", aiRecommendation: "92% positive response to sustainable features" },
+        { id: "2", name: "Competitive Market Analysis", status: "completed", aiRecommendation: "Premium pricing strategy validated for eco-friendly segment" },
+        { id: "3", name: "Product Feature Definition", status: "completed", aiRecommendation: "Temperature retention and leak-proof design prioritized" }
       ],
       budget: { allocated: 50000, spent: 47500, predicted: 47500 },
       kpis: [
-        { name: "Market Validation Score", current: 87, target: 80, aiInsight: "Exceeded target by 7%" },
-        { name: "Concept Approval Rating", current: 94, target: 85, aiInsight: "Strong stakeholder buy-in" }
+        { name: "Market Validation Score", current: 92, target: 80, aiInsight: "Strong consumer demand in eco-conscious segment" },
+        { name: "Concept Approval Rating", current: 94, target: 85, aiInsight: "Exceeded stakeholder expectations" }
       ]
     },
     {
       id: "design",
-      name: "Design & Prototyping",
+      name: "Product Design & Development",
       icon: Palette,
       status: "completed",
       progress: 100,
@@ -106,24 +108,24 @@ export function ProductLifecycleTracker() {
       aiPredictions: {
         riskScore: 20,
         successProbability: 89,
-        resourceOptimization: "Design iterations optimal, user testing exceeded expectations",
-        timelinePrediction: "Completed 5 days early due to AI-optimized prototyping"
+        resourceOptimization: "Material selection optimized for sustainability and durability",
+        timelinePrediction: "Design iterations completed efficiently with AI-assisted modeling"
       },
       tasks: [
-        { id: "4", name: "UI/UX Design", status: "completed", aiRecommendation: "User satisfaction score: 91%" },
-        { id: "5", name: "Hardware Design", status: "completed", aiRecommendation: "Cost optimization achieved 15% savings" },
-        { id: "6", name: "Prototype Testing", status: "completed", aiRecommendation: "3 iterations led to optimal design" }
+        { id: "4", name: "Industrial Design", status: "completed", aiRecommendation: "Ergonomic design rated 91% user satisfaction" },
+        { id: "5", name: "Material Selection", status: "completed", aiRecommendation: "Recycled stainless steel reduces costs by 15%" },
+        { id: "6", name: "Prototype Development", status: "completed", aiRecommendation: "3D printing reduced prototype costs by 40%" }
       ],
       budget: { allocated: 120000, spent: 115000, predicted: 115000 },
       kpis: [
-        { name: "User Satisfaction", current: 91, target: 85, aiInsight: "Design resonates well with target audience" },
-        { name: "Cost Optimization", current: 15, target: 10, aiInsight: "Exceeded cost reduction target" }
+        { name: "Design Satisfaction", current: 91, target: 85, aiInsight: "Aesthetic appeal exceeds market standards" },
+        { name: "Material Cost Optimization", current: 15, target: 10, aiInsight: "Sustainable materials within budget" }
       ]
     },
     {
-      id: "development",
-      name: "Development & Engineering",
-      icon: Code,
+      id: "manufacturing",
+      name: "Manufacturing Setup & Production",
+      icon: Factory,
       status: "in-progress",
       progress: 75,
       startDate: "2023-05-16",
@@ -131,24 +133,24 @@ export function ProductLifecycleTracker() {
       aiPredictions: {
         riskScore: 35,
         successProbability: 82,
-        resourceOptimization: "AI suggests adding 2 senior developers to maintain timeline",
-        timelinePrediction: "May delay by 2 weeks without resource adjustment"
+        resourceOptimization: "AI suggests optimizing assembly line for 20% efficiency gain",
+        timelinePrediction: "On track for production start with current resources"
       },
       tasks: [
-        { id: "7", name: "Frontend Development", status: "completed", aiRecommendation: "Performance optimization completed" },
-        { id: "8", name: "Backend API", status: "in-progress", aiRecommendation: "Consider microservices architecture" },
-        { id: "9", name: "Mobile App", status: "in-progress", aiRecommendation: "Cross-platform development recommended" },
-        { id: "10", name: "IoT Integration", status: "pending", aiRecommendation: "Security protocols need early implementation" }
+        { id: "7", name: "Supplier Partnership", status: "completed", aiRecommendation: "Sustainable material suppliers secured" },
+        { id: "8", name: "Production Line Setup", status: "in-progress", aiRecommendation: "Lean manufacturing principles implemented" },
+        { id: "9", name: "Quality Control Systems", status: "in-progress", aiRecommendation: "Automated inspection reduces defects by 85%" },
+        { id: "10", name: "Initial Production Run", status: "pending", aiRecommendation: "Pilot batch of 1000 units recommended" }
       ],
       budget: { allocated: 350000, spent: 245000, predicted: 365000 },
       kpis: [
-        { name: "Code Quality Score", current: 88, target: 90, aiInsight: "Close to target, implement automated testing" },
-        { name: "Feature Completion", current: 75, target: 80, aiInsight: "On track with current velocity" }
+        { name: "Production Efficiency", current: 78, target: 80, aiInsight: "Close to target efficiency rating" },
+        { name: "Quality Score", current: 92, target: 95, aiInsight: "Quality metrics on track for target" }
       ]
     },
     {
       id: "testing",
-      name: "Testing & QA",
+      name: "Quality Testing & Certification",
       icon: TestTube,
       status: "pending",
       progress: 0,
@@ -157,24 +159,24 @@ export function ProductLifecycleTracker() {
       aiPredictions: {
         riskScore: 25,
         successProbability: 87,
-        resourceOptimization: "AI-powered testing will reduce QA cycle by 40%",
-        timelinePrediction: "Parallel testing approach will maintain timeline"
+        resourceOptimization: "FDA compliance testing scheduled with 95% approval probability",
+        timelinePrediction: "Parallel testing will maintain launch timeline"
       },
       tasks: [
-        { id: "11", name: "Unit Testing", status: "pending", aiRecommendation: "Automated test coverage target: 95%" },
-        { id: "12", name: "Integration Testing", status: "pending", aiRecommendation: "Focus on IoT device compatibility" },
-        { id: "13", name: "User Acceptance Testing", status: "pending", aiRecommendation: "Beta program with 500 users recommended" }
+        { id: "11", name: "Safety & Durability Testing", status: "pending", aiRecommendation: "Drop tests and stress tests scheduled" },
+        { id: "12", name: "FDA Food Contact Approval", status: "pending", aiRecommendation: "All materials pre-approved for food contact" },
+        { id: "13", name: "Consumer Beta Testing", status: "pending", aiRecommendation: "500 beta testers recruited for feedback" }
       ],
       budget: { allocated: 80000, spent: 0, predicted: 75000 },
       kpis: [
-        { name: "Bug Detection Rate", current: 0, target: 95, aiInsight: "AI testing will exceed industry standards" },
-        { name: "Performance Score", current: 0, target: 90, aiInsight: "Predictive modeling shows 92% achievement" }
+        { name: "Safety Compliance", current: 0, target: 100, aiInsight: "Materials exceed FDA safety standards" },
+        { name: "Durability Score", current: 0, target: 95, aiInsight: "Predicted 98% durability rating" }
       ]
     },
     {
-      id: "production",
-      name: "Production & Manufacturing",
-      icon: Factory,
+      id: "launch",
+      name: "Market Launch & Distribution",
+      icon: Store,
       status: "pending",
       progress: 0,
       startDate: "2023-12-01",
@@ -182,18 +184,43 @@ export function ProductLifecycleTracker() {
       aiPredictions: {
         riskScore: 30,
         successProbability: 85,
-        resourceOptimization: "AI supply chain optimization will reduce costs by 12%",
-        timelinePrediction: "Manufacturing capacity sufficient for launch demand"
+        resourceOptimization: "Multi-channel launch strategy optimized for 85% market penetration",
+        timelinePrediction: "Holiday season launch timing optimal for sales"
       },
       tasks: [
-        { id: "14", name: "Supplier Selection", status: "pending", aiRecommendation: "AI vendor scoring identifies optimal partners" },
-        { id: "15", name: "Production Setup", status: "pending", aiRecommendation: "Lean manufacturing principles recommended" },
-        { id: "16", name: "Quality Control", status: "pending", aiRecommendation: "Computer vision QC will ensure 99.8% quality" }
+        { id: "14", name: "Retail Partnership", status: "pending", aiRecommendation: "Target stores with eco-conscious customer base" },
+        { id: "15", name: "Marketing Campaign", status: "pending", aiRecommendation: "Sustainability messaging resonates with 92% of audience" },
+        { id: "16", name: "E-commerce Setup", status: "pending", aiRecommendation: "Direct-to-consumer channel predicted 40% of sales" }
       ],
       budget: { allocated: 500000, spent: 0, predicted: 440000 },
       kpis: [
-        { name: "Production Efficiency", current: 0, target: 85, aiInsight: "AI optimization predicts 89% efficiency" },
-        { name: "Quality Rate", current: 0, target: 98, aiInsight: "Computer vision will achieve 99.8%" }
+        { name: "Market Penetration", current: 0, target: 15, aiInsight: "Premium eco-segment shows 18% potential" },
+        { name: "Customer Acquisition", current: 0, target: 10000, aiInsight: "Launch campaign targets 12,000 customers" }
+      ]
+    },
+    {
+      id: "growth",
+      name: "Post-Launch Growth & Optimization",
+      icon: TrendingUp,
+      status: "pending",
+      progress: 0,
+      startDate: "2024-03-01",
+      estimatedCompletion: "2024-08-31",
+      aiPredictions: {
+        riskScore: 20,
+        successProbability: 88,
+        resourceOptimization: "Customer feedback loop enables 25% faster product improvements",
+        timelinePrediction: "Steady growth trajectory with seasonal peaks"
+      },
+      tasks: [
+        { id: "17", name: "Customer Feedback Analysis", status: "pending", aiRecommendation: "AI sentiment analysis for continuous improvement" },
+        { id: "18", name: "Product Line Extension", status: "pending", aiRecommendation: "Accessories and variants based on usage data" },
+        { id: "19", name: "International Expansion", status: "pending", aiRecommendation: "European market shows 78% interest rate" }
+      ],
+      budget: { allocated: 300000, spent: 0, predicted: 280000 },
+      kpis: [
+        { name: "Customer Retention", current: 0, target: 85, aiInsight: "Loyalty program can increase retention to 90%" },
+        { name: "Revenue Growth", current: 0, target: 150, aiInsight: "Premium positioning supports 175% target" }
       ]
     }
   ]);

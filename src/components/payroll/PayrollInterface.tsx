@@ -6,6 +6,9 @@ import { EmployeeManagement } from "./EmployeeManagement";
 import { PayrollProcessing } from "./PayrollProcessing";
 import { PayrollRecords } from "./PayrollRecords";
 import { AIPayrollInsights } from "./AIPayrollInsights";
+import { AIEmployeePerformancePredictor } from "./AIEmployeePerformancePredictor";
+import { AISalaryOptimizationEngine } from "./AISalaryOptimizationEngine";
+import { AITimeTheftDetective } from "./AITimeTheftDetective";
 import { EmployeeOnboardingDialog } from "./EmployeeOnboardingDialog";
 import { SmartSchedulingDialog } from "./SmartSchedulingDialog";
 import { useToast } from "@/hooks/use-toast";
@@ -24,6 +27,17 @@ export function PayrollInterface() {
     });
   };
 
+  const handleAddEmployee = () => {
+    setShowOnboardingDialog(true);
+  };
+
+  const handleEditEmployee = (employee: any) => {
+    toast({
+      title: "Edit Employee",
+      description: `Editing ${employee.name}`
+    });
+  };
+
   const handleGenerateSchedule = (optimization: any) => {
     toast({
       title: "Schedule Generated",
@@ -34,17 +48,31 @@ export function PayrollInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="ai-performance">AI Performance</TabsTrigger>
+          <TabsTrigger value="ai-salary">AI Salary</TabsTrigger>
+          <TabsTrigger value="ai-theft">AI Time Theft</TabsTrigger>
           <TabsTrigger value="employees">Employees</TabsTrigger>
           <TabsTrigger value="onboarding">Onboarding</TabsTrigger>
           <TabsTrigger value="scheduling">Scheduling</TabsTrigger>
           <TabsTrigger value="processing">Processing</TabsTrigger>
-          <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
           <PayrollOverview />
+        </TabsContent>
+
+        <TabsContent value="ai-performance" className="space-y-6">
+          <AIEmployeePerformancePredictor />
+        </TabsContent>
+
+        <TabsContent value="ai-salary" className="space-y-6">
+          <AISalaryOptimizationEngine />
+        </TabsContent>
+
+        <TabsContent value="ai-theft" className="space-y-6">
+          <AITimeTheftDetective />
         </TabsContent>
 
         <TabsContent value="employees" className="space-y-6">
@@ -55,9 +83,8 @@ export function PayrollInterface() {
               Add Employee
             </Button>
           </div>
-          <div className="text-center text-muted-foreground py-8">
-            Employee management interface with existing staff overview
-          </div>
+          <EmployeeManagement onAddEmployee={handleAddEmployee} onEditEmployee={handleEditEmployee} />
+          <AIPayrollInsights />
         </TabsContent>
 
         <TabsContent value="onboarding" className="space-y-6">
@@ -88,10 +115,7 @@ export function PayrollInterface() {
 
         <TabsContent value="processing" className="space-y-6">
           <PayrollProcessing />
-        </TabsContent>
-
-        <TabsContent value="ai-insights" className="space-y-6">
-          <AIPayrollInsights />
+          <PayrollRecords />
         </TabsContent>
       </Tabs>
 

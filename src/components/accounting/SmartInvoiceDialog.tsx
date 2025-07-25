@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { useToast } from "@/hooks/use-toast";
 import { 
   FileText, 
@@ -217,6 +218,7 @@ const suggestCategory = (lineItems: LineItem[]) => {
 };
 
 export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice }: SmartInvoiceDialogProps) {
+  const { formatCurrency } = useGlobalization();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("upload");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -537,7 +539,7 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
                               <strong>Vendor:</strong> {extractedData.vendor?.name}
                             </p>
                             <p className="text-green-800">
-                              <strong>Amount:</strong> ${extractedData.details?.totalAmount?.toFixed(2)}
+                              <strong>Amount:</strong> {formatCurrency(extractedData.details?.totalAmount || 0)}
                             </p>
                           </div>
                           <div>
@@ -776,7 +778,7 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
                         <div className="space-y-2">
                           <Label>Amount</Label>
                           <Input
-                            value={`$${item.amount.toFixed(2)}`}
+                            value={formatCurrency(item.amount)}
                             readOnly
                             className="bg-muted"
                           />
@@ -813,15 +815,15 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>Subtotal:</span>
-                        <span className="font-medium">${formData.details.subtotal.toFixed(2)}</span>
+                        <span className="font-medium">{formatCurrency(formData.details.subtotal)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Tax ({formData.details.taxRate}%):</span>
-                        <span className="font-medium">${formData.details.taxAmount.toFixed(2)}</span>
+                        <span className="font-medium">{formatCurrency(formData.details.taxAmount)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total:</span>
-                        <span>${formData.details.totalAmount.toFixed(2)}</span>
+                        <span>{formatCurrency(formData.details.totalAmount)}</span>
                       </div>
                     </div>
                   </div>

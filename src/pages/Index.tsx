@@ -7,6 +7,7 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { POSInterface } from "@/components/pos/POSInterface";
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
+import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
 import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
@@ -126,7 +127,7 @@ const Index = () => {
                 }
               </p>
             </div>
-            <PayrollInterface />
+            {isHomeMode ? <PersonalIncomeInterface /> : <PayrollInterface />}
           </div>
         );
       case "accounting":

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AIRelationshipProphet } from "./AIRelationshipProphet";
+import { AIDealProbabilityEngine } from "./AIDealProbabilityEngine";
+import { AICustomerLifetimeJourney } from "./AICustomerLifetimeJourney";
 import {
-  AIDealProbabilityEngine,
-  AICustomerLifetimeJourney,
   AIEmotionalIntelligenceTracker,
   AIChurnPreventionOracle,
   AIRevenueOpportunityScanner

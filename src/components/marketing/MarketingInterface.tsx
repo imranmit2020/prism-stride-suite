@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AIViralContentGenerator } from "./AIViralContentGenerator";
-import { 
-  AICompetitorMindReader,
-  AICustomerPsychologyMapper,
-  AIInfluenceNetworkDiscovery,
-  AITimingOracle,
-  AIBrandSentimentShapeshifter
-} from "./AIMarketingComponents";
+import { AICompetitorMindReader } from "./AICompetitorMindReader";
+import { AICustomerPsychologyMapper } from "./AICustomerPsychologyMapper";
+import { AIInfluenceNetworkDiscovery } from "./AIInfluenceNetworkDiscovery";
+import { AITimingOracle } from "./AITimingOracle";
+import { AIBrandSentimentShapeshifter } from "./AIBrandSentimentShapeshifter";
 
 export function MarketingInterface() {
   const [activeTab, setActiveTab] = useState("viral");

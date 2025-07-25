@@ -9,6 +9,7 @@ import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
 import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
+import { SettingsInterface } from "@/components/settings/SettingsInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -120,10 +121,13 @@ const Index = () => {
       case "settings":
         return (
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Settings</h1>
-            <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
-              <p className="text-muted-foreground">Settings Module - Coming Soon</p>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI Settings</h1>
+              <p className="text-muted-foreground mt-2">
+                Advanced AI configuration and optimization settings for your business.
+              </p>
             </div>
+            <SettingsInterface />
           </div>
         );
       default:

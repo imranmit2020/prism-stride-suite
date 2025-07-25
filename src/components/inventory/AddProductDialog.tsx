@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -98,6 +99,7 @@ const aiSuggestSupplier = (category: string): string => {
 };
 
 export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProductDialogProps) {
+  const { formatCurrency, currentCurrency } = useGlobalization();
   const { toast } = useToast();
   const [aiSuggestions, setAiSuggestions] = useState({
     category: '',
@@ -488,7 +490,7 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sellingPrice">Selling Price ($)</Label>
+              <Label htmlFor="sellingPrice">Selling Price ({currentCurrency.symbol})</Label>
               <Input
                 id="sellingPrice"
                 type="number"

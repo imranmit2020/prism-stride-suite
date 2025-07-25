@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,7 @@ interface ImportExportActionsProps {
 }
 
 // AI-powered data validation and cleaning
-const aiValidateAndCleanData = (products: any[]) => {
+const aiValidateAndCleanData = (products: any[], formatCurrency: (amount: number) => string) => {
   const cleaned = products.map((product, index) => {
     const issues: string[] = [];
     const suggestions: string[] = [];
@@ -54,7 +55,7 @@ const aiValidateAndCleanData = (products: any[]) => {
     
     if (sellingPrice === 0 && unitCost > 0) {
       sellingPrice = Math.round(unitCost * 2.2 * 100) / 100; // 120% markup
-      suggestions.push(`Suggested selling price: $${sellingPrice}`);
+      suggestions.push(`Suggested selling price: ${formatCurrency(sellingPrice)}`);
     }
     
     if (sellingPrice < unitCost && unitCost > 0) {
@@ -142,6 +143,7 @@ const aiSuggestSupplier = (category: string): string => {
 };
 
 export function ImportExportActions({ inventory, onImportProducts }: ImportExportActionsProps) {
+  const { formatCurrency } = useGlobalization();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);
@@ -284,7 +286,7 @@ export function ImportExportActions({ inventory, onImportProducts }: ImportExpor
 
       setImportProgress(80);
       // AI validation and cleaning
-      const validatedProducts = aiValidateAndCleanData(rawProducts);
+      const validatedProducts = aiValidateAndCleanData(rawProducts, formatCurrency);
       const duplicateIndices = aiDetectDuplicates(validatedProducts.map(p => p.cleaned));
       
       // Mark duplicates

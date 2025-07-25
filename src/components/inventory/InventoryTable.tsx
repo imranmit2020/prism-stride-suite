@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -117,6 +118,7 @@ interface InventoryTableProps {
 }
 
 export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTableProps) {
+  const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredInventory, setFilteredInventory] = useState(mockInventory);
 
@@ -241,8 +243,8 @@ export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTablePr
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>${item.unitCost.toFixed(2)}</TableCell>
-                  <TableCell>${item.sellingPrice.toFixed(2)}</TableCell>
+                  <TableCell>{formatCurrency(item.unitCost)}</TableCell>
+                  <TableCell>{formatCurrency(item.sellingPrice)}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

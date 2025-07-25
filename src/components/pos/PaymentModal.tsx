@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +23,7 @@ interface PaymentModalProps {
 }
 
 export function PaymentModal({ isOpen, onClose, items, total, onPaymentComplete }: PaymentModalProps) {
+  const { formatCurrency } = useGlobalization();
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card" | "digital">("cash");
   const [cashReceived, setCashReceived] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -77,7 +79,7 @@ export function PaymentModal({ isOpen, onClose, items, total, onPaymentComplete 
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between text-sm">
                   <span>{item.quantity}x {item.name}</span>
-                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                  <span>{formatCurrency(item.price * item.quantity)}</span>
                 </div>
               ))}
             </div>

@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   MoreHorizontal, 
   Edit, 
@@ -159,6 +160,7 @@ interface EmployeeManagementProps {
 }
 
 export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeManagementProps) {
+  const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployees, setFilteredEmployees] = useState(mockEmployees);
 
@@ -202,11 +204,11 @@ export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeMa
 
   const formatSalary = (employee: Employee) => {
     if (employee.salaryType === "hourly") {
-      return `$${employee.baseSalary.toFixed(2)}/hr`;
+      return `${formatCurrency(employee.baseSalary)}/hr`;
     } else if (employee.salaryType === "monthly") {
-      return `$${employee.baseSalary.toLocaleString()}/mo`;
+      return `${formatCurrency(employee.baseSalary)}/mo`;
     } else {
-      return `$${employee.baseSalary.toLocaleString()}/yr`;
+      return `${formatCurrency(employee.baseSalary)}/yr`;
     }
   };
 

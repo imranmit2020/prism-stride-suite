@@ -222,23 +222,21 @@ export function PersonalExpiryMatrix() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {expiringItems
-              .sort((a, b) => a.daysLeft - b.daysLeft)
-              .map((item, index) => (
-                <div key={index} className="p-4 border rounded-lg bg-card hover:bg-muted/50 transition-colors shadow-sm">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {getStatusIcon(item.daysLeft)}
-                      <item.icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-medium text-foreground truncate">{item.item}</h4>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <span className="truncate">{item.location}</span>
-                          <span>•</span>
-                          <span className="truncate">Expires: {item.expiryDate}</span>
-                        </div>
+            {expiringItems.map((item, index) => (
+              <div key={index} className="p-4 border rounded-lg bg-card hover:bg-muted/50 transition-colors shadow-sm">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    {getStatusIcon(item.daysLeft)}
+                    <item.icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-medium text-foreground truncate">{item.item}</h4>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span className="truncate">{item.location}</span>
+                        <span>•</span>
+                        <span className="truncate">Expires: {item.expiryDate}</span>
                       </div>
                     </div>
+                  </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <Badge variant="outline" className="text-xs whitespace-nowrap">
                         {item.category}

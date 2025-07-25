@@ -24,7 +24,7 @@ interface RecentActivityProps {
 }
 
 export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
-  const aiActivities = [
+  const businessActivities = [
     {
       type: "AI Optimization",
       title: "Automated inventory reorder for top-selling products",
@@ -93,7 +93,78 @@ export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
     }
   ];
 
-  const aiConversations = [
+  const homeActivities = [
+    {
+      type: "Smart Budget",
+      title: "Grocery budget alert",
+      description: "You've spent $120 on groceries this week - getting close to your $150 limit",
+      value: "$30 remaining",
+      time: "2 minutes ago",
+      confidence: 95,
+      icon: AlertTriangle,
+      status: "action-needed",
+      impact: "Medium"
+    },
+    {
+      type: "Bill Reminder",
+      title: "Electric bill due soon",
+      description: "Your electric bill of $76.45 is due in 3 days",
+      value: "Due March 15th",
+      time: "5 minutes ago",
+      confidence: 100,
+      icon: CheckCircle,
+      status: "pending",
+      impact: "High"
+    },
+    {
+      type: "Expense Insight",
+      title: "Coffee spending increased",
+      description: "You've spent 40% more on coffee this month compared to last month",
+      value: "+$23 vs last month",
+      time: "12 minutes ago",
+      confidence: 92,
+      icon: TrendingUp,
+      status: "completed",
+      impact: "Low"
+    },
+    {
+      type: "Shopping Alert",
+      title: "Milk expiring soon",
+      description: "The milk in your fridge expires in 2 days - add to shopping list?",
+      value: "Expires March 14th",
+      time: "18 minutes ago",
+      confidence: 88,
+      icon: Target,
+      status: "opportunity",
+      impact: "Low"
+    },
+    {
+      type: "Savings Goal",
+      title: "Emergency fund growing",
+      description: "You're 82% towards your $3,000 emergency fund goal",
+      value: "+$150 this month",
+      time: "25 minutes ago",
+      confidence: 100,
+      icon: Star,
+      status: "completed",
+      impact: "High"
+    },
+    {
+      type: "Income Tracking",
+      title: "Side income received",
+      description: "Freelance payment of $450 deposited to your account",
+      value: "+$450",
+      time: "35 minutes ago",
+      confidence: 100,
+      icon: Brain,
+      status: "completed",
+      impact: "Medium"
+    }
+  ];
+
+  const aiActivities = isHomeMode ? homeActivities : businessActivities;
+
+  const businessConversations = [
     {
       question: "What's our biggest revenue opportunity this quarter?",
       answer: "AI analysis shows expanding to the Gen-Z segment could generate $340K additional revenue with 78% confidence. The market is showing 67% increased engagement from 18-24 demographics.",
@@ -113,6 +184,29 @@ export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
       confidence: 92
     }
   ];
+
+  const homeConversations = [
+    {
+      question: "How can I save more money each month?",
+      answer: "Based on your spending patterns, you could save $180/month by reducing coffee shop visits by 50% and switching to a cheaper phone plan. Your grocery spending is actually very efficient!",
+      time: "3 minutes ago",
+      confidence: 89
+    },
+    {
+      question: "When should I buy groceries to save money?",
+      answer: "Shop on Wednesdays for best deals. Your local stores have 23% more discounts midweek. Stock up on non-perishables during the first week of each month when sales are highest.",
+      time: "8 minutes ago", 
+      confidence: 92
+    },
+    {
+      question: "Is my emergency fund on track?",
+      answer: "You're doing great! At $2,450 with your current $150/month savings rate, you'll reach your $3,000 goal in 4 months. Consider increasing to $200/month if possible.",
+      time: "15 minutes ago",
+      confidence: 95
+    }
+  ];
+
+  const aiConversations = isHomeMode ? homeConversations : businessConversations;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -148,7 +242,7 @@ export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
             </Badge>
           </CardTitle>
           <CardDescription>
-            Live feed of AI decisions, optimizations, and insights happening in your home
+            {isHomeMode ? "Live feed of AI decisions, optimizations, and insights happening in your home" : "Live feed of AI decisions, optimizations, and insights happening across your business"}
           </CardDescription>
         </CardHeader>
         <CardContent>

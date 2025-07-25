@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Brain, TrendingUp, AlertTriangle, Shield, DollarSign, Target } from "lucide-react";
 
 const aiInsights = [
@@ -11,7 +12,7 @@ const aiInsights = [
     description: "Potential cash shortage in 3 weeks based on payment patterns",
     confidence: 87,
     impact: "high",
-    value: "$15,000 needed",
+    value: 15000,
     action: "Accelerate receivables",
     icon: DollarSign
   },
@@ -21,7 +22,7 @@ const aiInsights = [
     description: "Office supplies expense 340% above normal - possible fraud",
     confidence: 94,
     impact: "critical",
-    value: "Investigate $2,400",
+    value: 2400,
     action: "Review transactions",
     icon: AlertTriangle
   },
@@ -31,7 +32,7 @@ const aiInsights = [
     description: "Prepay Q1 expenses to reduce current year tax burden",
     confidence: 82,
     impact: "medium",
-    value: "Save $3,200",
+    value: 3200,
     action: "Prepay utilities",
     icon: Target
   },
@@ -41,40 +42,44 @@ const aiInsights = [
     description: "Missing documentation for 12 transactions",
     confidence: 100,
     impact: "high",
-    value: "Avoid penalties",
+    value: "Compliance",
     action: "Collect receipts",
     icon: Shield
   }
 ];
 
-const financialPredictions = [
+const financialPredictionsRaw = [
   { 
     metric: "Revenue Forecast", 
-    current: "$45,200", 
-    predicted: "$52,800", 
+    current: 45200, 
+    predicted: 52800, 
     confidence: 89,
-    timeframe: "Next Month"
+    timeframe: "Next Month",
+    isCurrency: true
   },
   { 
     metric: "Expense Trend", 
-    current: "$32,100", 
-    predicted: "$34,500", 
+    current: 32100, 
+    predicted: 34500, 
     confidence: 76,
-    timeframe: "Next Month"
+    timeframe: "Next Month",
+    isCurrency: true
   },
   { 
     metric: "Profit Margin", 
     current: "18.2%", 
     predicted: "21.4%", 
     confidence: 83,
-    timeframe: "Q1 2024"
+    timeframe: "Q1 2024",
+    isCurrency: false
   },
   { 
     metric: "Cash Balance", 
-    current: "$28,900", 
-    predicted: "$31,200", 
+    current: 28900, 
+    predicted: 31200, 
     confidence: 91,
-    timeframe: "End of Month"
+    timeframe: "End of Month",
+    isCurrency: true
   }
 ];
 
@@ -93,6 +98,14 @@ const riskAssessment = [
 ];
 
 export function AIFinancialInsights() {
+  const { formatCurrency } = useGlobalization();
+  
+  // Convert raw predictions to formatted predictions
+  const financialPredictions = financialPredictionsRaw.map(pred => ({
+    ...pred,
+    current: pred.isCurrency ? formatCurrency(pred.current as number) : pred.current,
+    predicted: pred.isCurrency ? formatCurrency(pred.predicted as number) : pred.predicted
+  }));
   const getTypeColor = (type: string) => {
     switch (type) {
       case "forecast": return "text-primary";
@@ -147,7 +160,7 @@ export function AIFinancialInsights() {
                           {insight.impact} impact
                         </Badge>
                         <Badge variant="outline" className="text-success">
-                          {insight.value}
+                          {typeof insight.value === 'number' ? formatCurrency(insight.value) : insight.value}
                         </Badge>
                       </div>
                     </div>

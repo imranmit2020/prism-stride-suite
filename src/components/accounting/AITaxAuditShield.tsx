@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Shield, AlertTriangle, CheckCircle, Brain, Zap, Eye } from "lucide-react";
 
 interface AuditRisk {
@@ -29,6 +30,7 @@ interface ComplianceCheck {
 }
 
 export function AITaxAuditShield() {
+  const { formatCurrency } = useGlobalization();
   const [auditRisks] = useState<AuditRisk[]>([
     {
       id: "1",
@@ -37,7 +39,7 @@ export function AITaxAuditShield() {
       severity: "medium",
       probability: 73,
       aiConfidence: 94,
-      impact: "Potential audit trigger - $12,500 at risk",
+      impact: "Potential audit trigger - 12500 at risk",
       suggestion: "Implement AI-powered receipt validation system",
       quantumScore: 847
     },
@@ -48,7 +50,7 @@ export function AITaxAuditShield() {
       severity: "high",
       probability: 89,
       aiConfidence: 91,
-      impact: "High audit probability - $45,000 exposure",
+      impact: "High audit probability - 45000 exposure",
       suggestion: "Deploy quantum revenue matching algorithm",
       quantumScore: 923
     },
@@ -59,7 +61,7 @@ export function AITaxAuditShield() {
       severity: "low",
       probability: 34,
       aiConfidence: 88,
-      impact: "Minor compliance issue - $3,200 variance",
+      impact: "Minor compliance issue - 3200 variance",
       suggestion: "Activate AI depreciation harmonizer",
       quantumScore: 645
     }
@@ -223,7 +225,13 @@ export function AITaxAuditShield() {
               <Alert>
                 <Zap className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Impact:</strong> {risk.impact}<br />
+                  <strong>Impact:</strong> {risk.impact.includes('12500') ? 
+                    risk.impact.replace('12500', formatCurrency(12500)) :
+                    risk.impact.includes('45000') ?
+                    risk.impact.replace('45000', formatCurrency(45000)) :
+                    risk.impact.includes('3200') ?
+                    risk.impact.replace('3200', formatCurrency(3200)) :
+                    risk.impact}<br />
                   <strong>AI Suggestion:</strong> {risk.suggestion}
                 </AlertDescription>
               </Alert>

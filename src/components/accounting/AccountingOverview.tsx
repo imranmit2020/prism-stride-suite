@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   DollarSign, 
   TrendingUp, 
@@ -12,10 +13,10 @@ import {
   AlertTriangle
 } from "lucide-react";
 
-const financialStats = [
+const financialStatsRaw = [
   {
     title: "Total Revenue",
-    value: "$387,420",
+    value: 387420,
     change: "+15.2%",
     trend: "up",
     icon: DollarSign,
@@ -24,7 +25,7 @@ const financialStats = [
   },
   {
     title: "Total Expenses",
-    value: "$142,680",
+    value: 142680,
     change: "+8.1%",
     trend: "up",
     icon: Receipt,
@@ -33,7 +34,7 @@ const financialStats = [
   },
   {
     title: "Net Profit",
-    value: "$244,740",
+    value: 244740,
     change: "+22.3%",
     trend: "up",
     icon: TrendingUp,
@@ -42,7 +43,7 @@ const financialStats = [
   },
   {
     title: "Cash Flow",
-    value: "$89,320",
+    value: 89320,
     change: "-5.2%",
     trend: "down",
     icon: PiggyBank,
@@ -115,6 +116,14 @@ const recentTransactions = [
 ];
 
 export function AccountingOverview() {
+  const { formatCurrency } = useGlobalization();
+
+  // Convert raw financial data to formatted data
+  const financialStats = financialStatsRaw.map(stat => ({
+    ...stat,
+    value: formatCurrency(stat.value)
+  }));
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "overdue":
@@ -177,7 +186,7 @@ export function AccountingOverview() {
                 <FileText className="h-5 w-5" />
                 Accounts Receivable
               </span>
-              <span className="text-lg font-bold">${totalReceivable.toLocaleString()}</span>
+              <span className="text-lg font-bold">{formatCurrency(totalReceivable)}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -199,7 +208,7 @@ export function AccountingOverview() {
                   )}
                 </div>
                 <div className="text-right">
-                  <div className="font-bold text-lg">${ar.amount.toLocaleString()}</div>
+                  <div className="font-bold text-lg">{formatCurrency(ar.amount)}</div>
                 </div>
               </div>
             ))}
@@ -233,7 +242,7 @@ export function AccountingOverview() {
                   <div className={`font-bold text-lg ${
                     transaction.amount > 0 ? "text-success" : "text-destructive"
                   }`}>
-                    {transaction.amount > 0 ? "+" : ""}${Math.abs(transaction.amount).toFixed(2)}
+                    {transaction.amount > 0 ? "+" : ""}{formatCurrency(Math.abs(transaction.amount))}
                   </div>
                 </div>
               </div>
@@ -256,9 +265,9 @@ export function AccountingOverview() {
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium">{month.month} 2024</h4>
                     <div className="flex items-center gap-4 text-sm">
-                      <span className="text-success">Revenue: ${month.revenue.toLocaleString()}</span>
-                      <span className="text-destructive">Expenses: ${month.expenses.toLocaleString()}</span>
-                      <span className="text-primary font-medium">Profit: ${month.profit.toLocaleString()}</span>
+                      <span className="text-success">Revenue: {formatCurrency(month.revenue)}</span>
+                      <span className="text-destructive">Expenses: {formatCurrency(month.expenses)}</span>
+                      <span className="text-primary font-medium">Profit: {formatCurrency(month.profit)}</span>
                     </div>
                   </div>
                   <div className="space-y-1">

@@ -311,68 +311,70 @@ export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
         </CardContent>
       </Card>
 
-      {/* AI Business Advisor Chat */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-purple-600" />
-            {isHomeMode ? "Personal AI Helper" : "Business AI Helper"}
-            <Badge variant="outline" className="ml-auto">
-              <Sparkles className="h-3 w-3 mr-1 animate-pulse" />
-              Always Available
-            </Badge>
-          </CardTitle>
-          <CardDescription>
-            {isHomeMode ? "Ask your AI anything about your home & finances - get instant personal insights" : "Ask your AI anything about your business - get instant strategic insights"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {aiConversations.map((conv, index) => (
-              <div key={index} className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                    <Users className="h-4 w-4 text-blue-600" />
-                  </div>
-                  <div className="flex-1 p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm font-medium">{conv.question}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                    <Brain className="h-4 w-4 text-purple-600" />
-                  </div>
-                  <div className="flex-1 p-3 bg-purple-50 rounded-lg">
-                    <p className="text-sm">{conv.answer}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge variant="outline" className="text-xs">
-                        {conv.confidence}% confident
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">{conv.time}</span>
+      {/* AI Business Advisor Chat - Only show in business mode */}
+      {!isHomeMode && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-purple-600" />
+              Business AI Helper
+              <Badge variant="outline" className="ml-auto">
+                <Sparkles className="h-3 w-3 mr-1 animate-pulse" />
+                Always Available
+              </Badge>
+            </CardTitle>
+            <CardDescription>
+              Ask your AI anything about your business - get instant strategic insights
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {aiConversations.map((conv, index) => (
+                <div key={index} className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <Users className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <div className="flex-1 p-3 bg-blue-50 rounded-lg">
+                      <p className="text-sm font-medium">{conv.question}</p>
                     </div>
                   </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                      <Brain className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <div className="flex-1 p-3 bg-purple-50 rounded-lg">
+                      <p className="text-sm">{conv.answer}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="outline" className="text-xs">
+                          {conv.confidence}% confident
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">{conv.time}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {index < aiConversations.length - 1 && <div className="border-t my-4" />}
                 </div>
-                
-                {index < aiConversations.length - 1 && <div className="border-t my-4" />}
-              </div>
-            ))}
-            
-            <div className="pt-4 border-t">
-              <div className="flex gap-2">
-                <input 
-                  type="text" 
-                  placeholder={isHomeMode ? "Ask your personal AI helper anything..." : "Ask your business AI advisor anything..."}
-                  className="flex-1 px-3 py-2 border rounded-lg text-sm"
-                />
-                <Button size="sm">
-                  <Sparkles className="h-4 w-4" />
-                </Button>
+              ))}
+              
+              <div className="pt-4 border-t">
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    placeholder="Ask your business AI advisor anything..."
+                    className="flex-1 px-3 py-2 border rounded-lg text-sm"
+                  />
+                  <Button size="sm">
+                    <Sparkles className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

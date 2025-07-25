@@ -71,12 +71,12 @@ const Index = () => {
                 <QuickActions onActionClick={handleQuickAction} isHomeMode={isHomeMode} />
                 <RecentActivity isHomeMode={isHomeMode} />
               </div>
-              <div className="space-y-6">
+              {!isHomeMode && (
                 <div className="card-glass p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">{isHomeMode ? "Personal AI Helper" : "Business AI Helper"}</h3>
-                  <p className="text-muted-foreground text-sm lg:text-base">{isHomeMode ? "Your personal AI assistant for home management..." : "Your business AI advisor for strategic insights..."}</p>
+                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">Business AI Helper</h3>
+                  <p className="text-muted-foreground text-sm lg:text-base">Your business AI advisor for strategic insights...</p>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         );

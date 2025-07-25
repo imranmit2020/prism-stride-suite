@@ -88,8 +88,8 @@ export function SmartResourceAllocation() {
 
   const [resourcePools] = useState<ResourcePool[]>([
     {
-      id: "developers",
-      name: "Software Developers",
+      id: "manufacturing",
+      name: "Manufacturing Team",
       type: "human",
       total: 12,
       allocated: 9,
@@ -100,18 +100,18 @@ export function SmartResourceAllocation() {
         recommended: 14,
         efficiency_gain: 23,
         cost_savings: 180000,
-        reasoning: "AI suggests adding 2 senior developers to reduce bottlenecks and enable parallel development"
+        reasoning: "AI suggests adding 2 senior production engineers to reduce bottlenecks and enable parallel manufacturing"
       },
       utilization: {
         current: 75,
         optimal: 85,
-        bottlenecks: ["Code review delays", "Cross-team dependencies", "Legacy system integration"]
+        bottlenecks: ["Quality control delays", "Material sourcing", "Equipment maintenance"]
       },
-      skills: ["React", "Node.js", "Python", "IoT", "Machine Learning"]
+      skills: ["Lean Manufacturing", "Quality Control", "Supply Chain", "Safety Protocols", "Process Optimization"]
     },
     {
       id: "designers",
-      name: "UX/UI Designers",
+      name: "Product Designers",
       type: "human",
       total: 4,
       allocated: 4,
@@ -122,14 +122,14 @@ export function SmartResourceAllocation() {
         recommended: 5,
         efficiency_gain: 15,
         cost_savings: 50000,
-        reasoning: "High efficiency team at capacity. Additional designer would reduce design iteration time"
+        reasoning: "High efficiency team at capacity. Additional industrial designer would reduce product iteration time"
       },
       utilization: {
         current: 100,
         optimal: 80,
-        bottlenecks: ["User testing scheduling", "Stakeholder feedback cycles"]
+        bottlenecks: ["Consumer testing scheduling", "Stakeholder feedback cycles"]
       },
-      skills: ["UI Design", "UX Research", "Prototyping", "User Testing"]
+      skills: ["Industrial Design", "CAD Modeling", "Material Research", "Consumer Testing"]
     },
     {
       id: "testing_equipment",
@@ -153,8 +153,8 @@ export function SmartResourceAllocation() {
       }
     },
     {
-      id: "development_budget",
-      name: "Development Budget",
+      id: "production_budget",
+      name: "Production Budget",
       type: "budget",
       total: 2000000,
       allocated: 1650000,
@@ -165,7 +165,7 @@ export function SmartResourceAllocation() {
         recommended: 1900000,
         efficiency_gain: 18,
         cost_savings: 100000,
-        reasoning: "Reallocate 100K from marketing to accelerate critical path development"
+        reasoning: "Reallocate 100K from marketing to accelerate critical path production setup"
       },
       utilization: {
         current: 82.5,
@@ -178,7 +178,7 @@ export function SmartResourceAllocation() {
   const [recommendations] = useState<AllocationRecommendation[]>([
     {
       id: "1",
-      title: "Implement AI-Powered Code Review",
+      title: "Implement AI-Powered Quality Control",
       type: "automation",
       priority: "high",
       impact: {
@@ -186,18 +186,18 @@ export function SmartResourceAllocation() {
         cost: -25,
         timeline: 15
       },
-      description: "Deploy AI code review system to reduce manual review time and improve code quality",
+      description: "Deploy AI vision system for automated quality inspection to reduce manual inspection time and improve consistency",
       implementation: {
         effort: 2,
         duration: "4 weeks",
         cost: 45000
       },
-      aiReasoning: "Analysis shows 40% of developer time spent on code reviews. AI automation can reduce this to 15%",
-      expectedOutcome: "30% reduction in development cycle time, 25% cost savings, improved code quality"
+      aiReasoning: "Analysis shows 40% of quality control time spent on visual inspection. AI automation can reduce this to 15%",
+      expectedOutcome: "30% reduction in production cycle time, 25% cost savings, improved quality consistency"
     },
     {
       id: "2",
-      title: "Cross-Train Developers in IoT Protocols",
+      title: "Cross-Train Manufacturing Team in Advanced Techniques",
       type: "optimization",
       priority: "high",
       impact: {
@@ -205,18 +205,18 @@ export function SmartResourceAllocation() {
         cost: 10,
         timeline: 20
       },
-      description: "Upskill 6 developers in IoT protocols to eliminate knowledge bottlenecks",
+      description: "Upskill 6 production workers in advanced manufacturing techniques to eliminate knowledge bottlenecks",
       implementation: {
         effort: 6,
         duration: "8 weeks",
         cost: 75000
       },
-      aiReasoning: "IoT integration is critical path with only 2 qualified developers. Training 6 more reduces project risk",
-      expectedOutcome: "Eliminate IoT development bottleneck, reduce project timeline by 3 weeks"
+      aiReasoning: "Advanced manufacturing is critical path with only 2 qualified specialists. Training 6 more reduces project risk",
+      expectedOutcome: "Eliminate manufacturing bottleneck, reduce production timeline by 3 weeks"
     },
     {
       id: "3",
-      title: "Outsource Non-Critical UI Components",
+      title: "Outsource Non-Critical Component Manufacturing",
       type: "reallocation",
       priority: "medium",
       impact: {
@@ -224,30 +224,30 @@ export function SmartResourceAllocation() {
         cost: -15,
         timeline: 10
       },
-      description: "Outsource standard UI components to focus internal designers on core UX",
+      description: "Outsource standard component manufacturing to focus internal resources on core product assembly",
       implementation: {
         effort: 3,
         duration: "2 weeks",
         cost: 30000
       },
-      aiReasoning: "Internal designers spending 35% time on standard components. Outsourcing frees them for innovation",
-      expectedOutcome: "Focus internal talent on high-value design work, 15% cost reduction"
+      aiReasoning: "Internal team spending 35% time on standard components. Outsourcing frees them for innovation",
+      expectedOutcome: "Focus internal talent on high-value manufacturing work, 15% cost reduction"
     }
   ]);
 
   const [skillGaps] = useState<SkillGap[]>([
     {
       id: "1",
-      skill: "Machine Learning Engineering",
+      skill: "Advanced Manufacturing Automation",
       currentLevel: 3,
       requiredLevel: 8,
       gap: 5,
       impact: "high",
       aiSuggestions: {
-        training: "6-month ML bootcamp for 3 senior developers",
-        hiring: "Hire 2 ML engineers with 5+ years experience",
-        outsourcing: "Partner with ML consulting firm for 6 months",
-        automation: "Use AutoML platforms for standard ML tasks"
+        training: "6-month automation engineering bootcamp for 3 senior manufacturing engineers",
+        hiring: "Hire 2 automation engineers with 5+ years experience",
+        outsourcing: "Partner with automation consulting firm for 6 months",
+        automation: "Use AI-powered production monitoring systems"
       },
       cost: {
         training: 75000,
@@ -257,16 +257,16 @@ export function SmartResourceAllocation() {
     },
     {
       id: "2",
-      skill: "Voice Interface Design",
+      skill: "Sustainable Material Science",
       currentLevel: 2,
       requiredLevel: 7,
       gap: 5,
       impact: "high",
       aiSuggestions: {
-        training: "Voice UX certification for current design team",
-        hiring: "Hire voice UX specialist",
-        outsourcing: "Contract voice design agency",
-        automation: "Use AI voice testing tools"
+        training: "Green materials certification for current product team",
+        hiring: "Hire sustainable materials specialist",
+        outsourcing: "Contract with eco-materials consulting agency",
+        automation: "Use AI material property analysis tools"
       },
       cost: {
         training: 25000,
@@ -276,16 +276,16 @@ export function SmartResourceAllocation() {
     },
     {
       id: "3",
-      skill: "IoT Security",
+      skill: "Quality Control Systems",
       currentLevel: 4,
       requiredLevel: 9,
       gap: 5,
       impact: "high",
       aiSuggestions: {
-        training: "Advanced IoT security certification",
-        hiring: "Hire cybersecurity specialist with IoT focus",
-        outsourcing: "Security audit and consulting",
-        automation: "Implement automated security scanning"
+        training: "Advanced quality management certification",
+        hiring: "Hire quality control specialist with manufacturing focus",
+        outsourcing: "Quality audit and consulting services",
+        automation: "Implement automated quality inspection systems"
       },
       cost: {
         training: 40000,

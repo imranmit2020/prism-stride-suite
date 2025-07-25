@@ -70,22 +70,22 @@ export function AIProductIntelligence() {
     {
       id: "1",
       category: "market",
-      title: "Emerging Voice Control Demand",
-      description: "AI detects 340% increase in voice control feature searches across smart home devices",
+      title: "Emerging Sustainability Demand",
+      description: "AI detects 340% increase in eco-friendly product searches across consumer goods categories",
       confidence: 94,
       impact: "high",
       urgency: "immediate",
       recommendations: [
-        "Accelerate voice AI integration development",
-        "Partner with major voice platforms",
-        "Conduct voice UX testing with 500+ users"
+        "Accelerate sustainable material integration",
+        "Partner with eco-certification organizations",
+        "Conduct sustainability focus groups with 500+ consumers"
       ],
       dataPoints: 12500,
       trend: "positive",
       prediction: {
         timeframe: "6 months",
         probability: 87,
-        outcome: "Voice control will become primary interface for 65% of users"
+        outcome: "Sustainability will become primary purchase driver for 65% of consumers"
       }
     },
     {

@@ -67,34 +67,34 @@ export function Sidebar({
   const handleChange = onModuleChange || onTabChange || (() => {});
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
-    <div className="h-screen w-64 bg-gradient-to-br from-background via-card/50 to-background/80 border-r border-primary/30 flex flex-col shadow-neural backdrop-blur-2xl relative overflow-hidden">
-      {/* Revolutionary ambient background */}
-      <div className="absolute inset-0 bg-gradient-quantum opacity-5 animate-pulse" />
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-hero opacity-80" />
+    <div className="h-screen w-64 bg-gradient-to-br from-background via-card to-background border-r border-primary/30 flex flex-col shadow-xl backdrop-blur-sm relative overflow-hidden">
+      {/* Beautiful ambient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 animate-pulse" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary opacity-80" />
       
       {/* Logo/Brand */}
-      <div className="relative p-6 border-b border-primary/20 bg-gradient-to-br from-card/80 via-card/60 to-card/40 backdrop-blur-xl">
+      <div className="relative p-6 border-b border-primary/20 bg-gradient-to-br from-card via-card/80 to-card/60 backdrop-blur-sm">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 rounded-2xl bg-gradient-quantum shadow-neural hover:shadow-primary transition-all duration-500 hover:scale-110 hover:rotate-12">
+          <div className="p-3 rounded-2xl bg-gradient-primary shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-110">
             {isHomeMode ? <Home className="h-6 w-6 text-white" /> : <Building className="h-6 w-6 text-white" />}
           </div>
-          <h1 className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
             {isHomeMode ? "Home Manager" : "Prism Stride Suite"}
           </h1>
         </div>
-        <p className="text-sm text-muted-foreground mb-6 opacity-80">
+        <p className="text-sm text-muted-foreground mb-6">
           {isHomeMode ? "Personal Management Platform" : "Business Management Platform"}
         </p>
         
-        {/* Revolutionary Mode Toggle */}
-        <div className="flex items-center justify-between text-sm p-4 bg-gradient-to-r from-muted/30 via-primary/10 to-muted/30 rounded-2xl border border-primary/20 backdrop-blur-sm hover:border-primary/40 transition-all duration-500">
-          <span className="text-muted-foreground font-semibold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+        {/* Mode Toggle */}
+        <div className="flex items-center justify-between text-sm p-4 bg-gradient-to-r from-muted/30 to-primary/10 rounded-2xl border border-primary/20 backdrop-blur-sm">
+          <span className="text-foreground font-semibold">
             {isHomeMode ? "Personal Mode" : "Business Mode"}
           </span>
           <Switch 
             checked={!isHomeMode} 
             onCheckedChange={(checked) => onHomeModeChange?.(!checked)}
-            className="data-[state=checked]:bg-gradient-primary shadow-lg hover:shadow-neural transition-all duration-300"
+            className="data-[state=checked]:bg-primary shadow-lg"
           />
         </div>
       </div>
@@ -110,17 +110,17 @@ export function Sidebar({
               key={item.id}
               variant={isActive ? "default" : "ghost"}
               className={cn(
-                "w-full justify-start gap-3 h-12 text-sm font-medium transition-all duration-300 relative overflow-hidden group",
+                "w-full justify-start gap-3 h-12 text-sm font-medium transition-all duration-500 relative overflow-hidden group",
                 isActive 
-                  ? "bg-gradient-primary text-white shadow-lg hover:shadow-xl scale-[1.02] border-0" 
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/80 hover:scale-[1.01] hover:shadow-md"
+                  ? "bg-gradient-primary text-white shadow-xl hover:shadow-2xl scale-[1.02] border-0" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent/80 hover:scale-[1.01] hover:shadow-lg"
               )}
               onClick={() => handleChange(item.id)}
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              {/* Background gradient for active state */}
+              {/* Background for active state */}
               {isActive && (
-                <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-90" />
+                <div className="absolute inset-0 bg-gradient-primary opacity-90" />
               )}
               
               <div className="relative flex items-center gap-3 w-full">

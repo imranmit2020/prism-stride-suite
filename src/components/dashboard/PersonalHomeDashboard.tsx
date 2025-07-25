@@ -1,108 +1,116 @@
 import { 
   Home, 
-  Heart,
-  Calendar,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Package,
+  Receipt,
+  PiggyBank,
   ShoppingCart,
-  Users,
+  AlertTriangle,
   CheckCircle,
-  Clock,
-  Star,
-  Gift,
-  Coffee,
-  Car,
-  Utensils,
-  Lightbulb,
-  Sun
+  Calendar,
+  Plus,
+  Eye
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
-const familyStats = [
+const homeFinanceStats = [
   {
-    title: "Family Budget",
-    value: "$1,847",
-    remaining: "of $3,000 spent",
-    icon: Home,
-    description: "this month",
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-    note: "Doing great!",
-    progress: 62
+    title: "Monthly Expenses",
+    value: "$2,347",
+    target: "$2,800",
+    change: "-8.2%",
+    changeType: "decrease" as const,
+    icon: Receipt,
+    description: "vs last month",
+    color: "text-red-600",
+    bgColor: "bg-red-50",
+    note: "Saved money on groceries!",
+    progress: 84
   },
   {
-    title: "Vacation Fund",
-    value: "$2,450",
-    remaining: "of $5,000 goal",
-    icon: Gift,
-    description: "saved so far",
+    title: "Household Income",
+    value: "$5,850",
+    target: "$5,500",
+    change: "+6.4%",
+    changeType: "increase" as const,
+    icon: DollarSign,
+    description: "vs last month",
     color: "text-green-600", 
     bgColor: "bg-green-50",
-    note: "Almost halfway there!",
-    progress: 49
+    note: "Bonus from side work",
+    progress: 106
   },
   {
-    title: "Family Tasks",
-    value: "8",
-    remaining: "of 12 completed",
-    icon: CheckCircle,
-    description: "this week",
-    color: "text-purple-600",
-    bgColor: "bg-purple-50", 
-    note: "Kids are helping more",
-    progress: 67
+    title: "Emergency Fund",
+    value: "$8,450",
+    target: "$10,000",
+    change: "+12.3%",
+    changeType: "increase" as const,
+    icon: PiggyBank,
+    description: "towards goal",
+    color: "text-blue-600",
+    bgColor: "bg-blue-50", 
+    note: "Almost there!",
+    progress: 85
   }
 ];
 
-const todaySchedule = [
-  { time: "8:00 AM", task: "School Drop-off", person: "Mom", icon: Car },
-  { time: "10:30 AM", task: "Grocery Shopping", person: "Dad", icon: ShoppingCart },
-  { time: "3:00 PM", task: "Soccer Practice", person: "Emma", icon: Star },
-  { time: "6:00 PM", task: "Family Dinner", person: "Everyone", icon: Utensils }
+const inventoryItems = [
+  { item: "Milk", category: "Dairy", status: "low", expires: "Tomorrow", icon: ShoppingCart },
+  { item: "Bread", category: "Bakery", status: "out", expires: "Today", icon: AlertTriangle },
+  { item: "Chicken", category: "Meat", status: "good", expires: "Mar 25", icon: CheckCircle },
+  { item: "Apples", category: "Produce", status: "low", expires: "Mar 22", icon: ShoppingCart }
 ];
 
-const familyActions = [
-  { title: "Add Chore", icon: CheckCircle },
-  { title: "Plan Meal", icon: Utensils },
-  { title: "Family Event", icon: Calendar },
+const recentExpenses = [
+  { description: "Grocery Store", amount: "$127.85", category: "Food", date: "Today" },
+  { description: "Gas Station", amount: "$45.20", category: "Transport", date: "Yesterday" },
+  { description: "Electric Bill", amount: "$89.45", category: "Utilities", date: "Mar 15" },
+  { description: "Pharmacy", amount: "$23.67", category: "Health", date: "Mar 14" }
+];
+
+const quickActions = [
+  { title: "Add Expense", icon: Receipt },
+  { title: "Log Income", icon: DollarSign },
+  { title: "Check Inventory", icon: Package },
   { title: "Shopping List", icon: ShoppingCart }
-];
-
-const weeklyGoals = [
-  { goal: "Eat dinner together 5 times", current: 3, target: 5, icon: Utensils },
-  { goal: "Kids complete homework", current: 4, target: 5, icon: Star },
-  { goal: "Family exercise time", current: 2, target: 3, icon: Heart }
 ];
 
 export function PersonalHomeDashboard() {
   return (
     <div className="space-y-6">
-      {/* Family Home Header */}
-      <Card className="border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50">
+      {/* Personal Finance Header */}
+      <Card className="border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 rounded-xl">
-                <Home className="h-6 w-6 text-orange-600" />
+              <div className="p-2 bg-blue-100 rounded-xl">
+                <Home className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <CardTitle className="text-xl text-orange-800">Welcome Home, Johnson Family! 👋</CardTitle>
-                <p className="text-sm text-orange-600">Today is a beautiful {new Date().toLocaleDateString('en-US', { weekday: 'long' })}</p>
+                <CardTitle className="text-xl text-blue-800">Personal Finance Manager</CardTitle>
+                <p className="text-sm text-blue-600">Track your household expenses, income & inventory</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Sun className="h-5 w-5 text-orange-500" />
-              <span className="text-sm text-orange-700">72°F</span>
-            </div>
+            <Badge className="bg-green-100 text-green-700 border-green-200">
+              <CheckCircle className="h-3 w-3 mr-1" />
+              Up to date
+            </Badge>
           </div>
         </CardHeader>
       </Card>
 
-      {/* Family Overview */}
+      {/* Financial Overview */}
       <div className="grid gap-6 md:grid-cols-3">
-        {familyStats.map((stat, index) => {
+        {homeFinanceStats.map((stat, index) => {
           const Icon = stat.icon;
+          const isIncrease = stat.changeType === "increase";
+          const TrendIcon = isIncrease ? TrendingUp : TrendingDown;
           
           return (
             <Card key={stat.title} className="relative overflow-hidden">
@@ -118,14 +126,25 @@ export function PersonalHomeDashboard() {
               <CardContent className="space-y-3">
                 <div className="text-2xl font-bold">{stat.value}</div>
                 
-                <div className="text-sm text-muted-foreground">{stat.remaining}</div>
-
-                {stat.progress && (
-                  <div className="space-y-1">
-                    <Progress value={stat.progress} className="h-2" />
-                    <div className="text-xs text-muted-foreground">{stat.progress}% complete</div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${
+                    isIncrease 
+                      ? 'bg-green-100 text-green-700' 
+                      : 'bg-red-100 text-red-700'
+                  }`}>
+                    <TrendIcon className="h-3 w-3" />
+                    <span className="font-medium">{stat.change}</span>
                   </div>
-                )}
+                  <span className="text-muted-foreground">{stat.description}</span>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span>Target: {stat.target}</span>
+                    <span>{stat.progress}%</span>
+                  </div>
+                  <Progress value={stat.progress} className="h-2" />
+                </div>
 
                 <div className="text-xs text-blue-600 italic">{stat.note}</div>
               </CardContent>
@@ -134,27 +153,69 @@ export function PersonalHomeDashboard() {
         })}
       </div>
 
-      {/* Today's Schedule & Quick Family Actions */}
+      {/* Quick Actions */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Plus className="h-5 w-5 text-green-600" />
+            Quick Actions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {quickActions.map((action, index) => (
+              <Button
+                key={action.title}
+                variant="outline"
+                className="h-16 flex flex-col items-center gap-1"
+              >
+                <action.icon className="h-5 w-5" />
+                <span className="text-xs">{action.title}</span>
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Inventory & Expenses */}
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Today's Family Schedule */}
+        {/* Household Inventory Status */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-blue-600" />
-              Today's Family Schedule
+              <Package className="h-5 w-5 text-orange-600" />
+              Household Inventory
+              <Badge variant="outline" className="ml-auto">
+                <AlertTriangle className="h-3 w-3 mr-1 text-orange-500" />
+                2 items low
+              </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {todaySchedule.map((item, index) => (
-                <div key={index} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
-                  <div className="text-sm font-medium text-blue-600 w-16">{item.time}</div>
-                  <div className="p-2 bg-blue-50 rounded-full">
-                    <item.icon className="h-4 w-4 text-blue-600" />
+              {inventoryItems.map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-2 rounded-lg border">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-1.5 rounded-full ${
+                      item.status === 'out' ? 'bg-red-100 text-red-600' :
+                      item.status === 'low' ? 'bg-orange-100 text-orange-600' :
+                      'bg-green-100 text-green-600'
+                    }`}>
+                      <item.icon className="h-3 w-3" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm">{item.item}</div>
+                      <div className="text-xs text-muted-foreground">{item.category}</div>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-medium">{item.task}</div>
-                    <div className="text-sm text-muted-foreground">{item.person}</div>
+                  <div className="text-right">
+                    <Badge variant={
+                      item.status === 'out' ? 'destructive' :
+                      item.status === 'low' ? 'secondary' : 'outline'
+                    } className="text-xs">
+                      {item.status}
+                    </Badge>
+                    <div className="text-xs text-muted-foreground mt-1">{item.expires}</div>
                   </div>
                 </div>
               ))}
@@ -162,56 +223,33 @@ export function PersonalHomeDashboard() {
           </CardContent>
         </Card>
 
-        {/* Family Quick Actions */}
+        {/* Recent Expenses */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Heart className="h-5 w-5 text-pink-600" />
-              Family Quick Actions
+              <Receipt className="h-5 w-5 text-purple-600" />
+              Recent Expenses
+              <Button variant="ghost" size="sm" className="ml-auto">
+                <Eye className="h-4 w-4 mr-1" />
+                View All
+              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-3">
-              {familyActions.map((action, index) => (
-                <Button
-                  key={action.title}
-                  variant="outline"
-                  className="h-16 flex flex-col items-center gap-1"
-                >
-                  <action.icon className="h-5 w-5" />
-                  <span className="text-xs">{action.title}</span>
-                </Button>
+            <div className="space-y-3">
+              {recentExpenses.map((expense, index) => (
+                <div key={index} className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50">
+                  <div>
+                    <div className="font-medium text-sm">{expense.description}</div>
+                    <div className="text-xs text-muted-foreground">{expense.category} • {expense.date}</div>
+                  </div>
+                  <div className="font-semibold text-red-600">{expense.amount}</div>
+                </div>
               ))}
             </div>
           </CardContent>
         </Card>
       </div>
-
-      {/* This Week's Family Goals */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Star className="h-5 w-5 text-yellow-600" />
-            This Week's Family Goals
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {weeklyGoals.map((goal, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <goal.icon className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">{goal.goal}</span>
-                  </div>
-                  <span className="text-sm text-muted-foreground">{goal.current}/{goal.target}</span>
-                </div>
-                <Progress value={(goal.current / goal.target) * 100} className="h-2" />
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

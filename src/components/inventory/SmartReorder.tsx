@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   ShoppingCart, 
   AlertCircle, 
@@ -76,6 +77,7 @@ interface SmartReorderProps {
 }
 
 export function SmartReorder({ onProcessReorder }: SmartReorderProps) {
+  const { formatCurrency } = useGlobalization();
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case "critical": return "destructive";
@@ -118,7 +120,7 @@ export function SmartReorder({ onProcessReorder }: SmartReorderProps) {
                 </Badge>
               </div>
               <div className="text-right">
-                <div className="text-lg font-bold">${reorder.estimatedCost.toFixed(2)}</div>
+                <div className="text-lg font-bold">{formatCurrency(reorder.estimatedCost)}</div>
                 <div className="text-sm text-muted-foreground">{reorder.recommendedQuantity} units</div>
               </div>
             </div>

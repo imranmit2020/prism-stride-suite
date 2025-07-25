@@ -62,16 +62,15 @@ const Index = () => {
               </div>
             </div>
             <DashboardStats />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-8">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+              <div className="xl:col-span-2 space-y-6 lg:space-y-8">
                 <QuickActions onActionClick={handleQuickAction} />
                 <RecentActivity />
               </div>
-              <div>
-                {/* <AIBusinessAdvisor /> */}
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">AI Business Advisor</h3>
-                  <p className="text-muted-foreground">AI-powered business insights coming soon...</p>
+              <div className="space-y-6">
+                <div className="card-glass p-6 lg:p-8">
+                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">AI Business Advisor</h3>
+                  <p className="text-muted-foreground text-sm lg:text-base">AI-powered business insights coming soon...</p>
                 </div>
               </div>
             </div>

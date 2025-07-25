@@ -239,7 +239,7 @@ export function AIStorytellingReports() {
       </div>
 
       <Tabs defaultValue="stories" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="stories">Data Stories</TabsTrigger>
           <TabsTrigger value="reader">Story Reader</TabsTrigger>
           <TabsTrigger value="analytics">Story Analytics</TabsTrigger>

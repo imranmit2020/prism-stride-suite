@@ -154,11 +154,11 @@ export function PersonalReportsInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
-          <TabsTrigger value="overview" className="text-sm">Overview</TabsTrigger>
-          <TabsTrigger value="financial" className="text-sm">Financial</TabsTrigger>
-          <TabsTrigger value="household" className="text-sm">Household</TabsTrigger>
-          <TabsTrigger value="custom" className="text-sm">Custom Reports</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1 mb-6">
+          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
+          <TabsTrigger value="financial" className="px-3 py-2 text-xs font-medium">Financial</TabsTrigger>
+          <TabsTrigger value="household" className="px-3 py-2 text-xs font-medium">Household</TabsTrigger>
+          <TabsTrigger value="custom" className="px-3 py-2 text-xs font-medium">Custom Reports</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

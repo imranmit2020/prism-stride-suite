@@ -329,7 +329,7 @@ export function LoyaltyProgramDialog({ open, onOpenChange, program, onSaveProgra
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
             <TabsTrigger value="basic">Basic Setup</TabsTrigger>
             <TabsTrigger value="tiers">Tiers</TabsTrigger>
             <TabsTrigger value="rewards">Rewards</TabsTrigger>

@@ -134,7 +134,7 @@ export function CustomerAnalytics() {
       </div>
 
       <Tabs defaultValue="segments" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="segments">Segments</TabsTrigger>
           <TabsTrigger value="journey">Journey</TabsTrigger>
           <TabsTrigger value="loyalty">Loyalty</TabsTrigger>

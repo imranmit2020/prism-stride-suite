@@ -214,11 +214,11 @@ export function AICompetitorIntelligence() {
       </div>
 
       <Tabs defaultValue="competitors" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="competitors">Competitor Analysis</TabsTrigger>
-          <TabsTrigger value="alerts">Real-time Alerts</TabsTrigger>
-          <TabsTrigger value="strategy">AI Strategy</TabsTrigger>
-          <TabsTrigger value="trends">Market Trends</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="competitors" className="px-3 py-2 text-xs font-medium">Competitor Analysis</TabsTrigger>
+          <TabsTrigger value="alerts" className="px-3 py-2 text-xs font-medium">Real-time Alerts</TabsTrigger>
+          <TabsTrigger value="strategy" className="px-3 py-2 text-xs font-medium">AI Strategy</TabsTrigger>
+          <TabsTrigger value="trends" className="px-3 py-2 text-xs font-medium">Market Trends</TabsTrigger>
         </TabsList>
 
         <TabsContent value="competitors" className="space-y-4">

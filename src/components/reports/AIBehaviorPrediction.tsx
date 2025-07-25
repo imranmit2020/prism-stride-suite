@@ -228,7 +228,7 @@ export function AIBehaviorPrediction() {
       </div>
 
       <Tabs defaultValue="live" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="live">Live Users</TabsTrigger>
           <TabsTrigger value="patterns">Behavior Patterns</TabsTrigger>
           <TabsTrigger value="interventions">AI Interventions</TabsTrigger>

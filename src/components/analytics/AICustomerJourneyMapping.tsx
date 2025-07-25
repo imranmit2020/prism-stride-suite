@@ -214,11 +214,11 @@ export function AICustomerJourneyMapping() {
       </div>
 
       <Tabs defaultValue="journey" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="journey">Journey Stages</TabsTrigger>
-          <TabsTrigger value="segments">Customer Segments</TabsTrigger>
-          <TabsTrigger value="emotions">Emotion Tracking</TabsTrigger>
-          <TabsTrigger value="optimizations">AI Optimizations</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="journey" className="px-3 py-2 text-xs font-medium">Journey Stages</TabsTrigger>
+          <TabsTrigger value="segments" className="px-3 py-2 text-xs font-medium">Customer Segments</TabsTrigger>
+          <TabsTrigger value="emotions" className="px-3 py-2 text-xs font-medium">Emotion Tracking</TabsTrigger>
+          <TabsTrigger value="optimizations" className="px-3 py-2 text-xs font-medium">AI Optimizations</TabsTrigger>
         </TabsList>
 
         <TabsContent value="journey" className="space-y-4">

@@ -463,7 +463,7 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
             <TabsTrigger value="upload">Upload & Extract</TabsTrigger>
             <TabsTrigger value="details">Invoice Details</TabsTrigger>
             <TabsTrigger value="line-items">Line Items</TabsTrigger>

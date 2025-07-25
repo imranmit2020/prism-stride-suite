@@ -126,7 +126,7 @@ export function AIReportGenerator() {
       </Card>
 
       <Tabs defaultValue="natural" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="natural">Natural Language</TabsTrigger>
           <TabsTrigger value="suggestions">AI Suggestions</TabsTrigger>
           <TabsTrigger value="results">Generated Reports</TabsTrigger>

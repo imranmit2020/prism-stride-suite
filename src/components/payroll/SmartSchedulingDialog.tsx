@@ -392,7 +392,7 @@ export function SmartSchedulingDialog({ open, onOpenChange, onGenerateSchedule }
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
             <TabsTrigger value="basic">Schedule Period</TabsTrigger>
             <TabsTrigger value="hours">Business Hours</TabsTrigger>
             <TabsTrigger value="constraints">Constraints</TabsTrigger>

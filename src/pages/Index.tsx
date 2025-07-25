@@ -9,7 +9,7 @@ import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
-import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
+import { PersonalAnalyticsInterface } from "@/components/personal-analytics/PersonalAnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
 import { FormsInterface } from "@/components/forms/FormsInterface";

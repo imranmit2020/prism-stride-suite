@@ -173,9 +173,9 @@ export function PersonalExpenseAnalytics() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
+      <Card className="overflow-visible">
+        <CardHeader className="overflow-visible">
+          <div className="flex items-center justify-between overflow-visible">
             <div>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5" />
@@ -214,13 +214,20 @@ export function PersonalExpenseAnalytics() {
                         {dateFrom ? format(dateFrom, "MMM dd") : "From"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 z-50 bg-background border shadow-lg" align="start">
+                    <PopoverContent 
+                      className="w-auto p-0 z-[9999]" 
+                      align="end" 
+                      side="bottom"
+                      sideOffset={5}
+                      avoidCollisions={true}
+                      style={{ position: 'fixed' }}
+                    >
                       <Calendar
                         mode="single"
                         selected={dateFrom}
                         onSelect={setDateFrom}
                         initialFocus
-                        className={cn("p-3 pointer-events-auto")}
+                        className={cn("p-3 pointer-events-auto bg-background border rounded-md shadow-lg")}
                       />
                     </PopoverContent>
                   </Popover>
@@ -238,13 +245,20 @@ export function PersonalExpenseAnalytics() {
                         {dateTo ? format(dateTo, "MMM dd") : "To"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 z-50 bg-background border shadow-lg" align="start">
+                    <PopoverContent 
+                      className="w-auto p-0 z-[9999]" 
+                      align="end" 
+                      side="bottom"
+                      sideOffset={5}
+                      avoidCollisions={true}
+                      style={{ position: 'fixed' }}
+                    >
                       <Calendar
                         mode="single"
                         selected={dateTo}
                         onSelect={setDateTo}
                         initialFocus
-                        className={cn("p-3 pointer-events-auto")}
+                        className={cn("p-3 pointer-events-auto bg-background border rounded-md shadow-lg")}
                         disabled={(date) => dateFrom ? date < dateFrom : false}
                       />
                     </PopoverContent>

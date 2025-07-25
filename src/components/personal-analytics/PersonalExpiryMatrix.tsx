@@ -5,11 +5,19 @@ import { Progress } from "@/components/ui/progress";
 import { AlertTriangle, Calendar, Clock, CheckCircle, Package, FileText, CreditCard, Shield } from "lucide-react";
 
 export function PersonalExpiryMatrix() {
+  // Calculate dates relative to today
+  const today = new Date();
+  const formatDate = (daysFromNow: number) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() + daysFromNow);
+    return date.toISOString().split('T')[0];
+  };
+
   const expiringItems = [
     { 
       item: "Milk", 
       category: "Food", 
-      expiryDate: "2024-01-28", 
+      expiryDate: formatDate(3), 
       daysLeft: 3, 
       status: "urgent",
       location: "Refrigerator",
@@ -18,7 +26,7 @@ export function PersonalExpiryMatrix() {
     { 
       item: "Car Insurance", 
       category: "Insurance", 
-      expiryDate: "2024-03-15", 
+      expiryDate: formatDate(49), 
       daysLeft: 49, 
       status: "warning",
       location: "Documents",
@@ -27,7 +35,7 @@ export function PersonalExpiryMatrix() {
     { 
       item: "Passport", 
       category: "Documents", 
-      expiryDate: "2025-06-22", 
+      expiryDate: formatDate(508), 
       daysLeft: 508, 
       status: "good",
       location: "Safe",
@@ -36,7 +44,7 @@ export function PersonalExpiryMatrix() {
     { 
       item: "Credit Card", 
       category: "Financial", 
-      expiryDate: "2024-04-30", 
+      expiryDate: formatDate(95), 
       daysLeft: 95, 
       status: "warning",
       location: "Wallet",
@@ -45,16 +53,25 @@ export function PersonalExpiryMatrix() {
     { 
       item: "Bread", 
       category: "Food", 
-      expiryDate: "2024-01-26", 
+      expiryDate: formatDate(1), 
       daysLeft: 1, 
       status: "critical",
       location: "Kitchen Counter",
       icon: Package
     },
     { 
+      item: "Yogurt", 
+      category: "Food", 
+      expiryDate: formatDate(5), 
+      daysLeft: 5, 
+      status: "urgent",
+      location: "Refrigerator",
+      icon: Package
+    },
+    { 
       item: "Vitamins", 
       category: "Health", 
-      expiryDate: "2024-08-15", 
+      expiryDate: formatDate(201), 
       daysLeft: 201, 
       status: "good",
       location: "Medicine Cabinet",
@@ -63,7 +80,7 @@ export function PersonalExpiryMatrix() {
     { 
       item: "Netflix Subscription", 
       category: "Subscription", 
-      expiryDate: "2024-02-10", 
+      expiryDate: formatDate(16), 
       daysLeft: 16, 
       status: "warning",
       location: "Digital",
@@ -72,21 +89,49 @@ export function PersonalExpiryMatrix() {
     { 
       item: "Laptop Warranty", 
       category: "Warranty", 
-      expiryDate: "2024-12-01", 
+      expiryDate: formatDate(310), 
       daysLeft: 310, 
       status: "good",
       location: "Electronics",
       icon: Shield
+    },
+    { 
+      item: "Driver's License", 
+      category: "Documents", 
+      expiryDate: formatDate(180), 
+      daysLeft: 180, 
+      status: "good",
+      location: "Wallet",
+      icon: FileText
+    },
+    { 
+      item: "Cheese", 
+      category: "Food", 
+      expiryDate: formatDate(8), 
+      daysLeft: 8, 
+      status: "warning",
+      location: "Refrigerator",
+      icon: Package
+    },
+    { 
+      item: "Spotify Premium", 
+      category: "Subscription", 
+      expiryDate: formatDate(22), 
+      daysLeft: 22, 
+      status: "warning",
+      location: "Digital",
+      icon: CreditCard
     }
   ];
 
   const categoryStats = [
-    { category: "Food", total: 8, expiring: 3, urgent: 2 },
-    { category: "Documents", total: 5, expiring: 1, urgent: 0 },
-    { category: "Insurance", total: 4, expiring: 2, urgent: 0 },
-    { category: "Subscriptions", total: 6, expiring: 2, urgent: 0 },
-    { category: "Warranties", total: 3, expiring: 1, urgent: 0 },
-    { category: "Health", total: 4, expiring: 1, urgent: 0 }
+    { category: "Food", total: 4, expiring: 3, urgent: 2 },
+    { category: "Documents", total: 2, expiring: 0, urgent: 0 },
+    { category: "Insurance", total: 1, expiring: 1, urgent: 0 },
+    { category: "Subscriptions", total: 2, expiring: 2, urgent: 0 },
+    { category: "Warranties", total: 1, expiring: 0, urgent: 0 },
+    { category: "Health", total: 1, expiring: 0, urgent: 0 },
+    { category: "Financial", total: 1, expiring: 1, urgent: 0 }
   ];
 
   const getStatusColor = (status: string) => {
@@ -107,6 +152,7 @@ export function PersonalExpiryMatrix() {
 
   const urgentItems = expiringItems.filter(item => item.daysLeft <= 7);
   const warningItems = expiringItems.filter(item => item.daysLeft > 7 && item.daysLeft <= 30);
+  const criticalItems = expiringItems.filter(item => item.daysLeft <= 3);
 
   return (
     <div className="space-y-6">
@@ -119,7 +165,7 @@ export function PersonalExpiryMatrix() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">2</div>
+            <div className="text-2xl font-bold text-red-500">{criticalItems.length}</div>
             <div className="text-xs text-muted-foreground">Items need immediate attention</div>
           </CardContent>
         </Card>

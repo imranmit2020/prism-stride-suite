@@ -215,6 +215,11 @@ const Index = () => {
           </div>
         );
       case "product-tracking":
+        if (isHomeMode) {
+          // Redirect to inventory for home users
+          setActiveModule("inventory");
+          return null;
+        }
         return (
           <div className="space-y-6">
             <div>
@@ -227,6 +232,11 @@ const Index = () => {
           </div>
         );
       case "user-management":
+        if (isHomeMode) {
+          // Redirect to settings for home users
+          setActiveModule("settings");
+          return null;
+        }
         return (
           <div className="space-y-6">
             <div>
@@ -239,6 +249,11 @@ const Index = () => {
           </div>
         );
       case "saas":
+        if (isHomeMode) {
+          // Redirect to analytics for home users
+          setActiveModule("analytics");
+          return null;
+        }
         return (
           <div className="space-y-6">
             <div>
@@ -281,6 +296,11 @@ const Index = () => {
           </div>
         );
       case "forms":
+        if (isHomeMode) {
+          // Redirect to settings for home users
+          setActiveModule("settings");
+          return null;
+        }
         return (
           <div className="space-y-6">
             <div>

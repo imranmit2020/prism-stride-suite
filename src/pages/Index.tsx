@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { PersonalHomeDashboard } from "@/components/dashboard/PersonalHomeDashboard";
@@ -22,11 +23,41 @@ import { SaaSInterface } from "@/components/saas/SaaSInterface";
 import { ProductTrackingInterface } from "@/components/product-tracking/ProductTrackingInterface";
 import { UserManagementInterface } from "@/components/user-management/UserManagementInterface";
 import { AuthContainer } from "@/components/auth/AuthContainer";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Wand2 } from "lucide-react";
+import { MessageSquare, Wand2, LogIn } from "lucide-react";
 
-const Index = () => {
+const AuthenticatedApp = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to auth page if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect to auth
+  }
+
+  return <MainApp />;
+};
+
+const MainApp = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
   const [isAuthenticated, setIsAuthenticated] = useState(true); // Auto-login for demo
   const [isHomeMode, setIsHomeMode] = useState(false);
@@ -448,6 +479,14 @@ const Index = () => {
     >
       {renderContent()}
     </AppLayout>
+  );
+};
+
+const Index = () => {
+  return (
+    <AuthProvider>
+      <AuthenticatedApp />
+    </AuthProvider>
   );
 };
 

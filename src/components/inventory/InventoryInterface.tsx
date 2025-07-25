@@ -23,40 +23,13 @@ export function InventoryInterface() {
 
   // Authenticate user anonymously on component mount
   useEffect(() => {
-    authenticateUser();
+    // Authentication is now handled by AuthContext, so we can directly load products
+    loadProducts();
   }, []);
 
   const authenticateUser = async () => {
-    try {
-      // Check if user is already authenticated
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        setIsAuthenticated(true);
-        loadProducts();
-        return;
-      }
-
-      // Sign in anonymously if not authenticated
-      const { data, error } = await supabase.auth.signInAnonymously();
-      
-      if (error) {
-        console.error('Auth error:', error);
-        toast({
-          title: "Authentication Error",
-          description: "Failed to authenticate user",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      if (data.user) {
-        setIsAuthenticated(true);
-        loadProducts();
-      }
-    } catch (error) {
-      console.error('Error in authenticateUser:', error);
-    }
+    // This function is no longer needed since authentication is handled by AuthContext
+    return true;
   };
 
   // Load products from database on component mount
@@ -65,8 +38,6 @@ export function InventoryInterface() {
   }, []);
 
   const loadProducts = async () => {
-    if (!isAuthenticated) return;
-    
     try {
       setLoading(true);
       const { data: products, error } = await supabase
@@ -129,15 +100,6 @@ export function InventoryInterface() {
   };
 
   const handleAddNewProduct = async (product: Omit<InventoryItem, 'id'>) => {
-    if (!isAuthenticated) {
-      toast({
-        title: "Authentication Required",
-        description: "Please wait for authentication to complete",
-        variant: "destructive"
-      });
-      return;
-    }
-
     try {
       // First, ensure category exists
       let categoryId = null;

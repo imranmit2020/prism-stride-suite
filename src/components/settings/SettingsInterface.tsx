@@ -12,7 +12,7 @@ export function SettingsInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="localization" className="px-3 py-2 text-xs font-medium">Global Settings</TabsTrigger>
           <TabsTrigger value="optimization" className="px-3 py-2 text-xs font-medium">AI Optimization</TabsTrigger>
           <TabsTrigger value="personalization" className="px-3 py-2 text-xs font-medium">AI Personalization</TabsTrigger>

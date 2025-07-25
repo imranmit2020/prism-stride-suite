@@ -12,31 +12,11 @@ export function UserManagementInterface() {
     <div className="space-y-6">
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1">
-          <TabsTrigger 
-            value="users" 
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Users
-          </TabsTrigger>
-          <TabsTrigger 
-            value="roles" 
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Roles
-          </TabsTrigger>
-          <TabsTrigger 
-            value="permissions" 
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Permissions
-          </TabsTrigger>
-          <TabsTrigger 
-            value="analytics" 
-            className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Analytics
-          </TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="users" className="px-3 py-2 text-xs font-medium">Users</TabsTrigger>
+          <TabsTrigger value="roles" className="px-3 py-2 text-xs font-medium">Roles</TabsTrigger>
+          <TabsTrigger value="permissions" className="px-3 py-2 text-xs font-medium">Permissions</TabsTrigger>
+          <TabsTrigger value="analytics" className="px-3 py-2 text-xs font-medium">Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="users" className="space-y-6 mt-6">

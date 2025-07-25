@@ -18,17 +18,17 @@ export function AnalyticsInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-10 text-xs">
-          <TabsTrigger value="insights">AI Insights</TabsTrigger>
-          <TabsTrigger value="customers">Customers</TabsTrigger>
-          <TabsTrigger value="sales">Sales</TabsTrigger>
-          <TabsTrigger value="financial">Financial</TabsTrigger>
-          <TabsTrigger value="predictive">Predictive</TabsTrigger>
-          <TabsTrigger value="realtime">Real-time</TabsTrigger>
-          <TabsTrigger value="optimization">Optimization</TabsTrigger>
-          <TabsTrigger value="voice">Voice AI</TabsTrigger>
-          <TabsTrigger value="competitor">Competitor</TabsTrigger>
-          <TabsTrigger value="journey">Journey</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="insights" className="px-3 py-2 text-xs font-medium">AI Insights</TabsTrigger>
+          <TabsTrigger value="customers" className="px-3 py-2 text-xs font-medium">Customers</TabsTrigger>
+          <TabsTrigger value="sales" className="px-3 py-2 text-xs font-medium">Sales</TabsTrigger>
+          <TabsTrigger value="financial" className="px-3 py-2 text-xs font-medium">Financial</TabsTrigger>
+          <TabsTrigger value="predictive" className="px-3 py-2 text-xs font-medium">Predictive</TabsTrigger>
+          <TabsTrigger value="realtime" className="px-3 py-2 text-xs font-medium">Real-time</TabsTrigger>
+          <TabsTrigger value="optimization" className="px-3 py-2 text-xs font-medium">Optimization</TabsTrigger>
+          <TabsTrigger value="voice" className="px-3 py-2 text-xs font-medium">Voice AI</TabsTrigger>
+          <TabsTrigger value="competitor" className="px-3 py-2 text-xs font-medium">Competitor</TabsTrigger>
+          <TabsTrigger value="journey" className="px-3 py-2 text-xs font-medium">Journey</TabsTrigger>
         </TabsList>
 
         <TabsContent value="insights" className="space-y-6">

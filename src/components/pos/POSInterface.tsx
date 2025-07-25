@@ -150,13 +150,13 @@ export function POSInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-auto p-1">
-          <TabsTrigger value="pos" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Point of Sale</TabsTrigger>
-          <TabsTrigger value="ai-intelligence" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Intelligence</TabsTrigger>
-          <TabsTrigger value="ai-pricing" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Pricing</TabsTrigger>
-          <TabsTrigger value="ai-security" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">AI Security</TabsTrigger>
-          <TabsTrigger value="customers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Customers</TabsTrigger>
-          <TabsTrigger value="loyalty" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Loyalty</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="pos" className="px-3 py-2 text-xs font-medium">Point of Sale</TabsTrigger>
+          <TabsTrigger value="ai-intelligence" className="px-3 py-2 text-xs font-medium">AI Intelligence</TabsTrigger>
+          <TabsTrigger value="ai-pricing" className="px-3 py-2 text-xs font-medium">AI Pricing</TabsTrigger>
+          <TabsTrigger value="ai-security" className="px-3 py-2 text-xs font-medium">AI Security</TabsTrigger>
+          <TabsTrigger value="customers" className="px-3 py-2 text-xs font-medium">Customers</TabsTrigger>
+          <TabsTrigger value="loyalty" className="px-3 py-2 text-xs font-medium">Loyalty</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pos" className="space-y-6 mt-6">

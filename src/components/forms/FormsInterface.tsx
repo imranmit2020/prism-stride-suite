@@ -15,7 +15,7 @@ export function FormsInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="customer">AI Customer Intelligence</TabsTrigger>
           <TabsTrigger value="vendor">AI Vendor Risk</TabsTrigger>
           <TabsTrigger value="project">AI Project Predictor</TabsTrigger>
@@ -40,7 +40,7 @@ export function FormsInterface() {
       </Tabs>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-8">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="talent">AI Talent Scout</TabsTrigger>
           <TabsTrigger value="quality">AI Quality Oracle</TabsTrigger>
           <TabsTrigger value="lead">AI Lead Alchemist</TabsTrigger>

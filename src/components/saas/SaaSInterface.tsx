@@ -13,7 +13,7 @@ export function SaaSInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="behavior">Behavior Predictor</TabsTrigger>
           <TabsTrigger value="features">Feature Prophet</TabsTrigger>
           <TabsTrigger value="pricing">Pricing Engine</TabsTrigger>
@@ -33,7 +33,7 @@ export function SaaSInterface() {
       </Tabs>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-8">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="success">Success Predictor</TabsTrigger>
           <TabsTrigger value="pmf">PMF Analyzer</TabsTrigger>
           <TabsTrigger value="retention">Retention Alchemist</TabsTrigger>

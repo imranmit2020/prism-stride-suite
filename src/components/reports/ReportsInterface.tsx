@@ -81,13 +81,13 @@ export function ReportsInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-6 text-xs">
-          <TabsTrigger value="ai-generator">AI Generator</TabsTrigger>
-          <TabsTrigger value="storytelling">AI Stories</TabsTrigger>
-          <TabsTrigger value="behavior">AI Behavior</TabsTrigger>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="builder">Builder</TabsTrigger>
-          <TabsTrigger value="automation">Automation</TabsTrigger>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
+          <TabsTrigger value="ai-generator" className="px-3 py-2 text-xs font-medium">AI Generator</TabsTrigger>
+          <TabsTrigger value="storytelling" className="px-3 py-2 text-xs font-medium">AI Stories</TabsTrigger>
+          <TabsTrigger value="behavior" className="px-3 py-2 text-xs font-medium">AI Behavior</TabsTrigger>
+          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
+          <TabsTrigger value="builder" className="px-3 py-2 text-xs font-medium">Builder</TabsTrigger>
+          <TabsTrigger value="automation" className="px-3 py-2 text-xs font-medium">Automation</TabsTrigger>
         </TabsList>
 
         <TabsContent value="ai-generator" className="space-y-6">

@@ -13,7 +13,7 @@ export function CRMInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="prophet">Relationship Prophet</TabsTrigger>
           <TabsTrigger value="deals">Deal Probability</TabsTrigger>
           <TabsTrigger value="journey">Customer Journey</TabsTrigger>
@@ -33,7 +33,7 @@ export function CRMInterface() {
       </Tabs>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-8">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="emotional">Emotional Intelligence</TabsTrigger>
           <TabsTrigger value="churn">Churn Prevention</TabsTrigger>
           <TabsTrigger value="revenue">Revenue Scanner</TabsTrigger>

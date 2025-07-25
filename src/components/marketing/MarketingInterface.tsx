@@ -13,7 +13,7 @@ export function MarketingInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="viral">AI Viral Generator</TabsTrigger>
           <TabsTrigger value="psychology">Psychology Mapper</TabsTrigger>
           <TabsTrigger value="competitor">Competitor Mind Reader</TabsTrigger>
@@ -33,7 +33,7 @@ export function MarketingInterface() {
       </Tabs>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-8">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
           <TabsTrigger value="influence">Influence Discovery</TabsTrigger>
           <TabsTrigger value="timing">Timing Oracle</TabsTrigger>
           <TabsTrigger value="sentiment">Sentiment Shapeshifter</TabsTrigger>

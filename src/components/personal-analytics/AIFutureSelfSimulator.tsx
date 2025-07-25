@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Crystal, Calendar, TrendingUp } from "lucide-react";
+import { Sparkles, Calendar, TrendingUp } from "lucide-react";
 
 export function AIFutureSelfSimulator() {
   return (
@@ -8,7 +8,7 @@ export function AIFutureSelfSimulator() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Crystal className="h-5 w-5" />
+            <Sparkles className="h-5 w-5" />
             Future Self Simulator
           </CardTitle>
           <CardDescription>

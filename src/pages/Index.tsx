@@ -184,7 +184,7 @@ const Index = () => {
                 Advanced AI-powered business intelligence and predictive analytics.
               </p>
             </div>
-            <AnalyticsInterface />
+            <PersonalAnalyticsInterface />
           </div>
         );
       case "marketing":

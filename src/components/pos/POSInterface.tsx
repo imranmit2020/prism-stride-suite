@@ -8,6 +8,9 @@ import { Cart, CartItem } from "./Cart";
 import { CategoryFilter } from "./CategoryFilter";
 import { PaymentModal } from "./PaymentModal";
 import { AIRecommendations } from "./AIRecommendations";
+import { AIPOSIntelligence } from "./AIPOSIntelligence";
+import { AIDynamicPricing } from "./AIDynamicPricing";
+import { AISecurityFraudDetection } from "./AISecurityFraudDetection";
 import { CustomerManagementDialog } from "./CustomerManagementDialog";
 import { LoyaltyProgramDialog } from "./LoyaltyProgramDialog";
 import { useToast } from "@/hooks/use-toast";
@@ -145,11 +148,13 @@ export function POSInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="pos">Point of Sale</TabsTrigger>
+          <TabsTrigger value="ai-intelligence">AI Intelligence</TabsTrigger>
+          <TabsTrigger value="ai-pricing">AI Pricing</TabsTrigger>
+          <TabsTrigger value="ai-security">AI Security</TabsTrigger>
           <TabsTrigger value="customers">Customers</TabsTrigger>
           <TabsTrigger value="loyalty">Loyalty</TabsTrigger>
-          <TabsTrigger value="ai">AI Assistant</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pos" className="space-y-6">
@@ -203,6 +208,18 @@ export function POSInterface() {
           </div>
         </TabsContent>
 
+        <TabsContent value="ai-intelligence" className="space-y-6">
+          <AIPOSIntelligence />
+        </TabsContent>
+
+        <TabsContent value="ai-pricing" className="space-y-6">
+          <AIDynamicPricing />
+        </TabsContent>
+
+        <TabsContent value="ai-security" className="space-y-6">
+          <AISecurityFraudDetection />
+        </TabsContent>
+
         <TabsContent value="customers" className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Customer Management</h2>
@@ -227,10 +244,6 @@ export function POSInterface() {
           <div className="text-center text-muted-foreground py-8">
             Loyalty program management tools will be displayed here
           </div>
-        </TabsContent>
-
-        <TabsContent value="ai" className="space-y-6">
-          <AIRecommendations />
         </TabsContent>
       </Tabs>
 

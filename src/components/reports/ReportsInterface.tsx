@@ -4,6 +4,9 @@ import { AIReportsOverview } from "./AIReportsOverview";
 import { SmartReportBuilder } from "./SmartReportBuilder";
 import { AutomatedReporting } from "./AutomatedReporting";
 import { DetailedReportView } from "./DetailedReportView";
+import { AIReportGenerator } from "./AIReportGenerator";
+import { AIStorytellingReports } from "./AIStorytellingReports";
+import { AIBehaviorPrediction } from "./AIBehaviorPrediction";
 import { useToast } from "@/hooks/use-toast";
 
 export function ReportsInterface() {
@@ -76,11 +79,26 @@ export function ReportsInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">AI Reports</TabsTrigger>
-          <TabsTrigger value="builder">Report Builder</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-6 text-xs">
+          <TabsTrigger value="ai-generator">AI Generator</TabsTrigger>
+          <TabsTrigger value="storytelling">AI Stories</TabsTrigger>
+          <TabsTrigger value="behavior">AI Behavior</TabsTrigger>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="builder">Builder</TabsTrigger>
           <TabsTrigger value="automation">Automation</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="ai-generator" className="space-y-6">
+          <AIReportGenerator />
+        </TabsContent>
+
+        <TabsContent value="storytelling" className="space-y-6">
+          <AIStorytellingReports />
+        </TabsContent>
+
+        <TabsContent value="behavior" className="space-y-6">
+          <AIBehaviorPrediction />
+        </TabsContent>
 
         <TabsContent value="overview" className="space-y-6">
           <AIReportsOverview 

@@ -147,6 +147,28 @@ const Index = () => {
           </div>
         );
       case "analytics":
+        if (isHomeMode) {
+          return (
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Personal Analytics</h1>
+                <p className="text-muted-foreground mt-2">
+                  Track your personal spending patterns, income trends, and household metrics.
+                </p>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">Monthly Spending Analysis</h3>
+                  <p className="text-muted-foreground">Coming soon - Personal expense analytics</p>
+                </div>
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">Income Trends</h3>
+                  <p className="text-muted-foreground">Coming soon - Personal income tracking</p>
+                </div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="space-y-6">
             <div>
@@ -159,6 +181,11 @@ const Index = () => {
           </div>
         );
       case "marketing":
+        if (isHomeMode) {
+          // Redirect to more relevant module for home users
+          setActiveModule("accounting");
+          return null;
+        }
         return (
           <div className="space-y-6">
             <div>
@@ -171,6 +198,11 @@ const Index = () => {
           </div>
         );
       case "crm":
+        if (isHomeMode) {
+          // Redirect to more relevant module for home users
+          setActiveModule("accounting");
+          return null;
+        }
         return (
           <div className="space-y-6">
             <div>
@@ -222,12 +254,30 @@ const Index = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">AI Reports</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                {isHomeMode ? "Personal Reports" : "AI Reports"}
+              </h1>
               <p className="text-muted-foreground mt-2">
-                Comprehensive AI-powered business reports with automated insights and scheduling.
+                {isHomeMode 
+                  ? "Generate personal financial reports and household analytics."
+                  : "Comprehensive AI-powered business reports with automated insights and scheduling."
+                }
               </p>
             </div>
-            <ReportsInterface />
+            {isHomeMode ? (
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">Monthly Budget Report</h3>
+                  <p className="text-muted-foreground">Track your monthly income vs expenses</p>
+                </div>
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">Tax Summary</h3>
+                  <p className="text-muted-foreground">Annual tax document preparation</p>
+                </div>
+              </div>
+            ) : (
+              <ReportsInterface />
+            )}
           </div>
         );
       case "forms":
@@ -246,12 +296,30 @@ const Index = () => {
         return (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">AI Settings</h1>
+              <h1 className="text-3xl font-bold text-foreground">
+                {isHomeMode ? "Personal Settings" : "AI Settings"}
+              </h1>
               <p className="text-muted-foreground mt-2">
-                Advanced AI configuration and optimization settings for your business.
+                {isHomeMode 
+                  ? "Configure your personal preferences and account settings."
+                  : "Advanced AI configuration and optimization settings for your business."
+                }
               </p>
             </div>
-            <SettingsInterface />
+            {isHomeMode ? (
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
+                  <p className="text-muted-foreground">Update your personal information</p>
+                </div>
+                <div className="card-enhanced p-6">
+                  <h3 className="text-lg font-semibold mb-4">Notifications</h3>
+                  <p className="text-muted-foreground">Manage alert preferences</p>
+                </div>
+              </div>
+            ) : (
+              <SettingsInterface />
+            )}
           </div>
         );
       default:

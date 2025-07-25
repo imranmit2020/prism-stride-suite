@@ -203,6 +203,7 @@ export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeMa
   };
 
   const formatSalary = (employee: Employee) => {
+    console.log('Formatting salary:', employee.baseSalary, 'Currency format result:', formatCurrency(employee.baseSalary));
     if (employee.salaryType === "hourly") {
       return `${formatCurrency(employee.baseSalary)}/hr`;
     } else if (employee.salaryType === "monthly") {

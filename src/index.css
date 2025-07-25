@@ -193,23 +193,40 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
   }
 
   /* Enhanced typography */
   h1 {
     @apply text-4xl font-bold tracking-tight text-foreground;
+    font-feature-settings: 'cv11', 'ss01';
   }
 
   h2 {
     @apply text-3xl font-semibold tracking-tight text-foreground;
+    font-feature-settings: 'cv11', 'ss01';
   }
 
   h3 {
     @apply text-2xl font-semibold tracking-tight text-foreground;
+    font-feature-settings: 'cv11', 'ss01';
   }
 
   h4 {
     @apply text-xl font-medium text-foreground;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Improved text rendering */
+  p, span, div {
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Code and monospace text */
+  code, pre {
+    @apply font-mono;
+    font-feature-settings: 'liga' 0, 'calt' 1;
   }
 
   /* Enhanced scrollbar */

@@ -49,13 +49,13 @@ export function HomeManagerSettings() {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-6 mb-6">
-          <TabsTrigger value="profile" className="text-xs">Profile</TabsTrigger>
-          <TabsTrigger value="appearance" className="text-xs">Appearance</TabsTrigger>
-          <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
-          <TabsTrigger value="privacy" className="text-xs">Privacy</TabsTrigger>
-          <TabsTrigger value="data" className="text-xs">Data</TabsTrigger>
-          <TabsTrigger value="account" className="text-xs">Account</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-6 mb-6 h-auto">
+          <TabsTrigger value="profile" className="text-xs px-2 py-2">Profile</TabsTrigger>
+          <TabsTrigger value="appearance" className="text-xs px-2 py-2">Appearance</TabsTrigger>
+          <TabsTrigger value="notifications" className="text-xs px-2 py-2">Notifications</TabsTrigger>
+          <TabsTrigger value="privacy" className="text-xs px-2 py-2">Privacy</TabsTrigger>
+          <TabsTrigger value="data" className="text-xs px-2 py-2">Data</TabsTrigger>
+          <TabsTrigger value="account" className="text-xs px-2 py-2">Account</TabsTrigger>
         </TabsList>
 
         {/* Profile Settings */}

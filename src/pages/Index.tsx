@@ -73,8 +73,8 @@ const Index = () => {
               </div>
               <div className="space-y-6">
                 <div className="card-glass p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">AI Business Advisor</h3>
-                  <p className="text-muted-foreground text-sm lg:text-base">AI-powered business insights coming soon...</p>
+                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">Personal AI Helper</h3>
+                  <p className="text-muted-foreground text-sm lg:text-base">Your personal AI assistant for home management...</p>
                 </div>
               </div>
             </div>

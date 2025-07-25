@@ -318,7 +318,7 @@ export function QuickActions({ onActionClick }: QuickActionsProps) {
             <div className="flex gap-2">
               <input 
                 type="text" 
-                placeholder="Ask your AI business advisor..."
+                placeholder="Ask your personal AI helper..."
                 className="flex-1 px-3 py-2 border border-border rounded-lg text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
               />
               <Button size="sm" className="bg-gradient-primary hover:shadow-lg transition-all duration-300">

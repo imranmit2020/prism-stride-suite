@@ -218,14 +218,14 @@ export function RecentActivity() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-purple-600" />
-            AI Business Advisor
+            Personal AI Helper
             <Badge variant="outline" className="ml-auto">
               <Sparkles className="h-3 w-3 mr-1 animate-pulse" />
               Always Available
             </Badge>
           </CardTitle>
           <CardDescription>
-            Ask your AI anything about your business - get instant expert insights
+            Ask your AI anything about your home & finances - get instant personal insights
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -264,7 +264,7 @@ export function RecentActivity() {
               <div className="flex gap-2">
                 <input 
                   type="text" 
-                  placeholder="Ask your AI business advisor anything..."
+                  placeholder="Ask your personal AI helper anything..."
                   className="flex-1 px-3 py-2 border rounded-lg text-sm"
                 />
                 <Button size="sm">

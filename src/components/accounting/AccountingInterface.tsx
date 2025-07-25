@@ -12,6 +12,7 @@ import { AICashFlowProphet } from "./AICashFlowProphet";
 import { AILanguageIntelligence } from "./AILanguageIntelligence";
 import { AICurrencyProphet } from "./AICurrencyProphet";
 import { AITaxQuantumEngine } from "./AITaxQuantumEngine";
+import { AICountryIntelligence } from "./AICountryIntelligence";
 import { SmartInvoiceDialog } from "./SmartInvoiceDialog";
 import { ExpenseManagementDialog } from "./ExpenseManagementDialog";
 import { useToast } from "@/hooks/use-toast";
@@ -53,6 +54,7 @@ export function AccountingInterface() {
           <TabsTrigger value="language-ai" className="px-3 py-2 text-xs font-medium">Language AI</TabsTrigger>
           <TabsTrigger value="currency-ai" className="px-3 py-2 text-xs font-medium">Currency AI</TabsTrigger>
           <TabsTrigger value="tax-quantum" className="px-3 py-2 text-xs font-medium">Tax AI</TabsTrigger>
+          <TabsTrigger value="country-ai" className="px-3 py-2 text-xs font-medium">Country AI</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -137,6 +139,10 @@ export function AccountingInterface() {
 
         <TabsContent value="tax-quantum" className="space-y-6">
           <AITaxQuantumEngine />
+        </TabsContent>
+
+        <TabsContent value="country-ai" className="space-y-6">
+          <AICountryIntelligence />
         </TabsContent>
       </Tabs>
 

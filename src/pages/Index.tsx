@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
+import { PersonalHomeDashboard } from "@/components/dashboard/PersonalHomeDashboard";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 // import { AIBusinessAdvisor } from "@/components/dashboard/AIBusinessAdvisor";
@@ -64,7 +65,7 @@ const Index = () => {
                 </p>
               </div>
             </div>
-            <DashboardStats />
+            {isHomeMode ? <PersonalHomeDashboard /> : <DashboardStats />}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
               <div className="xl:col-span-2 space-y-6 lg:space-y-8">
                 <QuickActions onActionClick={handleQuickAction} />
@@ -383,8 +384,10 @@ const Index = () => {
       default:
         return (
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-            <DashboardStats />
+            <h1 className="text-3xl font-bold text-foreground">
+              {isHomeMode ? "Personal Home Dashboard" : "Business Dashboard"}
+            </h1>
+            {isHomeMode ? <PersonalHomeDashboard /> : <DashboardStats />}
           </div>
         );
     }

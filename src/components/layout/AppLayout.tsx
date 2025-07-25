@@ -53,14 +53,14 @@ export function AppLayout({
   return (
     <>
       <TenantBranding tenant={currentTenant} />
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen bg-background">
         <Sidebar 
           onModuleChange={onModuleChange} 
           activeModule={currentModule}
           isHomeMode={isHomeMode}
           onHomeModeChange={onHomeModeChange}
         />
-        <div className="flex-1 flex flex-col ml-64">
+        <div className="ml-64">
           <Header 
             onTenantChange={handleTenantChange}
             currentUser={{
@@ -70,7 +70,7 @@ export function AppLayout({
               tenant: currentTenant.name
             }}
           />
-          <main className="flex-1 overflow-auto">
+          <main className="min-h-screen">
             <div className="container mx-auto py-6 px-6">
               {children}
             </div>

@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { InventoryItem } from "./InventoryTable";
-import { Sparkles, Wand2, TrendingUp, AlertCircle } from "lucide-react";
+import { Sparkles, Wand2, TrendingUp, AlertCircle, MapPin } from "lucide-react";
 
 interface AddProductDialogProps {
   open: boolean;
@@ -120,6 +120,11 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
     unitCost: "",
     sellingPrice: "",
     supplier: "",
+    warehouse: "",
+    zone: "",
+    aisle: "",
+    shelf: "",
+    bin: "",
   });
 
   const categories = [
@@ -190,6 +195,13 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
       lastRestocked: new Date().toISOString().split('T')[0],
       demand7Days: 0,
       demand30Days: 0,
+      location: formData.warehouse && formData.zone ? {
+        warehouse: formData.warehouse,
+        zone: formData.zone,
+        aisle: formData.aisle,
+        shelf: formData.shelf,
+        bin: formData.bin,
+      } : undefined,
       aiPrediction: {
         nextWeekDemand: parseInt(formData.currentStock) || 0,
         confidence: 75,
@@ -211,6 +223,11 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
       unitCost: "",
       sellingPrice: "",
       supplier: "",
+      warehouse: "",
+      zone: "",
+      aisle: "",
+      shelf: "",
+      bin: "",
     });
 
     toast({
@@ -499,6 +516,69 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
                 onChange={(e) => handleInputChange("sellingPrice", e.target.value)}
                 placeholder="0.00"
               />
+            </div>
+          </div>
+
+          {/* Location Fields */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-blue-500" />
+              <Label className="text-base font-medium">Storage Location (Optional)</Label>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="warehouse">Warehouse</Label>
+                <Select value={formData.warehouse} onValueChange={(value) => handleInputChange("warehouse", value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select warehouse" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Main Warehouse">Main Warehouse</SelectItem>
+                    <SelectItem value="Distribution Center">Distribution Center</SelectItem>
+                    <SelectItem value="Cold Storage">Cold Storage</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="zone">Zone</Label>
+                <Input
+                  id="zone"
+                  value={formData.zone}
+                  onChange={(e) => handleInputChange("zone", e.target.value)}
+                  placeholder="e.g., A, B, C"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="aisle">Aisle</Label>
+                <Input
+                  id="aisle"
+                  value={formData.aisle}
+                  onChange={(e) => handleInputChange("aisle", e.target.value)}
+                  placeholder="e.g., 01, 02"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="shelf">Shelf</Label>
+                <Input
+                  id="shelf"
+                  value={formData.shelf}
+                  onChange={(e) => handleInputChange("shelf", e.target.value)}
+                  placeholder="e.g., 1, 2, 3"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bin">Bin</Label>
+                <Input
+                  id="bin"
+                  value={formData.bin}
+                  onChange={(e) => handleInputChange("bin", e.target.value)}
+                  placeholder="e.g., A, B, C"
+                />
+              </div>
             </div>
           </div>
 

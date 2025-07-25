@@ -14,7 +14,8 @@ import {
   TrendingUp, 
   TrendingDown,
   Package,
-  Search
+  Search,
+  MapPin
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -38,6 +39,13 @@ export interface InventoryItem {
   lastRestocked: string;
   demand7Days: number;
   demand30Days: number;
+  location?: {
+    warehouse: string;
+    zone: string;
+    aisle: string;
+    shelf: string;
+    bin: string;
+  };
   aiPrediction: {
     nextWeekDemand: number;
     confidence: number;
@@ -62,6 +70,13 @@ const mockInventory: InventoryItem[] = [
     lastRestocked: "2024-01-15",
     demand7Days: 35,
     demand30Days: 142,
+    location: {
+      warehouse: "Main Warehouse",
+      zone: "A",
+      aisle: "01",
+      shelf: "3",
+      bin: "B"
+    },
     aiPrediction: {
       nextWeekDemand: 43,
       confidence: 87,
@@ -83,6 +98,13 @@ const mockInventory: InventoryItem[] = [
     lastRestocked: "2024-01-18",
     demand7Days: 28,
     demand30Days: 95,
+    location: {
+      warehouse: "Main Warehouse",
+      zone: "B",
+      aisle: "05",
+      shelf: "2",
+      bin: "A"
+    },
     aiPrediction: {
       nextWeekDemand: 32,
       confidence: 92,
@@ -104,6 +126,13 @@ const mockInventory: InventoryItem[] = [
     lastRestocked: "2024-01-19",
     demand7Days: 18,
     demand30Days: 67,
+    location: {
+      warehouse: "Distribution Center",
+      zone: "C",
+      aisle: "12",
+      shelf: "1",
+      bin: "C"
+    },
     aiPrediction: {
       nextWeekDemand: 22,
       confidence: 78,
@@ -121,6 +150,11 @@ export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTablePr
   const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredInventory, setFilteredInventory] = useState(mockInventory);
+
+  const getLocationCode = (location?: InventoryItem['location']) => {
+    if (!location) return "Not Assigned";
+    return `${location.warehouse.charAt(0)}${location.zone}-${location.aisle}-${location.shelf}-${location.bin}`;
+  };
 
   const getStockStatus = (item: InventoryItem) => {
     if (item.currentStock <= item.minStock) return "critical";
@@ -193,6 +227,7 @@ export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTablePr
             <TableRow>
               <TableHead>Product</TableHead>
               <TableHead>SKU</TableHead>
+              <TableHead>Location</TableHead>
               <TableHead>Stock Status</TableHead>
               <TableHead>Current Stock</TableHead>
               <TableHead>AI Prediction</TableHead>
@@ -213,6 +248,19 @@ export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTablePr
                     </div>
                   </TableCell>
                   <TableCell className="font-mono text-sm">{item.sku}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-blue-500" />
+                      <div>
+                        <div className="font-medium text-sm">{getLocationCode(item.location)}</div>
+                        {item.location && (
+                          <div className="text-xs text-muted-foreground">
+                            {item.location.warehouse}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       {getStockBadge(status)}

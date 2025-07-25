@@ -67,13 +67,13 @@ export function Sidebar({
   const handleChange = onModuleChange || onTabChange || (() => {});
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
-    <div className="h-screen w-64 bg-gradient-to-br from-background via-card/50 to-background/80 border-r-2 border-gradient-to-b from-primary/30 via-accent/20 to-primary/30 flex flex-col shadow-neural backdrop-blur-2xl relative overflow-hidden">
+    <div className="h-screen w-64 bg-gradient-to-br from-background via-card/50 to-background/80 border-r border-primary/30 flex flex-col shadow-neural backdrop-blur-2xl relative overflow-hidden">
       {/* Revolutionary ambient background */}
       <div className="absolute inset-0 bg-gradient-quantum opacity-5 animate-pulse" />
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-hero opacity-80" />
       
       {/* Logo/Brand */}
-      <div className="relative p-6 border-b-2 border-gradient-to-r from-primary/20 via-accent/30 to-primary/20 bg-gradient-to-br from-card/80 via-card/60 to-card/40 backdrop-blur-xl">
+      <div className="relative p-6 border-b border-primary/20 bg-gradient-to-br from-card/80 via-card/60 to-card/40 backdrop-blur-xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-3 rounded-2xl bg-gradient-quantum shadow-neural hover:shadow-primary transition-all duration-500 hover:scale-110 hover:rotate-12">
             {isHomeMode ? <Home className="h-6 w-6 text-white" /> : <Building className="h-6 w-6 text-white" />}
@@ -87,7 +87,7 @@ export function Sidebar({
         </p>
         
         {/* Revolutionary Mode Toggle */}
-        <div className="flex items-center justify-between text-sm p-4 bg-gradient-to-r from-muted/30 via-primary/10 to-muted/30 rounded-2xl border-2 border-primary/20 backdrop-blur-sm hover:border-primary/40 transition-all duration-500">
+        <div className="flex items-center justify-between text-sm p-4 bg-gradient-to-r from-muted/30 via-primary/10 to-muted/30 rounded-2xl border border-primary/20 backdrop-blur-sm hover:border-primary/40 transition-all duration-500">
           <span className="text-muted-foreground font-semibold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
             {isHomeMode ? "Personal Mode" : "Business Mode"}
           </span>

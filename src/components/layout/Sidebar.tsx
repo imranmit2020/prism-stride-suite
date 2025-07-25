@@ -6,7 +6,8 @@ import {
   ShoppingCart, 
   TrendingUp,
   Settings,
-  Home
+  Home,
+  FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,7 +25,7 @@ const menuItems = [
   { id: "accounting", label: "Accounting", icon: Calculator },
   { id: "analytics", label: "Analytics", icon: TrendingUp },
   { id: "reports", label: "Reports", icon: BarChart3 },
-  { id: "forms", label: "AI Forms", icon: Settings },
+  { id: "forms", label: "AI Forms", icon: FileText },
   { id: "settings", label: "AI Settings", icon: Settings },
 ];
 

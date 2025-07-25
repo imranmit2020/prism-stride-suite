@@ -119,6 +119,18 @@ const Index = () => {
             <ReportsInterface />
           </div>
         );
+      case "forms":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI Forms Suite</h1>
+              <p className="text-muted-foreground mt-2">
+                Revolutionary AI-powered forms that predict, optimize, and transform your business processes.
+              </p>
+            </div>
+            <FormsInterface />
+          </div>
+        );
       case "settings":
         return (
           <div className="space-y-6">

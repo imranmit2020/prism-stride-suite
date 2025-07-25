@@ -11,6 +11,7 @@ import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInte
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
 import { PersonalFinanceAnalyticsInterface } from "@/components/personal-analytics/PersonalFinanceAnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
+import { PersonalReportsInterface } from "@/components/reports/PersonalReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
 import { FormsInterface } from "@/components/forms/FormsInterface";
 import { MarketingInterface } from "@/components/marketing/MarketingInterface";
@@ -323,16 +324,7 @@ const Index = () => {
               </p>
             </div>
             {isHomeMode ? (
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">Monthly Budget Report</h3>
-                  <p className="text-muted-foreground">Track your monthly income vs expenses</p>
-                </div>
-                <div className="card-enhanced p-6">
-                  <h3 className="text-lg font-semibold mb-4">Tax Summary</h3>
-                  <p className="text-muted-foreground">Annual tax document preparation</p>
-                </div>
-              </div>
+              <PersonalReportsInterface />
             ) : (
               <ReportsInterface />
             )}

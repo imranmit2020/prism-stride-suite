@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FileText, Receipt } from "lucide-react";
 
 export function AccountingInterface() {
+  console.log("🧮 AccountingInterface rendering");
   const [activeTab, setActiveTab] = useState("overview");
   const [showInvoiceDialog, setShowInvoiceDialog] = useState(false);
   const [showExpenseDialog, setShowExpenseDialog] = useState(false);

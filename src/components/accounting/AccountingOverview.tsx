@@ -13,6 +13,8 @@ import {
   AlertTriangle
 } from "lucide-react";
 
+console.log("🧮 AccountingOverview component loaded");
+
 const financialStatsRaw = [
   {
     title: "Total Revenue",

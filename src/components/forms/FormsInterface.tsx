@@ -16,10 +16,10 @@ export function FormsInterface() {
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
-          <TabsTrigger value="customer">AI Customer Intelligence</TabsTrigger>
-          <TabsTrigger value="vendor">AI Vendor Risk</TabsTrigger>
-          <TabsTrigger value="project">AI Project Predictor</TabsTrigger>
-          <TabsTrigger value="marketing">AI Marketing Genius</TabsTrigger>
+          <TabsTrigger value="customer" className="px-3 py-2 text-xs font-medium">AI Customer Intelligence</TabsTrigger>
+          <TabsTrigger value="vendor" className="px-3 py-2 text-xs font-medium">AI Vendor Risk</TabsTrigger>
+          <TabsTrigger value="project" className="px-3 py-2 text-xs font-medium">AI Project Predictor</TabsTrigger>
+          <TabsTrigger value="marketing" className="px-3 py-2 text-xs font-medium">AI Marketing Genius</TabsTrigger>
         </TabsList>
 
         <TabsContent value="customer" className="space-y-6">
@@ -41,10 +41,10 @@ export function FormsInterface() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-8">
         <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
-          <TabsTrigger value="talent">AI Talent Scout</TabsTrigger>
-          <TabsTrigger value="quality">AI Quality Oracle</TabsTrigger>
-          <TabsTrigger value="lead">AI Lead Alchemist</TabsTrigger>
-          <TabsTrigger value="learning">AI Learning Architect</TabsTrigger>
+          <TabsTrigger value="talent" className="px-3 py-2 text-xs font-medium">AI Talent Scout</TabsTrigger>
+          <TabsTrigger value="quality" className="px-3 py-2 text-xs font-medium">AI Quality Oracle</TabsTrigger>
+          <TabsTrigger value="lead" className="px-3 py-2 text-xs font-medium">AI Lead Alchemist</TabsTrigger>
+          <TabsTrigger value="learning" className="px-3 py-2 text-xs font-medium">AI Learning Architect</TabsTrigger>
         </TabsList>
 
         <TabsContent value="talent" className="space-y-6">

@@ -14,9 +14,9 @@ export function CRMInterface() {
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
-          <TabsTrigger value="prophet">Relationship Prophet</TabsTrigger>
-          <TabsTrigger value="deals">Deal Probability</TabsTrigger>
-          <TabsTrigger value="journey">Customer Journey</TabsTrigger>
+          <TabsTrigger value="prophet" className="px-3 py-2 text-xs font-medium">Relationship Prophet</TabsTrigger>
+          <TabsTrigger value="deals" className="px-3 py-2 text-xs font-medium">Deal Probability</TabsTrigger>
+          <TabsTrigger value="journey" className="px-3 py-2 text-xs font-medium">Customer Journey</TabsTrigger>
         </TabsList>
 
         <TabsContent value="prophet" className="space-y-6">
@@ -34,9 +34,9 @@ export function CRMInterface() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-8">
         <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full gap-1">
-          <TabsTrigger value="emotional">Emotional Intelligence</TabsTrigger>
-          <TabsTrigger value="churn">Churn Prevention</TabsTrigger>
-          <TabsTrigger value="revenue">Revenue Scanner</TabsTrigger>
+          <TabsTrigger value="emotional" className="px-3 py-2 text-xs font-medium">Emotional Intelligence</TabsTrigger>
+          <TabsTrigger value="churn" className="px-3 py-2 text-xs font-medium">Churn Prevention</TabsTrigger>
+          <TabsTrigger value="revenue" className="px-3 py-2 text-xs font-medium">Revenue Scanner</TabsTrigger>
         </TabsList>
 
         <TabsContent value="emotional" className="space-y-6">

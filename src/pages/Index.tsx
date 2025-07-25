@@ -193,10 +193,12 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex w-full">
       <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
-      <main className="flex-1 p-6">
-        {renderContent()}
+      <main className="flex-1 p-6 overflow-x-auto">
+        <div className="max-w-full">
+          {renderContent()}
+        </div>
       </main>
     </div>
   );

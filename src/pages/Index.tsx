@@ -14,6 +14,7 @@ import { FormsInterface } from "@/components/forms/FormsInterface";
 import { MarketingInterface } from "@/components/marketing/MarketingInterface";
 import { CRMInterface } from "@/components/crm/CRMInterface";
 import { SaaSInterface } from "@/components/saas/SaaSInterface";
+import { ProductTrackingInterface } from "@/components/product-tracking/ProductTrackingInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -132,6 +133,18 @@ const Index = () => {
               </p>
             </div>
             <CRMInterface />
+          </div>
+        );
+      case "product-tracking":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI Product Lifecycle Tracking</h1>
+              <p className="text-muted-foreground mt-2">
+                End-to-end intelligent product management with revolutionary AI insights.
+              </p>
+            </div>
+            <ProductTrackingInterface />
           </div>
         );
       case "saas":

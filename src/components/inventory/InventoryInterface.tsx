@@ -54,17 +54,15 @@ export function InventoryInterface() {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="overflow-x-auto">
-          <TabsList className="inline-flex h-12 items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground min-w-max">
-            <TabsTrigger value="overview" className="px-4 py-2 text-sm font-medium">Overview</TabsTrigger>
-            <TabsTrigger value="products" className="px-4 py-2 text-sm font-medium">Products</TabsTrigger>
-            <TabsTrigger value="ai-demand" className="px-4 py-2 text-sm font-medium">AI Demand Prophet</TabsTrigger>
-            <TabsTrigger value="ai-theft" className="px-4 py-2 text-sm font-medium">AI Theft Detection</TabsTrigger>
-            <TabsTrigger value="ai-shelf" className="px-4 py-2 text-sm font-medium">AI Shelf Life</TabsTrigger>
-            <TabsTrigger value="reorders" className="px-4 py-2 text-sm font-medium">Smart Reorders</TabsTrigger>
-            <TabsTrigger value="import-export" className="px-4 py-2 text-sm font-medium">Import/Export</TabsTrigger>
-          </TabsList>
-        </div>
+        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full">
+          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
+          <TabsTrigger value="products" className="px-3 py-2 text-xs font-medium">Products</TabsTrigger>
+          <TabsTrigger value="ai-demand" className="px-3 py-2 text-xs font-medium">Demand AI</TabsTrigger>
+          <TabsTrigger value="ai-theft" className="px-3 py-2 text-xs font-medium">Theft AI</TabsTrigger>
+          <TabsTrigger value="ai-shelf" className="px-3 py-2 text-xs font-medium">Shelf AI</TabsTrigger>
+          <TabsTrigger value="reorders" className="px-3 py-2 text-xs font-medium">Reorders</TabsTrigger>
+          <TabsTrigger value="import-export" className="px-3 py-2 text-xs font-medium">Import/Export</TabsTrigger>
+        </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
           <InventoryOverview />

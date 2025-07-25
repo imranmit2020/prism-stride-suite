@@ -11,6 +11,9 @@ import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
 import { FormsInterface } from "@/components/forms/FormsInterface";
+import { MarketingInterface } from "@/components/marketing/MarketingInterface";
+import { CRMInterface } from "@/components/crm/CRMInterface";
+import { SaaSInterface } from "@/components/saas/SaaSInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -105,6 +108,42 @@ const Index = () => {
               </p>
             </div>
             <AnalyticsInterface />
+          </div>
+        );
+      case "marketing":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI Marketing Suite</h1>
+              <p className="text-muted-foreground mt-2">
+                Revolutionary AI-powered marketing tools that predict viral content and optimize campaigns.
+              </p>
+            </div>
+            <MarketingInterface />
+          </div>
+        );
+      case "crm":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI CRM Intelligence</h1>
+              <p className="text-muted-foreground mt-2">
+                Advanced AI that predicts relationships, prevents churn, and maximizes customer lifetime value.
+              </p>
+            </div>
+            <CRMInterface />
+          </div>
+        );
+      case "saas":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">AI SaaS Optimization</h1>
+              <p className="text-muted-foreground mt-2">
+                Intelligent SaaS tools that predict user behavior, optimize pricing, and ensure product-market fit.
+              </p>
+            </div>
+            <SaaSInterface />
           </div>
         );
       case "reports":

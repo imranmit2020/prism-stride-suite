@@ -105,13 +105,18 @@ const upcomingPayroll = [
 ];
 
 export function PayrollOverview() {
-  const { formatCurrency } = useGlobalization();
+  console.log("👥 PayrollOverview rendering");
   
-  // Convert raw payroll data to formatted data
-  const payrollStats = payrollStatsRaw.map(stat => ({
-    ...stat,
-    value: stat.type === "currency" ? formatCurrency(stat.value as number) : stat.value
-  }));
+  try {
+    const { formatCurrency } = useGlobalization();
+    console.log("✅ Globalization context loaded in PayrollOverview");
+    
+    // Convert raw payroll data to formatted data
+    const payrollStats = payrollStatsRaw.map(stat => ({
+      ...stat,
+      value: stat.type === "currency" ? formatCurrency(stat.value as number) : stat.value
+    }));
+    console.log("✅ Payroll stats formatted:", payrollStats);
   const getStatusColor = (status: string) => {
     switch (status) {
       case "scheduled": return "bg-success text-success-foreground";
@@ -228,4 +233,14 @@ export function PayrollOverview() {
       </div>
     </div>
   );
+  } catch (error) {
+    console.error("❌ PayrollOverview error:", error);
+    return (
+      <div className="p-6 border rounded-lg">
+        <h3 className="text-lg font-semibold text-destructive mb-2">Error Loading Payroll Overview</h3>
+        <p className="text-muted-foreground">There was an error loading the payroll data. Please refresh the page.</p>
+        <pre className="mt-2 text-xs bg-muted p-2 rounded">{error?.toString()}</pre>
+      </div>
+    );
+  }
 }

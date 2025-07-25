@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { PayrollOverview } from "./PayrollOverview";
+import { SimplePayrollOverview } from "./SimplePayrollOverview";
 import { EmployeeManagement } from "./EmployeeManagement";
 import { PayrollProcessing } from "./PayrollProcessing";
 import { PayrollRecords } from "./PayrollRecords";
@@ -62,7 +63,7 @@ export function PayrollInterface() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <PayrollOverview />
+          <SimplePayrollOverview />
         </TabsContent>
 
         <TabsContent value="ai-performance" className="space-y-6">

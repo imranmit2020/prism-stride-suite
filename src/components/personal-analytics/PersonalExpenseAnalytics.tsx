@@ -214,7 +214,7 @@ export function PersonalExpenseAnalytics() {
                         {dateFrom ? format(dateFrom, "MMM dd") : "From"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 z-50 bg-background border shadow-lg" align="start">
                       <Calendar
                         mode="single"
                         selected={dateFrom}
@@ -238,7 +238,7 @@ export function PersonalExpenseAnalytics() {
                         {dateTo ? format(dateTo, "MMM dd") : "To"}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 z-50 bg-background border shadow-lg" align="start">
                       <Calendar
                         mode="single"
                         selected={dateTo}

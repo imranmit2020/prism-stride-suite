@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,10 +7,11 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, DollarSign, TrendingUp, Target, Zap, Users } from "lucide-react";
 
 export function AISalaryOptimizationEngine() {
+  const { formatCurrency } = useGlobalization();
   const [optimizationData, setOptimizationData] = useState({
     totalEmployees: 247,
     optimizedSalaries: 89,
-    costSavings: "$234,000",
+    costSavings: formatCurrency(234000),
     retentionImprovement: 67
   });
 

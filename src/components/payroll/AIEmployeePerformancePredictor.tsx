@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, TrendingUp, Target, Users, Zap, Star } from "lucide-react";
 
 export function AIEmployeePerformancePredictor() {
+  const { formatCurrency } = useGlobalization();
   const [performanceData, setPerformanceData] = useState({
     totalEmployees: 247,
     atRiskEmployees: 12,
@@ -97,13 +99,13 @@ export function AIEmployeePerformancePredictor() {
         strategy: "Dynamic Goal Adjustment",
         impact: "+31% goal achievement",
         description: "Real-time goal optimization based on capacity",
-        roi: "$156,000 annually"
+        roi: formatCurrency(156000) + " annually"
       },
       {
         strategy: "Proactive Retention Intervention",
         impact: "+67% retention rate",
         description: "Early intervention for at-risk employees",
-        roi: "$234,000 annually"
+        roi: formatCurrency(234000) + " annually"
       }
     ]
   };

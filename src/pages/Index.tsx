@@ -21,7 +21,7 @@ import { AuthContainer } from "@/components/auth/AuthContainer";
 
 const Index = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Auto-login for demo
   const [isHomeMode, setIsHomeMode] = useState(false);
 
   const handleModuleChange = (module: string) => {

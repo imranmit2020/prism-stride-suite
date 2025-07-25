@@ -68,9 +68,9 @@ export function Sidebar({
   const handleChange = onModuleChange || onTabChange || (() => {});
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
   return (
-    <aside className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm fixed left-0 top-0 z-40">
+    <aside className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm fixed left-0 top-0 z-40 overflow-hidden">
       {/* Logo/Brand */}
-      <div className="p-6 border-b border-border bg-card">
+      <div className="p-4 border-b border-border bg-card flex-shrink-0">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 rounded-lg bg-primary">
             {isHomeMode ? <Home className="h-5 w-5 text-white" /> : <Building className="h-5 w-5 text-white" />}
@@ -96,7 +96,7 @@ export function Sidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = currentActive === item.id;
@@ -121,7 +121,7 @@ export function Sidebar({
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-border bg-card">
+      <div className="p-3 border-t border-border bg-card flex-shrink-0">
         <div className="text-xs text-muted-foreground text-center">
           <div className="font-medium">
             {isHomeMode ? "Home Manager" : "Prism Stride Suite"}

@@ -68,13 +68,13 @@ const Index = () => {
             {isHomeMode ? <PersonalHomeDashboard /> : <DashboardStats />}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
               <div className="xl:col-span-2 space-y-6 lg:space-y-8">
-                <QuickActions onActionClick={handleQuickAction} />
-                <RecentActivity />
+                <QuickActions onActionClick={handleQuickAction} isHomeMode={isHomeMode} />
+                <RecentActivity isHomeMode={isHomeMode} />
               </div>
               <div className="space-y-6">
                 <div className="card-glass p-6 lg:p-8">
-                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">Personal AI Helper</h3>
-                  <p className="text-muted-foreground text-sm lg:text-base">Your personal AI assistant for home management...</p>
+                  <h3 className="text-lg lg:text-xl font-semibold mb-4 bg-gradient-hero bg-clip-text text-transparent">{isHomeMode ? "Personal AI Helper" : "Business AI Helper"}</h3>
+                  <p className="text-muted-foreground text-sm lg:text-base">{isHomeMode ? "Your personal AI assistant for home management..." : "Your business AI advisor for strategic insights..."}</p>
                 </div>
               </div>
             </div>

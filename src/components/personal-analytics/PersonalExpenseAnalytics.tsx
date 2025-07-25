@@ -3,11 +3,17 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Receipt, TrendingUp, TrendingDown, DollarSign, ShoppingCart, Home } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Receipt, TrendingUp, TrendingDown, DollarSign, ShoppingCart, Home, CalendarIcon } from "lucide-react";
 import { useState } from "react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export function PersonalExpenseAnalytics() {
   const [selectedTimeRange, setSelectedTimeRange] = useState("6months");
+  const [dateFrom, setDateFrom] = useState<Date>();
+  const [dateTo, setDateTo] = useState<Date>();
 
   const monthlyExpenses = [
     { category: "Groceries", amount: 1247, budget: 1200, change: 3.9, trend: "up" },
@@ -46,6 +52,12 @@ export function PersonalExpenseAnalytics() {
   ];
 
   const spendingTrendsData = {
+    "1month": [
+      { month: "Week 1", amount: 567 },
+      { month: "Week 2", amount: 623 },
+      { month: "Week 3", amount: 534 },
+      { month: "Week 4", amount: 465 }
+    ],
     "3months": [
       { month: "Jan", amount: 2234 },
       { month: "Feb", amount: 2456 },
@@ -72,16 +84,25 @@ export function PersonalExpenseAnalytics() {
       { month: "Jan", amount: 2234 },
       { month: "Feb", amount: 2456 },
       { month: "Mar", amount: 2189 }
-    ]
+    ],
+    "daterange": dateFrom && dateTo ? [
+      { month: "Custom", amount: 2345 },
+      { month: "Range", amount: 2678 },
+      { month: "Data", amount: 2123 }
+    ] : []
   };
 
   const spendingTrends = spendingTrendsData[selectedTimeRange as keyof typeof spendingTrendsData];
   
   const getTimeRangeLabel = () => {
     switch (selectedTimeRange) {
+      case "1month": return "1-Month";
       case "3months": return "3-Month";
       case "6months": return "6-Month";
       case "12months": return "12-Month";
+      case "daterange": return dateFrom && dateTo 
+        ? `${format(dateFrom, "MMM dd")} - ${format(dateTo, "MMM dd")}` 
+        : "Date Range";
       default: return "6-Month";
     }
   };
@@ -164,41 +185,105 @@ export function PersonalExpenseAnalytics() {
                 Track your total monthly expenses over time
               </CardDescription>
             </div>
-            <Select value={selectedTimeRange} onValueChange={setSelectedTimeRange}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="3months">3 Months</SelectItem>
-                <SelectItem value="6months">6 Months</SelectItem>
-                <SelectItem value="12months">12 Months</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-2">
+              <Select value={selectedTimeRange} onValueChange={setSelectedTimeRange}>
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1month">1 Month</SelectItem>
+                  <SelectItem value="3months">3 Months</SelectItem>
+                  <SelectItem value="6months">6 Months</SelectItem>
+                  <SelectItem value="12months">12 Months</SelectItem>
+                  <SelectItem value="daterange">Date Range</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {selectedTimeRange === "daterange" && (
+                <div className="flex items-center gap-2">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-28 justify-start text-left font-normal",
+                          !dateFrom && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateFrom ? format(dateFrom, "MMM dd") : "From"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={dateFrom}
+                        onSelect={setDateFrom}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-28 justify-start text-left font-normal",
+                          !dateTo && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateTo ? format(dateTo, "MMM dd") : "To"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={dateTo}
+                        onSelect={setDateTo}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                        disabled={(date) => dateFrom ? date < dateFrom : false}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
-              <span>Average Monthly Spending:</span>
+              <span>Average {selectedTimeRange === "1month" ? "Weekly" : "Monthly"} Spending:</span>
               <span className="font-medium">
-                ${Math.round(spendingTrends.reduce((sum, trend) => sum + trend.amount, 0) / spendingTrends.length).toLocaleString()}
+                ${spendingTrends.length > 0 ? Math.round(spendingTrends.reduce((sum, trend) => sum + trend.amount, 0) / spendingTrends.length).toLocaleString() : "0"}
               </span>
             </div>
-            <div className={`grid gap-2 ${spendingTrends.length <= 3 ? 'grid-cols-3' : spendingTrends.length <= 6 ? 'grid-cols-6' : 'grid-cols-12'}`}>
+            <div className={`grid gap-2 ${spendingTrends.length <= 4 ? 'grid-cols-4' : spendingTrends.length <= 6 ? 'grid-cols-6' : 'grid-cols-12'}`}>
               {spendingTrends.map((trend, index) => (
                 <div key={index} className="text-center space-y-2">
                   <div className="text-xs text-muted-foreground">{trend.month}</div>
                   <div 
                     className="bg-primary rounded w-full"
                     style={{ 
-                      height: `${(trend.amount / Math.max(...spendingTrends.map(t => t.amount))) * 100}px`,
+                      height: `${spendingTrends.length > 0 ? (trend.amount / Math.max(...spendingTrends.map(t => t.amount))) * 100 : 20}px`,
                       minHeight: "20px"
                     }}
                   />
-                  <div className="text-xs font-medium">${(trend.amount / 1000).toFixed(1)}k</div>
+                  <div className="text-xs font-medium">
+                    ${selectedTimeRange === "1month" ? trend.amount : (trend.amount / 1000).toFixed(1) + "k"}
+                  </div>
                 </div>
               ))}
             </div>
+            {selectedTimeRange === "daterange" && (!dateFrom || !dateTo) && (
+              <div className="text-center py-4 text-muted-foreground">
+                Please select both start and end dates to view spending data
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -10,6 +10,7 @@ import { AccountingInterface } from "@/components/accounting/AccountingInterface
 import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
+import { FormsInterface } from "@/components/forms/FormsInterface";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");

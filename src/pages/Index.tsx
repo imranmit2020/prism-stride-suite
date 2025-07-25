@@ -26,6 +26,7 @@ const Index = () => {
   const [isHomeMode, setIsHomeMode] = useState(false);
 
   const handleModuleChange = (module: string) => {
+    console.log(`📍 Navigating to module: ${module} (${isHomeMode ? 'personal' : 'business'} mode)`);
     setActiveModule(module);
   };
 

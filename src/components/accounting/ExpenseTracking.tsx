@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   MoreHorizontal, 
   Edit, 
@@ -144,6 +145,7 @@ interface ExpenseTrackingProps {
 }
 
 export function ExpenseTracking({ onAddExpense, onEditExpense }: ExpenseTrackingProps) {
+  const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -225,7 +227,7 @@ export function ExpenseTracking({ onAddExpense, onEditExpense }: ExpenseTracking
               <DollarSign className="h-4 w-4 text-destructive" />
               <div>
                 <p className="text-sm text-muted-foreground">Total Expenses</p>
-                <p className="text-xl font-bold">${totalExpenses.toLocaleString()}</p>
+                <p className="text-xl font-bold">{formatCurrency(totalExpenses)}</p>
               </div>
             </div>
           </CardContent>
@@ -249,7 +251,7 @@ export function ExpenseTracking({ onAddExpense, onEditExpense }: ExpenseTracking
               <DollarSign className="h-4 w-4 text-success" />
               <div>
                 <p className="text-sm text-muted-foreground">Tax Deductible</p>
-                <p className="text-xl font-bold">${taxDeductibleAmount.toLocaleString()}</p>
+                <p className="text-xl font-bold">{formatCurrency(taxDeductibleAmount)}</p>
               </div>
             </div>
           </CardContent>
@@ -372,7 +374,7 @@ export function ExpenseTracking({ onAddExpense, onEditExpense }: ExpenseTracking
                     <Badge variant="secondary">{expense.category}</Badge>
                   </TableCell>
                   <TableCell>{expense.vendor}</TableCell>
-                  <TableCell className="font-medium">${expense.amount.toFixed(2)}</TableCell>
+                  <TableCell className="font-medium">{formatCurrency(expense.amount)}</TableCell>
                   <TableCell>{getPaymentMethodBadge(expense.paymentMethod)}</TableCell>
                   <TableCell>{getStatusBadge(expense.status)}</TableCell>
                   <TableCell className="text-sm">{expense.submittedBy}</TableCell>

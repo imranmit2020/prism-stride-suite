@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { 
   MoreHorizontal, 
   Edit, 
@@ -115,6 +116,7 @@ interface InvoiceManagementProps {
 }
 
 export function InvoiceManagement({ onCreateInvoice, onEditInvoice }: InvoiceManagementProps) {
+  const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [filteredInvoices, setFilteredInvoices] = useState(mockInvoices);
@@ -188,7 +190,7 @@ export function InvoiceManagement({ onCreateInvoice, onEditInvoice }: InvoiceMan
           <CardContent className="p-4">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Total Outstanding</p>
-              <p className="text-2xl font-bold">${totalOutstanding.toLocaleString()}</p>
+              <p className="text-2xl font-bold">{formatCurrency(totalOutstanding)}</p>
             </div>
           </CardContent>
         </Card>
@@ -196,7 +198,7 @@ export function InvoiceManagement({ onCreateInvoice, onEditInvoice }: InvoiceMan
           <CardContent className="p-4">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Overdue Amount</p>
-              <p className="text-2xl font-bold text-destructive">${totalOverdue.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-destructive">{formatCurrency(totalOverdue)}</p>
             </div>
           </CardContent>
         </Card>
@@ -294,7 +296,7 @@ export function InvoiceManagement({ onCreateInvoice, onEditInvoice }: InvoiceMan
                         </div>
                       )}
                     </TableCell>
-                    <TableCell className="font-medium">${invoice.total.toFixed(2)}</TableCell>
+                    <TableCell className="font-medium">{formatCurrency(invoice.total)}</TableCell>
                     <TableCell>{getStatusBadge(invoice.status)}</TableCell>
                     <TableCell>
                       <DropdownMenu>

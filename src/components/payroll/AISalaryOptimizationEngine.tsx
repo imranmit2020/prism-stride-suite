@@ -191,15 +191,15 @@ export function AISalaryOptimizationEngine() {
               <div className="grid grid-cols-3 gap-4 mb-3">
                 <div>
                   <div className="text-sm font-medium">Current</div>
-                  <div className="text-lg font-bold">${optimization.currentSalary.toLocaleString()}</div>
+                  <div className="text-lg font-bold">{formatCurrency(optimization.currentSalary)}</div>
                 </div>
                 <div>
                   <div className="text-sm font-medium">Market Rate</div>
-                  <div className="text-lg font-bold">${optimization.marketRate.toLocaleString()}</div>
+                  <div className="text-lg font-bold">{formatCurrency(optimization.marketRate)}</div>
                 </div>
                 <div>
                   <div className="text-sm font-medium">AI Optimized</div>
-                  <div className="text-lg font-bold text-green-600">${optimization.optimizedSalary.toLocaleString()}</div>
+                  <div className="text-lg font-bold text-green-600">{formatCurrency(optimization.optimizedSalary)}</div>
                   <Badge variant="destructive" className="text-xs">{optimization.adjustment}</Badge>
                 </div>
               </div>
@@ -242,11 +242,11 @@ export function AISalaryOptimizationEngine() {
                 <div>
                   <div className="font-medium">{market.role}</div>
                   <div className="text-sm text-muted-foreground">
-                    Market Range: ${market.marketMin.toLocaleString()} - ${market.marketMax.toLocaleString()}
+                    Market Range: {formatCurrency(market.marketMin)} - {formatCurrency(market.marketMax)}
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold">${market.companyAvg.toLocaleString()}</div>
+                  <div className="text-lg font-bold">{formatCurrency(market.companyAvg)}</div>
                   <Badge variant={market.gap.startsWith('+') ? "secondary" : "destructive"}>
                     {market.gap}
                   </Badge>

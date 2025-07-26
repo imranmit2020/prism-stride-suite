@@ -142,14 +142,23 @@ const mockInventory: InventoryItem[] = [
 ];
 
 interface InventoryTableProps {
+  inventory: InventoryItem[];
+  loading: boolean;
   onAddProduct: () => void;
   onEditProduct: (item: InventoryItem) => void;
 }
 
-export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTableProps) {
+export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct }: InventoryTableProps) {
   const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredInventory, setFilteredInventory] = useState(mockInventory);
+
+  // Filter inventory based on search term
+  const filteredInventory = inventory.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.supplier.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const getLocationCode = (location?: InventoryItem['location']) => {
     if (!location) return "Not Assigned";
@@ -188,12 +197,6 @@ export function InventoryTable({ onAddProduct, onEditProduct }: InventoryTablePr
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
-    const filtered = mockInventory.filter(item =>
-      item.name.toLowerCase().includes(term.toLowerCase()) ||
-      item.sku.toLowerCase().includes(term.toLowerCase()) ||
-      item.category.toLowerCase().includes(term.toLowerCase())
-    );
-    setFilteredInventory(filtered);
   };
 
   return (

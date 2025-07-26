@@ -1,0 +1,312 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { InventoryItem } from '@/components/inventory/InventoryTable';
+
+export function useInventory() {
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  const loadInventory = async () => {
+    try {
+      setLoading(true);
+      const { data: products, error } = await supabase
+        .from('bm_inv_products')
+        .select(`
+          *,
+          bm_inv_categories(name),
+          bm_inv_suppliers(name),
+          bm_inv_stock(
+            quantity, 
+            min_stock, 
+            max_stock, 
+            reorder_point, 
+            bm_inv_warehouses(name, location)
+          )
+        `);
+
+      if (error) {
+        console.error('Error loading inventory:', error);
+        toast({
+          title: "Error Loading Inventory",
+          description: "Failed to load inventory from database",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const transformedProducts: InventoryItem[] = (products || []).map(product => ({
+        id: product.id,
+        name: product.name,
+        sku: product.sku,
+        category: product.bm_inv_categories?.name || 'Uncategorized',
+        currentStock: product.bm_inv_stock?.[0]?.quantity || 0,
+        minStock: product.bm_inv_stock?.[0]?.min_stock || 0,
+        maxStock: product.bm_inv_stock?.[0]?.max_stock || 100,
+        reorderPoint: product.bm_inv_stock?.[0]?.reorder_point || 0,
+        unitCost: parseFloat(product.cost_price?.toString() || '0') || 0,
+        sellingPrice: parseFloat(product.unit_price?.toString() || '0') || 0,
+        supplier: product.bm_inv_suppliers?.name || 'Unknown',
+        lastRestocked: new Date().toISOString().split('T')[0],
+        demand7Days: 0, // Would come from transaction history
+        demand30Days: 0, // Would come from transaction history
+        location: product.bm_inv_stock?.[0]?.bm_inv_warehouses ? {
+          warehouse: product.bm_inv_stock[0].bm_inv_warehouses.name,
+          zone: 'A', // Default values - would be in location system
+          aisle: '01',
+          shelf: '1',
+          bin: 'A'
+        } : undefined,
+        aiPrediction: {
+          nextWeekDemand: Math.floor(Math.random() * 50) + 10, // AI would calculate this
+          confidence: Math.floor(Math.random() * 30) + 70,
+          recommendation: "Monitor performance"
+        }
+      }));
+
+      setInventory(transformedProducts);
+    } catch (error) {
+      console.error('Error in loadInventory:', error);
+      toast({
+        title: "Database Error",
+        description: "Unable to connect to database",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addProduct = async (product: Omit<InventoryItem, 'id'>) => {
+    try {
+      // Create category if it doesn't exist
+      let categoryId = null;
+      const { data: existingCategory } = await supabase
+        .from('bm_inv_categories')
+        .select('id')
+        .eq('name', product.category)
+        .maybeSingle();
+
+      if (existingCategory) {
+        categoryId = existingCategory.id;
+      } else {
+        const { data: newCategory, error: categoryError } = await supabase
+          .from('bm_inv_categories')
+          .insert({ name: product.category })
+          .select('id')
+          .single();
+
+        if (categoryError) throw categoryError;
+        categoryId = newCategory.id;
+      }
+
+      // Create supplier if it doesn't exist
+      let supplierId = null;
+      const { data: existingSupplier } = await supabase
+        .from('bm_inv_suppliers')
+        .select('id')
+        .eq('name', product.supplier)
+        .maybeSingle();
+
+      if (existingSupplier) {
+        supplierId = existingSupplier.id;
+      } else {
+        const { data: newSupplier, error: supplierError } = await supabase
+          .from('bm_inv_suppliers')
+          .insert({ name: product.supplier })
+          .select('id')
+          .single();
+
+        if (supplierError) throw supplierError;
+        supplierId = newSupplier.id;
+      }
+
+      // Create the product
+      const { data: newProduct, error: productError } = await supabase
+        .from('bm_inv_products')
+        .insert({
+          name: product.name,
+          sku: product.sku,
+          category_id: categoryId,
+          supplier_id: supplierId,
+          cost_price: product.unitCost,
+          unit_price: product.sellingPrice,
+          description: `${product.category} product`
+        })
+        .select('id')
+        .single();
+
+      if (productError) throw productError;
+
+      // Get or create default warehouse
+      let { data: warehouses } = await supabase
+        .from('bm_inv_warehouses')
+        .select('id')
+        .limit(1);
+
+      let warehouseId = null;
+      if (warehouses && warehouses.length > 0) {
+        warehouseId = warehouses[0].id;
+      } else {
+        const { data: newWarehouse, error: warehouseError } = await supabase
+          .from('bm_inv_warehouses')
+          .insert({ name: 'Main Warehouse', location: 'Primary Location' })
+          .select('id')
+          .single();
+
+        if (warehouseError) throw warehouseError;
+        warehouseId = newWarehouse.id;
+      }
+
+      // Create stock record
+      const { error: stockError } = await supabase
+        .from('bm_inv_stock')
+        .insert({
+          product_id: newProduct.id,
+          warehouse_id: warehouseId,
+          quantity: product.currentStock,
+          min_stock: product.minStock,
+          max_stock: product.maxStock,
+          reorder_point: product.reorderPoint
+        });
+
+      if (stockError) throw stockError;
+
+      toast({
+        title: "Product Added Successfully",
+        description: `${product.name} has been added to inventory`
+      });
+
+      await loadInventory();
+    } catch (error) {
+      console.error('Error adding product:', error);
+      toast({
+        title: "Failed to Add Product",
+        description: "There was an error adding the product to inventory",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const updateProduct = async (productId: string, updates: Partial<InventoryItem>) => {
+    try {
+      // Update product basic info
+      if (updates.name || updates.sku || updates.unitCost || updates.sellingPrice) {
+        const { error: productError } = await supabase
+          .from('bm_inv_products')
+          .update({
+            ...(updates.name && { name: updates.name }),
+            ...(updates.sku && { sku: updates.sku }),
+            ...(updates.unitCost && { cost_price: updates.unitCost }),
+            ...(updates.sellingPrice && { unit_price: updates.sellingPrice })
+          })
+          .eq('id', productId);
+
+        if (productError) throw productError;
+      }
+
+      // Update stock levels
+      if (updates.currentStock !== undefined || updates.minStock !== undefined || 
+          updates.maxStock !== undefined || updates.reorderPoint !== undefined) {
+        const { error: stockError } = await supabase
+          .from('bm_inv_stock')
+          .update({
+            ...(updates.currentStock !== undefined && { quantity: updates.currentStock }),
+            ...(updates.minStock !== undefined && { min_stock: updates.minStock }),
+            ...(updates.maxStock !== undefined && { max_stock: updates.maxStock }),
+            ...(updates.reorderPoint !== undefined && { reorder_point: updates.reorderPoint })
+          })
+          .eq('product_id', productId);
+
+        if (stockError) throw stockError;
+      }
+
+      toast({
+        title: "Product Updated",
+        description: "Product has been successfully updated"
+      });
+
+      await loadInventory();
+    } catch (error) {
+      console.error('Error updating product:', error);
+      toast({
+        title: "Failed to Update Product",
+        description: "There was an error updating the product",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const deleteProduct = async (productId: string) => {
+    try {
+      // Delete stock records first (foreign key constraint)
+      const { error: stockError } = await supabase
+        .from('bm_inv_stock')
+        .delete()
+        .eq('product_id', productId);
+
+      if (stockError) throw stockError;
+
+      // Delete the product
+      const { error: productError } = await supabase
+        .from('bm_inv_products')
+        .delete()
+        .eq('id', productId);
+
+      if (productError) throw productError;
+
+      toast({
+        title: "Product Deleted",
+        description: "Product has been successfully deleted"
+      });
+
+      await loadInventory();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast({
+        title: "Failed to Delete Product",
+        description: "There was an error deleting the product",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const getInventoryStats = () => {
+    const totalProducts = inventory.length;
+    const lowStockCount = inventory.filter(item => item.currentStock <= item.minStock).length;
+    const totalValue = inventory.reduce((sum, item) => sum + (item.currentStock * item.unitCost), 0);
+    const avgAccuracy = inventory.reduce((sum, item) => sum + item.aiPrediction.confidence, 0) / Math.max(totalProducts, 1);
+
+    return {
+      totalProducts,
+      lowStockCount,
+      totalValue,
+      avgAccuracy: Math.round(avgAccuracy * 10) / 10
+    };
+  };
+
+  const getLowStockItems = () => {
+    return inventory.filter(item => item.currentStock <= item.minStock);
+  };
+
+  const getReorderRecommendations = () => {
+    return inventory.filter(item => item.currentStock <= item.reorderPoint);
+  };
+
+  useEffect(() => {
+    loadInventory();
+  }, []);
+
+  return {
+    inventory,
+    loading,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    refreshInventory: loadInventory,
+    getInventoryStats,
+    getLowStockItems,
+    getReorderRecommendations
+  };
+}

@@ -9,10 +9,11 @@ import {
   Clock, 
   TrendingUp,
   Zap,
-  CheckCircle
+  CheckCircle,
+  Package
 } from "lucide-react";
 
-const smartReorders = [
+const mockSmartReorders = [
   {
     id: "1",
     productName: "Butter Croissants",
@@ -73,11 +74,60 @@ const smartReorders = [
 ];
 
 interface SmartReorderProps {
+  inventory: InventoryItem[];
+  getReorderRecommendations: () => InventoryItem[];
   onProcessReorder: (reorderId: string) => void;
 }
 
-export function SmartReorder({ onProcessReorder }: SmartReorderProps) {
+interface InventoryItem {
+  id: string;
+  name: string;
+  sku: string;
+  category: string;
+  currentStock: number;
+  minStock: number;
+  maxStock: number;
+  reorderPoint: number;
+  unitCost: number;
+  sellingPrice: number;
+  supplier: string;
+  lastRestocked: string;
+  demand7Days: number;
+  demand30Days: number;
+  aiPrediction: {
+    nextWeekDemand: number;
+    confidence: number;
+    recommendation: string;
+  };
+}
+
+export function SmartReorder({ inventory, getReorderRecommendations, onProcessReorder }: SmartReorderProps) {
   const { formatCurrency } = useGlobalization();
+  
+  // Get real reorder recommendations instead of mock data
+  const reorderItems = getReorderRecommendations();
+  
+  // Transform to smart reorder format
+  const smartReorderItems = reorderItems.map(item => ({
+    id: item.id,
+    productName: item.name,
+    sku: item.sku,
+    currentStock: item.currentStock,
+    recommendedQuantity: Math.max(item.maxStock - item.currentStock, item.aiPrediction.nextWeekDemand * 2),
+    urgency: item.currentStock <= item.minStock ? "critical" : 
+             item.currentStock <= item.reorderPoint ? "moderate" : "low",
+    confidence: item.aiPrediction.confidence,
+    reason: item.aiPrediction.recommendation,
+    estimatedCost: item.unitCost * Math.max(item.maxStock - item.currentStock, item.aiPrediction.nextWeekDemand * 2),
+    supplier: item.supplier,
+    leadTime: "2-3 days",
+    aiReasoning: [
+      `Current stock (${item.currentStock}) ${item.currentStock <= item.minStock ? 'below minimum' : 'approaching reorder point'} (${item.reorderPoint})`,
+      `AI predicts ${item.aiPrediction.nextWeekDemand} units demand next week (${item.aiPrediction.confidence}% confidence)`,
+      `Recommended quantity: ${Math.max(item.maxStock - item.currentStock, item.aiPrediction.nextWeekDemand * 2)} units`,
+      item.aiPrediction.recommendation
+    ]
+  }));
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case "critical": return "destructive";
@@ -105,7 +155,7 @@ export function SmartReorder({ onProcessReorder }: SmartReorderProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {smartReorders.map((reorder) => (
+        {smartReorderItems.length > 0 ? smartReorderItems.map((reorder) => (
           <div key={reorder.id} className="border rounded-lg p-4 space-y-4">
             {/* Header */}
             <div className="flex items-center justify-between">
@@ -189,7 +239,13 @@ export function SmartReorder({ onProcessReorder }: SmartReorderProps) {
               </Button>
             </div>
           </div>
-        ))}
+        )) : (
+          <div className="text-center py-8 text-muted-foreground">
+            <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p>No items need reordering at this time</p>
+            <p className="text-sm">All inventory levels are adequate</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

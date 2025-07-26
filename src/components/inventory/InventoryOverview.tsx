@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useGlobalization } from "@/contexts/GlobalizationContext";
+import { InventoryItem } from "./InventoryTable";
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -10,6 +11,17 @@ import {
   BarChart3,
   Brain
 } from "lucide-react";
+
+interface InventoryOverviewProps {
+  inventory: InventoryItem[];
+  getInventoryStats: () => {
+    totalProducts: number;
+    lowStockCount: number;
+    totalValue: number;
+    avgAccuracy: number;
+  };
+  getLowStockItems: () => InventoryItem[];
+}
 
 const inventoryStatsRaw = [
   {
@@ -51,21 +63,83 @@ const inventoryStatsRaw = [
   }
 ];
 
-const demandForecast = [
-  { category: "Beverages", currentStock: 245, predictedDemand: 187, status: "adequate" },
-  { category: "Food", currentStock: 89, predictedDemand: 156, status: "reorder" },
-  { category: "Pastries", currentStock: 34, predictedDemand: 78, status: "critical" },
-  { category: "Snacks", currentStock: 167, predictedDemand: 92, status: "overstocked" }
-];
+  // Generate category-based forecast from real data
+  const categoryStats = inventory.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = { 
+        currentStock: 0, 
+        predictedDemand: 0, 
+        items: 0 
+      };
+    }
+    acc[item.category].currentStock += item.currentStock;
+    acc[item.category].predictedDemand += item.aiPrediction.nextWeekDemand;
+    acc[item.category].items += 1;
+    return acc;
+  }, {} as Record<string, { currentStock: number; predictedDemand: number; items: number }>);
 
-export function InventoryOverview() {
+  const demandForecast = Object.entries(categoryStats).map(([category, stats]) => {
+    const ratio = stats.currentStock / Math.max(stats.predictedDemand, 1);
+    let status = "adequate";
+    if (ratio < 0.5) status = "critical";
+    else if (ratio < 1) status = "reorder"; 
+    else if (ratio > 2) status = "overstocked";
+    
+    return {
+      category,
+      currentStock: stats.currentStock,
+      predictedDemand: stats.predictedDemand,
+      status
+    };
+  });
+
+export function InventoryOverview({ inventory, getInventoryStats, getLowStockItems }: InventoryOverviewProps) {
   const { formatCurrency } = useGlobalization();
   
-  // Convert raw inventory data to formatted data
-  const inventoryStats = inventoryStatsRaw.map(stat => ({
-    ...stat,
-    value: stat.type === "currency" ? formatCurrency(stat.value as number) : stat.value
-  }));
+  // Get real stats from hooks
+  const stats = getInventoryStats();
+  const lowStockItems = getLowStockItems();
+  
+  // Create dynamic stats based on real data
+  const inventoryStats = [
+    {
+      title: "Total Products",
+      value: stats.totalProducts.toString(),
+      change: "+12",
+      trend: "up",
+      icon: Package,
+      description: "items in catalog",
+      type: "number"
+    },
+    {
+      title: "Low Stock Alerts",
+      value: stats.lowStockCount.toString(),
+      change: "+5",
+      trend: "up",
+      icon: AlertTriangle,
+      description: "need attention",
+      variant: stats.lowStockCount > 0 ? "destructive" : "secondary",
+      type: "number"
+    },
+    {
+      title: "Inventory Value",
+      value: formatCurrency(stats.totalValue),
+      change: "+8.2%",
+      trend: "up",
+      icon: DollarSign,
+      description: "total value",
+      type: "currency"
+    },
+    {
+      title: "AI Accuracy",
+      value: `${stats.avgAccuracy}%`,
+      change: "+2.1%",
+      trend: "up",
+      icon: Brain,
+      description: "prediction accuracy",
+      type: "number"
+    }
+  ];
   const getStatusColor = (status: string) => {
     switch (status) {
       case "critical": return "bg-destructive";

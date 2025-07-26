@@ -26,11 +26,14 @@ import { usePersonalInventory } from "@/hooks/usePersonalInventory";
 import { AddPersonalItemDialog } from "./AddPersonalItemDialog";
 import { PersonalImportExportActions } from "./PersonalImportExportActions";
 import { PersonalInventoryAnalytics } from "@/components/personal-analytics/PersonalInventoryAnalytics";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export function PersonalInventoryInterface() {
   const [activeTab, setActiveTab] = useState("overview");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { toast } = useToast();
   
   const { 
     items, 
@@ -40,7 +43,8 @@ export function PersonalInventoryInterface() {
     addItem,
     updateItem,
     deleteItem,
-    getInventoryStats
+    getInventoryStats,
+    refreshData
   } = usePersonalInventory();
 
   const stats = getInventoryStats();
@@ -66,6 +70,29 @@ export function PersonalInventoryInterface() {
   const handleImportItems = async (importedItems: any[]) => {
     for (const item of importedItems) {
       await addItem(item);
+    }
+  };
+
+  // Seed sample data function
+  const handleSeedSampleData = async () => {
+    try {
+      const { error } = await supabase.rpc('seed_personal_inventory_data_for_user');
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Sample inventory data has been added to your account!",
+      });
+
+      // Refresh data to show the new items
+      await refreshData();
+    } catch (error) {
+      console.error('Error seeding sample data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add sample data. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -157,20 +184,32 @@ export function PersonalInventoryInterface() {
               <CardTitle>Recent Items</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {items.slice(0, 5).map((item) => (
-                  <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Package className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <div className="font-medium">{item.name}</div>
-                        <div className="text-sm text-muted-foreground">{item.category?.name || 'Uncategorized'}</div>
+              {loading ? (
+                <div className="text-center text-muted-foreground py-8">Loading inventory data...</div>
+              ) : items.length === 0 ? (
+                <div className="text-center py-8 space-y-4">
+                  <div className="text-muted-foreground">No inventory items found. Get started by adding some sample items to your home inventory.</div>
+                  <Button onClick={handleSeedSampleData} size="lg">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Sample Home Items
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {items.slice(0, 5).map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Package className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">{item.name}</div>
+                          <div className="text-sm text-muted-foreground">{item.category?.name || 'Uncategorized'}</div>
+                        </div>
                       </div>
+                      {getStatusBadge(item)}
                     </div>
-                    {getStatusBadge(item)}
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

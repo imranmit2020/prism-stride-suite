@@ -3026,6 +3026,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      seed_personal_inventory_data_for_user: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       seed_pos_data_for_user: {
         Args: Record<PropertyKey, never>
         Returns: undefined

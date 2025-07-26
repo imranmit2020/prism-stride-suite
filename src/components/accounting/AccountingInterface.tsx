@@ -58,7 +58,6 @@ export function AccountingInterface({ isHomeMode = false }: AccountingInterfaceP
               <TabsTrigger value="add-budget" className="px-3 py-2 text-xs font-medium">Add Budget</TabsTrigger>
               <TabsTrigger value="expenses" className="px-3 py-2 text-xs font-medium">Expense Tracking</TabsTrigger>
               <TabsTrigger value="budgets" className="px-3 py-2 text-xs font-medium">Budget Management</TabsTrigger>
-              <TabsTrigger value="reports" className="px-3 py-2 text-xs font-medium">Financial Reports</TabsTrigger>
             </>
           ) : (
             <>
@@ -152,12 +151,12 @@ export function AccountingInterface({ isHomeMode = false }: AccountingInterfaceP
           </>
         )}
 
-        <TabsContent value="reports" className="space-y-6">
-          <FinancialReports />
-        </TabsContent>
-
         {!isHomeMode && (
           <>
+            <TabsContent value="reports" className="space-y-6">
+              <FinancialReports />
+            </TabsContent>
+
             <TabsContent value="ai-insights" className="space-y-6">
               <AIFinancialInsights />
             </TabsContent>

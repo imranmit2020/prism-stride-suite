@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Mail, Lock, User, Building2 } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Building2, Home, Briefcase } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +18,8 @@ export function AuthPage() {
     email: "", 
     password: "", 
     confirmPassword: "",
-    fullName: ""
+    fullName: "",
+    preferredMode: "business" as "business" | "personal"
   });
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -117,12 +119,13 @@ export function AuthPage() {
       const { data, error } = await supabase.auth.signUp({
         email: signupForm.email,
         password: signupForm.password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            full_name: signupForm.fullName
+          options: {
+            emailRedirectTo: redirectUrl,
+            data: {
+              full_name: signupForm.fullName,
+              preferred_mode: signupForm.preferredMode
+            }
           }
-        }
       });
 
       if (error) {
@@ -286,6 +289,43 @@ export function AuthPage() {
                         required
                       />
                     </div>
+                  </div>
+                  
+                  {/* Mode Selection */}
+                  <div className="space-y-3">
+                    <Label>Choose Your Mode</Label>
+                    <RadioGroup 
+                      value={signupForm.preferredMode} 
+                      onValueChange={(value) => setSignupForm(prev => ({ ...prev, preferredMode: value as "business" | "personal" }))}
+                      className="grid grid-cols-2 gap-4"
+                    >
+                      <div>
+                        <RadioGroupItem value="business" id="business" className="peer sr-only" />
+                        <Label
+                          htmlFor="business"
+                          className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer transition-colors"
+                        >
+                          <Briefcase className="mb-3 h-6 w-6" />
+                          <div className="font-medium">Business</div>
+                          <div className="text-xs text-muted-foreground text-center">
+                            For companies, teams, and professional use
+                          </div>
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem value="personal" id="personal" className="peer sr-only" />
+                        <Label
+                          htmlFor="personal"
+                          className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer transition-colors"
+                        >
+                          <Home className="mb-3 h-6 w-6" />
+                          <div className="font-medium">Personal</div>
+                          <div className="text-xs text-muted-foreground text-center">
+                            For personal finance and home management
+                          </div>
+                        </Label>
+                      </div>
+                    </RadioGroup>
                   </div>
                   
                   <div className="space-y-2">

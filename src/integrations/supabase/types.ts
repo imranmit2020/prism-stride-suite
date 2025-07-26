@@ -2989,6 +2989,7 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          preferred_mode: string | null
           role: string | null
           updated_at: string | null
         }
@@ -3001,6 +3002,7 @@ export type Database = {
           full_name?: string | null
           id: string
           phone?: string | null
+          preferred_mode?: string | null
           role?: string | null
           updated_at?: string | null
         }
@@ -3013,6 +3015,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          preferred_mode?: string | null
           role?: string | null
           updated_at?: string | null
         }

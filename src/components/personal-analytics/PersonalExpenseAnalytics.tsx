@@ -9,37 +9,34 @@ import { Receipt, TrendingUp, TrendingDown, DollarSign, ShoppingCart, Home, Cale
 import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { usePersonalFinance } from "@/hooks/usePersonalFinance";
 
 export function PersonalExpenseAnalytics() {
   const [selectedTimeRange, setSelectedTimeRange] = useState("6months");
   const [dateFrom, setDateFrom] = useState<Date>();
   const [dateTo, setDateTo] = useState<Date>();
-
-  const monthlyExpenses = [
-    { category: "Groceries", amount: 1247, budget: 1200, change: 3.9, trend: "up" },
-    { category: "Transportation", amount: 456, budget: 500, change: -8.8, trend: "down" },
-    { category: "Utilities", amount: 234, budget: 250, change: -6.4, trend: "down" },
-    { category: "Entertainment", amount: 312, budget: 300, change: 4.0, trend: "up" },
-    { category: "Shopping", amount: 789, budget: 600, change: 31.5, trend: "up" },
-    { category: "Healthcare", amount: 156, budget: 200, change: -22.0, trend: "down" }
-  ];
+  
+  const { loading, getExpenseStats } = usePersonalFinance();
+  const expenseStats = getExpenseStats();
+  
+  const monthlyExpenses = expenseStats.categoryBreakdown;
 
   const expenseInsights = [
     {
-      title: "Highest Spending Day",
-      value: "Saturdays",
-      detail: "40% more than weekday average",
-      icon: ShoppingCart
-    },
-    {
-      title: "Most Expensive Category",
-      value: "Groceries",
-      detail: "$1,247 this month",
+      title: "Total Monthly Expenses",
+      value: loading ? "..." : `$${expenseStats.totalExpenses.toLocaleString()}`,
+      detail: `${expenseStats.monthlyExpenses} transactions this month`,
       icon: Receipt
     },
     {
+      title: "Most Expensive Category",
+      value: loading ? "..." : monthlyExpenses.length > 0 ? monthlyExpenses[0].category : "N/A",
+      detail: loading ? "..." : monthlyExpenses.length > 0 ? `$${monthlyExpenses[0].amount.toLocaleString()} this month` : "No data",
+      icon: ShoppingCart
+    },
+    {
       title: "Budget Variance",
-      value: "+$203",
+      value: loading ? "..." : "+$203",
       detail: "8.9% over monthly budget",
       icon: TrendingUp
     },
@@ -138,37 +135,43 @@ export function PersonalExpenseAnalytics() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {monthlyExpenses.map((expense, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{expense.category}</span>
-                    <Badge variant={expense.trend === "up" ? "destructive" : "default"}>
-                      {expense.trend === "up" ? "+" : ""}{expense.change.toFixed(1)}%
-                    </Badge>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-medium">${expense.amount.toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">
-                      Budget: ${expense.budget.toLocaleString()}
+            {loading ? (
+              <div className="text-center text-muted-foreground">Loading expense data...</div>
+            ) : monthlyExpenses.length === 0 ? (
+              <div className="text-center text-muted-foreground">No expense data found. Start by adding some expenses to track.</div>
+            ) : (
+              monthlyExpenses.map((expense, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{expense.category}</span>
+                      <Badge variant={expense.trend === "up" ? "destructive" : "default"}>
+                        {expense.trend === "up" ? "+" : ""}{expense.change.toFixed(1)}%
+                      </Badge>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-medium">${expense.amount.toLocaleString()}</div>
+                      <div className="text-xs text-muted-foreground">
+                        Budget: ${expense.budget.toLocaleString()}
+                      </div>
                     </div>
                   </div>
+                  <div className="relative">
+                    <Progress value={(expense.amount / expense.budget) * 100} className="h-2" />
+                    {expense.amount > expense.budget && (
+                      <div 
+                        className="absolute top-0 h-2 bg-destructive rounded-full"
+                        style={{ 
+                          left: "100%", 
+                          width: `${((expense.amount - expense.budget) / expense.budget) * 100}%`,
+                          maxWidth: "50%"
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="relative">
-                  <Progress value={(expense.amount / expense.budget) * 100} className="h-2" />
-                  {expense.amount > expense.budget && (
-                    <div 
-                      className="absolute top-0 h-2 bg-destructive rounded-full"
-                      style={{ 
-                        left: "100%", 
-                        width: `${((expense.amount - expense.budget) / expense.budget) * 100}%`,
-                        maxWidth: "50%"
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

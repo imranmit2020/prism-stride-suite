@@ -9,39 +9,36 @@ import { TrendingUp, DollarSign, Calendar as CalendarIcon, Target, BriefcaseIcon
 import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { usePersonalFinance } from "@/hooks/usePersonalFinance";
 
 export function PersonalIncomeAnalytics() {
   const [selectedTimeRange, setSelectedTimeRange] = useState("6months");
   const [dateFrom, setDateFrom] = useState<Date>();
   const [dateTo, setDateTo] = useState<Date>();
-
-  const incomeStreams = [
-    { source: "Primary Job", amount: 4500, target: 4500, change: 5.2, trend: "up", type: "Salary" },
-    { source: "Freelancing", amount: 650, target: 800, change: -18.8, trend: "down", type: "Variable" },
-    { source: "Investments", amount: 150, target: 200, change: 25.0, trend: "up", type: "Passive" },
-    { source: "Side Business", amount: 320, target: 400, change: 12.3, trend: "up", type: "Business" },
-    { source: "Rental Income", amount: 280, target: 300, change: -6.7, trend: "down", type: "Passive" },
-    { source: "Dividends", amount: 95, target: 100, change: 8.0, trend: "up", type: "Passive" }
-  ];
+  
+  const { loading, getIncomeStats } = usePersonalFinance();
+  const incomeStats = getIncomeStats();
+  
+  const incomeStreams = incomeStats.incomeStreams;
 
   const incomeInsights = [
     {
       title: "Monthly Income",
-      value: "$5,995",
+      value: loading ? "..." : `$${incomeStats.totalIncome.toLocaleString()}`,
       detail: "Total across all sources",
       icon: DollarSign,
       color: "text-green-600"
     },
     {
       title: "Best Performing Source",
-      value: "Investments",
-      detail: "+25% growth this month",
+      value: loading ? "..." : incomeStreams.length > 0 ? incomeStreams[0].source : "N/A",
+      detail: loading ? "..." : incomeStreams.length > 0 ? `+${incomeStreams[0].change}% growth this month` : "No data",
       icon: TrendingUp,
       color: "text-emerald-600"
     },
     {
       title: "Target Achievement",
-      value: "88.2%",
+      value: loading ? "..." : "88.2%",
       detail: "Of monthly income goal",
       icon: Target,
       color: "text-blue-600"
@@ -142,38 +139,44 @@ export function PersonalIncomeAnalytics() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {incomeStreams.map((stream, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{stream.source}</span>
-                    <Badge variant="outline">{stream.type}</Badge>
-                    <Badge variant={stream.trend === "up" ? "default" : "destructive"}>
-                      {stream.trend === "up" ? "+" : ""}{stream.change.toFixed(1)}%
-                    </Badge>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-medium">${stream.amount.toLocaleString()}</div>
-                    <div className="text-xs text-muted-foreground">
-                      Target: ${stream.target.toLocaleString()}
+            {loading ? (
+              <div className="text-center text-muted-foreground">Loading income data...</div>
+            ) : incomeStreams.length === 0 ? (
+              <div className="text-center text-muted-foreground">No income data found. Start by adding some income sources to track.</div>
+            ) : (
+              incomeStreams.map((stream, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{stream.source}</span>
+                      <Badge variant="outline">{stream.type}</Badge>
+                      <Badge variant={stream.trend === "up" ? "default" : "destructive"}>
+                        {stream.trend === "up" ? "+" : ""}{stream.change.toFixed(1)}%
+                      </Badge>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-medium">${stream.amount.toLocaleString()}</div>
+                      <div className="text-xs text-muted-foreground">
+                        Target: ${stream.target.toLocaleString()}
+                      </div>
                     </div>
                   </div>
+                  <div className="relative">
+                    <Progress value={(stream.amount / stream.target) * 100} className="h-2" />
+                    {stream.amount > stream.target && (
+                      <div 
+                        className="absolute top-0 h-2 bg-green-500 rounded-full"
+                        style={{ 
+                          left: "100%", 
+                          width: `${((stream.amount - stream.target) / stream.target) * 100}%`,
+                          maxWidth: "50%"
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="relative">
-                  <Progress value={(stream.amount / stream.target) * 100} className="h-2" />
-                  {stream.amount > stream.target && (
-                    <div 
-                      className="absolute top-0 h-2 bg-green-500 rounded-full"
-                      style={{ 
-                        left: "100%", 
-                        width: `${((stream.amount - stream.target) / stream.target) * 100}%`,
-                        maxWidth: "50%"
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

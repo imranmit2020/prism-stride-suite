@@ -1,16 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Target, DollarSign, TrendingUp, AlertCircle } from "lucide-react";
+import { usePersonalFinance } from "@/hooks/usePersonalFinance";
 
 export function PersonalBudgetAnalytics() {
-  const budgetCategories = [
-    { name: "Housing", budget: 1500, spent: 1500, percentage: 100 },
-    { name: "Food", budget: 800, spent: 687, percentage: 86 },
-    { name: "Transportation", budget: 400, spent: 345, percentage: 86 },
-    { name: "Entertainment", budget: 300, spent: 412, percentage: 137 },
-    { name: "Savings", budget: 500, spent: 350, percentage: 70 },
-    { name: "Miscellaneous", budget: 200, spent: 156, percentage: 78 }
-  ];
+  const { loading, getBudgetStats } = usePersonalFinance();
+  const budgetStats = getBudgetStats();
+  
+  const budgetCategories = budgetStats.budgetCategories;
 
   return (
     <div className="space-y-6">
@@ -23,7 +20,7 @@ export function PersonalBudgetAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">$3,700</div>
+            <div className="text-2xl font-bold text-primary">{loading ? "..." : `$${budgetStats.totalBudget.toLocaleString()}`}</div>
             <div className="text-xs text-muted-foreground">Total allocated</div>
           </CardContent>
         </Card>
@@ -36,8 +33,8 @@ export function PersonalBudgetAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-500">$3,450</div>
-            <div className="text-xs text-muted-foreground">93% of budget</div>
+            <div className="text-2xl font-bold text-green-500">{loading ? "..." : `$${budgetStats.totalSpent.toLocaleString()}`}</div>
+            <div className="text-xs text-muted-foreground">{loading ? "..." : `${Math.round((budgetStats.totalSpent / budgetStats.totalBudget) * 100)}% of budget`}</div>
           </CardContent>
         </Card>
 
@@ -49,8 +46,8 @@ export function PersonalBudgetAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">$250</div>
-            <div className="text-xs text-muted-foreground">7% left for month</div>
+            <div className="text-2xl font-bold text-blue-500">{loading ? "..." : `$${budgetStats.remaining.toLocaleString()}`}</div>
+            <div className="text-xs text-muted-foreground">{loading ? "..." : `${Math.round((budgetStats.remaining / budgetStats.totalBudget) * 100)}% left for month`}</div>
           </CardContent>
         </Card>
 
@@ -62,7 +59,7 @@ export function PersonalBudgetAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">1</div>
+            <div className="text-2xl font-bold text-red-500">{loading ? "..." : budgetStats.overBudgetCount}</div>
             <div className="text-xs text-muted-foreground">Category exceeded</div>
           </CardContent>
         </Card>
@@ -75,30 +72,36 @@ export function PersonalBudgetAnalytics() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {budgetCategories.map((category, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">{category.name}</span>
-                  <div className="text-right">
-                    <div className="font-medium">
-                      ${category.spent} / ${category.budget}
-                    </div>
-                    <div className={`text-xs ${category.percentage > 100 ? 'text-red-500' : 'text-muted-foreground'}`}>
-                      {category.percentage}%
+            {loading ? (
+              <div className="text-center text-muted-foreground">Loading budget data...</div>
+            ) : budgetCategories.length === 0 ? (
+              <div className="text-center text-muted-foreground">No budget data found. Start by creating some budgets to track.</div>
+            ) : (
+              budgetCategories.map((category, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{category.name}</span>
+                    <div className="text-right">
+                      <div className="font-medium">
+                        ${category.spent} / ${category.budget}
+                      </div>
+                      <div className={`text-xs ${category.percentage > 100 ? 'text-red-500' : 'text-muted-foreground'}`}>
+                        {category.percentage}%
+                      </div>
                     </div>
                   </div>
+                  <Progress 
+                    value={Math.min(category.percentage, 100)} 
+                    className={`h-2 ${category.percentage > 100 ? 'bg-red-100' : ''}`}
+                  />
+                  {category.percentage > 100 && (
+                    <div className="text-xs text-red-500">
+                      Over budget by ${category.spent - category.budget}
+                    </div>
+                  )}
                 </div>
-                <Progress 
-                  value={Math.min(category.percentage, 100)} 
-                  className={`h-2 ${category.percentage > 100 ? 'bg-red-100' : ''}`}
-                />
-                {category.percentage > 100 && (
-                  <div className="text-xs text-red-500">
-                    Over budget by ${category.spent - category.budget}
-                  </div>
-                )}
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

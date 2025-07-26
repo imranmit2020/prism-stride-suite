@@ -1910,6 +1910,371 @@ export type Database = {
         }
         Relationships: []
       }
+      pm_fnc_budgets: {
+        Row: {
+          alert_threshold: number | null
+          budgeted_amount: number
+          category_id: string | null
+          created_at: string
+          end_date: string
+          id: string
+          is_active: boolean | null
+          name: string
+          notes: string | null
+          period: string
+          spent_amount: number | null
+          start_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alert_threshold?: number | null
+          budgeted_amount?: number
+          category_id?: string | null
+          created_at?: string
+          end_date: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          notes?: string | null
+          period?: string
+          spent_amount?: number | null
+          start_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alert_threshold?: number | null
+          budgeted_amount?: number
+          category_id?: string | null
+          created_at?: string
+          end_date?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          notes?: string | null
+          period?: string
+          spent_amount?: number | null
+          start_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pm_fnc_budgets_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_fnc_categories: {
+        Row: {
+          category_type: string
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category_type: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category_type?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pm_fnc_expenses: {
+        Row: {
+          amount: number
+          category_id: string | null
+          created_at: string
+          date: string
+          description: string
+          id: string
+          is_recurring: boolean | null
+          is_tax_deductible: boolean | null
+          location: string | null
+          merchant: string | null
+          notes: string | null
+          payment_method: string | null
+          receipt_url: string | null
+          recurrence_pattern: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          category_id?: string | null
+          created_at?: string
+          date: string
+          description: string
+          id?: string
+          is_recurring?: boolean | null
+          is_tax_deductible?: boolean | null
+          location?: string | null
+          merchant?: string | null
+          notes?: string | null
+          payment_method?: string | null
+          receipt_url?: string | null
+          recurrence_pattern?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category_id?: string | null
+          created_at?: string
+          date?: string
+          description?: string
+          id?: string
+          is_recurring?: boolean | null
+          is_tax_deductible?: boolean | null
+          location?: string | null
+          merchant?: string | null
+          notes?: string | null
+          payment_method?: string | null
+          receipt_url?: string | null
+          recurrence_pattern?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pm_fnc_expenses_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_fnc_goals: {
+        Row: {
+          completed_date: string | null
+          created_at: string
+          current_amount: number | null
+          description: string | null
+          goal_type: string
+          id: string
+          is_active: boolean | null
+          is_completed: boolean | null
+          name: string
+          notes: string | null
+          priority: string | null
+          target_amount: number
+          target_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_date?: string | null
+          created_at?: string
+          current_amount?: number | null
+          description?: string | null
+          goal_type: string
+          id?: string
+          is_active?: boolean | null
+          is_completed?: boolean | null
+          name: string
+          notes?: string | null
+          priority?: string | null
+          target_amount?: number
+          target_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_date?: string | null
+          created_at?: string
+          current_amount?: number | null
+          description?: string | null
+          goal_type?: string
+          id?: string
+          is_active?: boolean | null
+          is_completed?: boolean | null
+          name?: string
+          notes?: string | null
+          priority?: string | null
+          target_amount?: number
+          target_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pm_fnc_income: {
+        Row: {
+          amount: number
+          category_id: string | null
+          created_at: string
+          date: string
+          description: string | null
+          employer_payer: string | null
+          id: string
+          income_type: string
+          is_recurring: boolean | null
+          net_amount: number | null
+          notes: string | null
+          payment_method: string | null
+          recurrence_pattern: string | null
+          source: string
+          target_amount: number | null
+          tax_withheld: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          category_id?: string | null
+          created_at?: string
+          date: string
+          description?: string | null
+          employer_payer?: string | null
+          id?: string
+          income_type: string
+          is_recurring?: boolean | null
+          net_amount?: number | null
+          notes?: string | null
+          payment_method?: string | null
+          recurrence_pattern?: string | null
+          source: string
+          target_amount?: number | null
+          tax_withheld?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category_id?: string | null
+          created_at?: string
+          date?: string
+          description?: string | null
+          employer_payer?: string | null
+          id?: string
+          income_type?: string
+          is_recurring?: boolean | null
+          net_amount?: number | null
+          notes?: string | null
+          payment_method?: string | null
+          recurrence_pattern?: string | null
+          source?: string
+          target_amount?: number | null
+          tax_withheld?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pm_fnc_income_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_fnc_transactions: {
+        Row: {
+          account_from: string | null
+          account_to: string | null
+          amount: number
+          category_id: string | null
+          created_at: string
+          date: string
+          description: string
+          id: string
+          is_recurring: boolean | null
+          location: string | null
+          merchant: string | null
+          notes: string | null
+          parent_transaction_id: string | null
+          payment_method: string | null
+          recurrence_pattern: string | null
+          reference_number: string | null
+          tags: string[] | null
+          transaction_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_from?: string | null
+          account_to?: string | null
+          amount?: number
+          category_id?: string | null
+          created_at?: string
+          date: string
+          description: string
+          id?: string
+          is_recurring?: boolean | null
+          location?: string | null
+          merchant?: string | null
+          notes?: string | null
+          parent_transaction_id?: string | null
+          payment_method?: string | null
+          recurrence_pattern?: string | null
+          reference_number?: string | null
+          tags?: string[] | null
+          transaction_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_from?: string | null
+          account_to?: string | null
+          amount?: number
+          category_id?: string | null
+          created_at?: string
+          date?: string
+          description?: string
+          id?: string
+          is_recurring?: boolean | null
+          location?: string | null
+          merchant?: string | null
+          notes?: string | null
+          parent_transaction_id?: string | null
+          payment_method?: string | null
+          recurrence_pattern?: string | null
+          reference_number?: string | null
+          tags?: string[] | null
+          transaction_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pm_fnc_transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pm_inv_categories: {
         Row: {
           color: string | null

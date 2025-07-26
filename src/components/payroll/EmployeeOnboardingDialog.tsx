@@ -391,12 +391,6 @@ export function EmployeeOnboardingDialog({ open, onOpenChange, employee, onSaveE
     }
 
     onSaveEmployee(formData);
-    
-    toast({
-      title: "Employee Onboarded",
-      description: `${formData.personalInfo.firstName} ${formData.personalInfo.lastName} has been successfully onboarded`
-    });
-
     onOpenChange(false);
   };
 

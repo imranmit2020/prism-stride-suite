@@ -13,6 +13,7 @@ import { AITimeTheftDetective } from "./AITimeTheftDetective";
 import { EmployeeOnboardingDialog } from "./EmployeeOnboardingDialog";
 import { SmartSchedulingDialog } from "./SmartSchedulingDialog";
 import { useToast } from "@/hooks/use-toast";
+import { usePayroll } from "@/hooks/usePayroll";
 import { UserPlus, Calendar } from "lucide-react";
 
 export function PayrollInterface() {
@@ -22,12 +23,50 @@ export function PayrollInterface() {
   const [showOnboardingDialog, setShowOnboardingDialog] = useState(false);
   const [showSchedulingDialog, setShowSchedulingDialog] = useState(false);
   const { toast } = useToast();
+  const { createEmployee } = usePayroll();
 
-  const handleSaveEmployee = (employee: any) => {
-    toast({
-      title: "Employee Onboarded",
-      description: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName} has been successfully added to the system`
-    });
+  const handleSaveEmployee = async (employeeData: any) => {
+    try {
+      // Convert the form data to the database format
+      const employeeToSave = {
+        employee_id: employeeData.employment.employeeId || `EMP-${Date.now()}`,
+        first_name: employeeData.personalInfo.firstName,
+        last_name: employeeData.personalInfo.lastName,
+        email: employeeData.personalInfo.email,
+        phone: employeeData.personalInfo.phone,
+        position: employeeData.employment.position,
+        department: employeeData.employment.department,
+        hire_date: employeeData.employment.startDate,
+        employment_type: employeeData.employment.employmentType,
+        salary_type: employeeData.compensation.salaryType,
+        base_salary: employeeData.compensation.baseSalary,
+        status: 'active' as const,
+        street_address: employeeData.personalInfo.address?.street,
+        city: employeeData.personalInfo.address?.city,
+        state: employeeData.personalInfo.address?.state,
+        zip_code: employeeData.personalInfo.address?.zipCode,
+        ssn: employeeData.taxInfo?.ssn,
+        filing_status: employeeData.taxInfo?.filingStatus,
+        allowances: employeeData.taxInfo?.allowances,
+        account_number: employeeData.bankInfo?.accountNumber,
+        routing_number: employeeData.bankInfo?.routingNumber,
+        bank_name: employeeData.bankInfo?.bankName,
+      };
+
+      await createEmployee(employeeToSave);
+      
+      toast({
+        title: "Employee Onboarded",
+        description: `${employeeData.personalInfo.firstName} ${employeeData.personalInfo.lastName} has been successfully added to the system`
+      });
+    } catch (error) {
+      console.error('Error saving employee:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save employee to database",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleAddEmployee = () => {

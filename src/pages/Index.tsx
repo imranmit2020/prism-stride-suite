@@ -8,6 +8,7 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 // import { AIBusinessAdvisor } from "@/components/dashboard/AIBusinessAdvisor";
 import { POSInterface } from "@/components/pos/POSInterface";
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
+import { PersonalInventoryInterface } from "@/components/inventory/PersonalInventoryInterface";
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
@@ -192,7 +193,7 @@ const MainApp = () => {
                 }
               </p>
             </div>
-            <InventoryInterface />
+            {isHomeMode ? <PersonalInventoryInterface /> : <InventoryInterface />}
           </div>
         );
       case "payroll":

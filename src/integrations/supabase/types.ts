@@ -14,6 +14,742 @@ export type Database = {
   }
   public: {
     Tables: {
+      bm_acc_budget_items: {
+        Row: {
+          account_id: string
+          actual_amount: number | null
+          budget_id: string
+          budgeted_amount: number
+          created_at: string
+          id: string
+          period: string
+          period_number: number
+          updated_at: string
+          variance: number | null
+        }
+        Insert: {
+          account_id: string
+          actual_amount?: number | null
+          budget_id: string
+          budgeted_amount?: number
+          created_at?: string
+          id?: string
+          period: string
+          period_number: number
+          updated_at?: string
+          variance?: number | null
+        }
+        Update: {
+          account_id?: string
+          actual_amount?: number | null
+          budget_id?: string
+          budgeted_amount?: number
+          created_at?: string
+          id?: string
+          period?: string
+          period_number?: number
+          updated_at?: string
+          variance?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_budget_items_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_chart_of_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_budget_items_budget_id_fkey"
+            columns: ["budget_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_budgets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_budgets: {
+        Row: {
+          created_at: string
+          end_date: string
+          fiscal_year: number
+          id: string
+          name: string
+          start_date: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          fiscal_year: number
+          id?: string
+          name: string
+          start_date: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          fiscal_year?: number
+          id?: string
+          name?: string
+          start_date?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_acc_chart_of_accounts: {
+        Row: {
+          account_code: string
+          account_name: string
+          account_type: string
+          balance: number | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          parent_account_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_code: string
+          account_name: string
+          account_type: string
+          balance?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          parent_account_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_code?: string
+          account_name?: string
+          account_type?: string
+          balance?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          parent_account_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_chart_of_accounts_parent_account_id_fkey"
+            columns: ["parent_account_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_chart_of_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_customers: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          credit_limit: number | null
+          customer_code: string
+          email: string | null
+          id: string
+          is_active: boolean
+          name: string
+          notes: string | null
+          payment_terms: number | null
+          phone: string | null
+          postal_code: string | null
+          state: string | null
+          tax_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          credit_limit?: number | null
+          customer_code: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          notes?: string | null
+          payment_terms?: number | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          credit_limit?: number | null
+          customer_code?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: string | null
+          payment_terms?: number | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_acc_expenses: {
+        Row: {
+          account_id: string | null
+          amount: number
+          approved_by: string | null
+          approved_date: string | null
+          category: string
+          created_at: string
+          date: string
+          description: string
+          expense_number: string | null
+          id: string
+          is_recurring: boolean | null
+          is_tax_deductible: boolean | null
+          notes: string | null
+          paid_date: string | null
+          payment_method: string | null
+          receipt_url: string | null
+          recurrence_pattern: string | null
+          reference_number: string | null
+          status: string | null
+          submitted_by: string | null
+          tax_amount: number | null
+          total_amount: number
+          updated_at: string
+          user_id: string
+          vendor_id: string | null
+          vendor_name: string | null
+        }
+        Insert: {
+          account_id?: string | null
+          amount: number
+          approved_by?: string | null
+          approved_date?: string | null
+          category: string
+          created_at?: string
+          date: string
+          description: string
+          expense_number?: string | null
+          id?: string
+          is_recurring?: boolean | null
+          is_tax_deductible?: boolean | null
+          notes?: string | null
+          paid_date?: string | null
+          payment_method?: string | null
+          receipt_url?: string | null
+          recurrence_pattern?: string | null
+          reference_number?: string | null
+          status?: string | null
+          submitted_by?: string | null
+          tax_amount?: number | null
+          total_amount: number
+          updated_at?: string
+          user_id: string
+          vendor_id?: string | null
+          vendor_name?: string | null
+        }
+        Update: {
+          account_id?: string | null
+          amount?: number
+          approved_by?: string | null
+          approved_date?: string | null
+          category?: string
+          created_at?: string
+          date?: string
+          description?: string
+          expense_number?: string | null
+          id?: string
+          is_recurring?: boolean | null
+          is_tax_deductible?: boolean | null
+          notes?: string | null
+          paid_date?: string | null
+          payment_method?: string | null
+          receipt_url?: string | null
+          recurrence_pattern?: string | null
+          reference_number?: string | null
+          status?: string | null
+          submitted_by?: string | null
+          tax_amount?: number | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+          vendor_id?: string | null
+          vendor_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_expenses_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_chart_of_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_expenses_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_invoice_items: {
+        Row: {
+          account_id: string | null
+          created_at: string
+          description: string
+          discount_percentage: number | null
+          id: string
+          invoice_id: string
+          line_number: number
+          line_total: number
+          quantity: number
+          tax_code: string | null
+          unit_price: number
+        }
+        Insert: {
+          account_id?: string | null
+          created_at?: string
+          description: string
+          discount_percentage?: number | null
+          id?: string
+          invoice_id: string
+          line_number: number
+          line_total?: number
+          quantity?: number
+          tax_code?: string | null
+          unit_price?: number
+        }
+        Update: {
+          account_id?: string | null
+          created_at?: string
+          description?: string
+          discount_percentage?: number | null
+          id?: string
+          invoice_id?: string
+          line_number?: number
+          line_total?: number
+          quantity?: number
+          tax_code?: string | null
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_invoice_items_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_chart_of_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_invoices: {
+        Row: {
+          balance_due: number | null
+          created_at: string
+          currency: string | null
+          customer_id: string
+          discount_amount: number | null
+          due_date: string
+          id: string
+          invoice_number: string
+          issue_date: string
+          notes: string | null
+          paid_amount: number | null
+          paid_date: string | null
+          payment_instructions: string | null
+          sent_date: string | null
+          status: string
+          subtotal: number
+          tax_amount: number | null
+          tax_rate: number | null
+          terms: string | null
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance_due?: number | null
+          created_at?: string
+          currency?: string | null
+          customer_id: string
+          discount_amount?: number | null
+          due_date: string
+          id?: string
+          invoice_number: string
+          issue_date: string
+          notes?: string | null
+          paid_amount?: number | null
+          paid_date?: string | null
+          payment_instructions?: string | null
+          sent_date?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number | null
+          tax_rate?: number | null
+          terms?: string | null
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance_due?: number | null
+          created_at?: string
+          currency?: string | null
+          customer_id?: string
+          discount_amount?: number | null
+          due_date?: string
+          id?: string
+          invoice_number?: string
+          issue_date?: string
+          notes?: string | null
+          paid_amount?: number | null
+          paid_date?: string | null
+          payment_instructions?: string | null
+          sent_date?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number | null
+          tax_rate?: number | null
+          terms?: string | null
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_invoices_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_journal_entries: {
+        Row: {
+          approved_by: string | null
+          created_at: string
+          created_by: string | null
+          date: string
+          description: string
+          entry_number: string
+          id: string
+          reference: string | null
+          source_id: string | null
+          source_type: string | null
+          status: string | null
+          total_credit: number
+          total_debit: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          date: string
+          description: string
+          entry_number: string
+          id?: string
+          reference?: string | null
+          source_id?: string | null
+          source_type?: string | null
+          status?: string | null
+          total_credit?: number
+          total_debit?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          description?: string
+          entry_number?: string
+          id?: string
+          reference?: string | null
+          source_id?: string | null
+          source_type?: string | null
+          status?: string | null
+          total_credit?: number
+          total_debit?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_acc_journal_entry_lines: {
+        Row: {
+          account_id: string
+          created_at: string
+          credit_amount: number | null
+          debit_amount: number | null
+          description: string | null
+          id: string
+          journal_entry_id: string
+          line_number: number
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          credit_amount?: number | null
+          debit_amount?: number | null
+          description?: string | null
+          id?: string
+          journal_entry_id: string
+          line_number: number
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          credit_amount?: number | null
+          debit_amount?: number | null
+          description?: string | null
+          id?: string
+          journal_entry_id?: string
+          line_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_journal_entry_lines_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_chart_of_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_journal_entry_lines_journal_entry_id_fkey"
+            columns: ["journal_entry_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_journal_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_payments: {
+        Row: {
+          account_id: string
+          amount: number
+          created_at: string
+          customer_id: string | null
+          date: string
+          description: string | null
+          expense_id: string | null
+          id: string
+          invoice_id: string | null
+          notes: string | null
+          payment_method: string
+          payment_number: string
+          reference_number: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+          vendor_id: string | null
+        }
+        Insert: {
+          account_id: string
+          amount: number
+          created_at?: string
+          customer_id?: string | null
+          date: string
+          description?: string | null
+          expense_id?: string | null
+          id?: string
+          invoice_id?: string | null
+          notes?: string | null
+          payment_method: string
+          payment_number: string
+          reference_number?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          vendor_id?: string | null
+        }
+        Update: {
+          account_id?: string
+          amount?: number
+          created_at?: string
+          customer_id?: string | null
+          date?: string
+          description?: string | null
+          expense_id?: string | null
+          id?: string
+          invoice_id?: string | null
+          notes?: string | null
+          payment_method?: string
+          payment_number?: string
+          reference_number?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bm_acc_payments_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_chart_of_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_payments_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_payments_expense_id_fkey"
+            columns: ["expense_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_expenses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bm_acc_payments_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "bm_acc_vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bm_acc_tax_rates: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          rate: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          rate: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          rate?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_acc_vendors: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_active: boolean
+          name: string
+          notes: string | null
+          payment_terms: number | null
+          phone: string | null
+          postal_code: string | null
+          state: string | null
+          tax_id: string | null
+          updated_at: string
+          user_id: string
+          vendor_code: string
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          notes?: string | null
+          payment_terms?: number | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id: string
+          vendor_code: string
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: string | null
+          payment_terms?: number | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          tax_id?: string | null
+          updated_at?: string
+          user_id?: string
+          vendor_code?: string
+        }
+        Relationships: []
+      }
       bm_inv_categories: {
         Row: {
           created_at: string
@@ -376,6 +1112,384 @@ export type Database = {
           name?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      bm_payroll_benefits: {
+        Row: {
+          benefit_name: string
+          benefit_type: string
+          coverage_end_date: string | null
+          coverage_start_date: string | null
+          created_at: string
+          employee_contribution: number | null
+          employee_id: string
+          employer_contribution: number | null
+          id: string
+          is_active: boolean | null
+          provider: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          benefit_name: string
+          benefit_type: string
+          coverage_end_date?: string | null
+          coverage_start_date?: string | null
+          created_at?: string
+          employee_contribution?: number | null
+          employee_id: string
+          employer_contribution?: number | null
+          id?: string
+          is_active?: boolean | null
+          provider?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          benefit_name?: string
+          benefit_type?: string
+          coverage_end_date?: string | null
+          coverage_start_date?: string | null
+          created_at?: string
+          employee_contribution?: number | null
+          employee_id?: string
+          employer_contribution?: number | null
+          id?: string
+          is_active?: boolean | null
+          provider?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_payroll_deductions: {
+        Row: {
+          amount: number
+          created_at: string
+          deduction_name: string
+          deduction_type: string
+          effective_date: string | null
+          employee_id: string
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          is_percentage: boolean | null
+          is_pre_tax: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          deduction_name: string
+          deduction_type: string
+          effective_date?: string | null
+          employee_id: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_percentage?: boolean | null
+          is_pre_tax?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          deduction_name?: string
+          deduction_type?: string
+          effective_date?: string | null
+          employee_id?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_percentage?: boolean | null
+          is_pre_tax?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_payroll_departments: {
+        Row: {
+          budget_allocated: number | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          manager: string | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_allocated?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          manager?: string | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_allocated?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          manager?: string | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_payroll_employees: {
+        Row: {
+          account_number: string | null
+          allowances: number | null
+          bank_name: string | null
+          base_salary: number
+          city: string | null
+          created_at: string
+          department: string
+          email: string | null
+          employee_id: string
+          employment_type: string
+          filing_status: string | null
+          first_name: string
+          hire_date: string
+          id: string
+          last_name: string
+          phone: string | null
+          position: string
+          routing_number: string | null
+          salary_type: string
+          ssn: string | null
+          state: string | null
+          status: string
+          street_address: string | null
+          updated_at: string
+          user_id: string
+          zip_code: string | null
+        }
+        Insert: {
+          account_number?: string | null
+          allowances?: number | null
+          bank_name?: string | null
+          base_salary?: number
+          city?: string | null
+          created_at?: string
+          department: string
+          email?: string | null
+          employee_id: string
+          employment_type?: string
+          filing_status?: string | null
+          first_name: string
+          hire_date: string
+          id?: string
+          last_name: string
+          phone?: string | null
+          position: string
+          routing_number?: string | null
+          salary_type?: string
+          ssn?: string | null
+          state?: string | null
+          status?: string
+          street_address?: string | null
+          updated_at?: string
+          user_id: string
+          zip_code?: string | null
+        }
+        Update: {
+          account_number?: string | null
+          allowances?: number | null
+          bank_name?: string | null
+          base_salary?: number
+          city?: string | null
+          created_at?: string
+          department?: string
+          email?: string | null
+          employee_id?: string
+          employment_type?: string
+          filing_status?: string | null
+          first_name?: string
+          hire_date?: string
+          id?: string
+          last_name?: string
+          phone?: string | null
+          position?: string
+          routing_number?: string | null
+          salary_type?: string
+          ssn?: string | null
+          state?: string | null
+          status?: string
+          street_address?: string | null
+          updated_at?: string
+          user_id?: string
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
+      bm_payroll_records: {
+        Row: {
+          created_at: string
+          deductions: number
+          employee_id: string
+          gross_pay: number
+          hours_worked: number | null
+          id: string
+          net_pay: number
+          overtime_hours: number | null
+          pay_date: string
+          pay_period_end: string
+          pay_period_start: string
+          payroll_type: string
+          record_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deductions?: number
+          employee_id: string
+          gross_pay?: number
+          hours_worked?: number | null
+          id?: string
+          net_pay?: number
+          overtime_hours?: number | null
+          pay_date: string
+          pay_period_end: string
+          pay_period_start: string
+          payroll_type?: string
+          record_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deductions?: number
+          employee_id?: string
+          gross_pay?: number
+          hours_worked?: number | null
+          id?: string
+          net_pay?: number
+          overtime_hours?: number | null
+          pay_date?: string
+          pay_period_end?: string
+          pay_period_start?: string
+          payroll_type?: string
+          record_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_payroll_runs: {
+        Row: {
+          created_at: string
+          employee_count: number | null
+          id: string
+          pay_date: string
+          pay_period_end: string
+          pay_period_start: string
+          processed_at: string | null
+          processed_by: string | null
+          run_number: string
+          status: string | null
+          total_deductions: number | null
+          total_gross_pay: number | null
+          total_net_pay: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          employee_count?: number | null
+          id?: string
+          pay_date: string
+          pay_period_end: string
+          pay_period_start: string
+          processed_at?: string | null
+          processed_by?: string | null
+          run_number: string
+          status?: string | null
+          total_deductions?: number | null
+          total_gross_pay?: number | null
+          total_net_pay?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          employee_count?: number | null
+          id?: string
+          pay_date?: string
+          pay_period_end?: string
+          pay_period_start?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          run_number?: string
+          status?: string | null
+          total_deductions?: number | null
+          total_gross_pay?: number | null
+          total_net_pay?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_payroll_time_entries: {
+        Row: {
+          break_duration: number | null
+          clock_in: string | null
+          clock_out: string | null
+          created_at: string
+          date: string
+          employee_id: string
+          id: string
+          notes: string | null
+          overtime_hours: number | null
+          status: string | null
+          total_hours: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          break_duration?: number | null
+          clock_in?: string | null
+          clock_out?: string | null
+          created_at?: string
+          date: string
+          employee_id: string
+          id?: string
+          notes?: string | null
+          overtime_hours?: number | null
+          status?: string | null
+          total_hours?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          break_duration?: number | null
+          clock_in?: string | null
+          clock_out?: string | null
+          created_at?: string
+          date?: string
+          employee_id?: string
+          id?: string
+          notes?: string | null
+          overtime_hours?: number | null
+          status?: string | null
+          total_hours?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { usePayroll, PayrollRecord } from "@/hooks/usePayroll";
 import { 
   Search, 
   Download, 
@@ -12,100 +13,15 @@ import {
   FileText,
   Filter
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface PayrollRecord {
-  id: string;
-  employeeId: string;
-  employeeName: string;
-  payPeriod: {
-    start: string;
-    end: string;
-  };
-  payDate: string;
-  grossPay: number;
-  deductions: number;
-  netPay: number;
-  hoursWorked?: number;
-  overtimeHours?: number;
-  status: "paid" | "pending" | "cancelled";
-  payrollType: "regular" | "bonus" | "overtime";
-}
-
-// Mock payroll records
-const mockPayrollRecords: PayrollRecord[] = [
-  {
-    id: "PAY-2024-001",
-    employeeId: "EMP-001", 
-    employeeName: "John Smith",
-    payPeriod: { start: "2024-01-15", end: "2024-01-31" },
-    payDate: "2024-01-31",
-    grossPay: 2115.38,
-    deductions: 467.39,
-    netPay: 1647.99,
-    status: "paid",
-    payrollType: "regular"
-  },
-  {
-    id: "PAY-2024-002",
-    employeeId: "EMP-002",
-    employeeName: "Sarah Johnson", 
-    payPeriod: { start: "2024-01-15", end: "2024-01-31" },
-    payDate: "2024-01-31",
-    grossPay: 1184.00,
-    deductions: 261.48,
-    netPay: 922.52,
-    hoursWorked: 64,
-    overtimeHours: 4,
-    status: "paid",
-    payrollType: "regular"
-  },
-  {
-    id: "PAY-2024-003",
-    employeeId: "EMP-003",
-    employeeName: "Mike Wilson",
-    payPeriod: { start: "2024-01-15", end: "2024-01-31" },
-    payDate: "2024-01-31", 
-    grossPay: 1072.00,
-    deductions: 236.64,
-    netPay: 835.36,
-    hoursWorked: 64,
-    overtimeHours: 0,
-    status: "paid",
-    payrollType: "regular"
-  },
-  {
-    id: "PAY-2024-004",
-    employeeId: "EMP-001",
-    employeeName: "John Smith",
-    payPeriod: { start: "2024-01-01", end: "2024-01-14" },
-    payDate: "2024-01-15",
-    grossPay: 2115.38,
-    deductions: 467.39, 
-    netPay: 1647.99,
-    status: "paid",
-    payrollType: "regular"
-  },
-  {
-    id: "PAY-2024-005",
-    employeeId: "EMP-002",
-    employeeName: "Sarah Johnson",
-    payPeriod: { start: "2024-01-01", end: "2024-01-14" },
-    payDate: "2024-01-15",
-    grossPay: 1500.00,
-    deductions: 0,
-    netPay: 1500.00,
-    status: "paid",
-    payrollType: "bonus"
-  }
-];
-
 export function PayrollRecords() {
+  const { payrollRecords, employees } = usePayroll();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [filteredRecords, setFilteredRecords] = useState(mockPayrollRecords);
+  const [filteredRecords, setFilteredRecords] = useState<PayrollRecord[]>([]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -149,15 +65,17 @@ export function PayrollRecords() {
   };
 
   const applyFilters = (search: string, status: string, type: string) => {
-    let filtered = mockPayrollRecords;
+    let filtered = payrollRecords;
 
     // Apply search filter
     if (search) {
-      filtered = filtered.filter(record =>
-        record.employeeName.toLowerCase().includes(search.toLowerCase()) ||
-        record.employeeId.toLowerCase().includes(search.toLowerCase()) ||
-        record.id.toLowerCase().includes(search.toLowerCase())
-      );
+      filtered = filtered.filter(record => {
+        const employee = employees.find(emp => emp.id === record.employee_id);
+        const employeeName = employee ? `${employee.first_name} ${employee.last_name}` : '';
+        return employeeName.toLowerCase().includes(search.toLowerCase()) ||
+               record.record_id.toLowerCase().includes(search.toLowerCase()) ||
+               record.id.toLowerCase().includes(search.toLowerCase());
+      });
     }
 
     // Apply status filter
@@ -167,14 +85,23 @@ export function PayrollRecords() {
 
     // Apply type filter
     if (type !== "all") {
-      filtered = filtered.filter(record => record.payrollType === type);
+      filtered = filtered.filter(record => record.payroll_type === type);
     }
 
     setFilteredRecords(filtered);
   };
 
-  const totalGrossPay = filteredRecords.reduce((sum, record) => sum + record.grossPay, 0);
-  const totalNetPay = filteredRecords.reduce((sum, record) => sum + record.netPay, 0);
+  // Update filtered records when payroll records or employees change
+  useEffect(() => {
+    if (searchTerm || statusFilter !== "all" || typeFilter !== "all") {
+      applyFilters(searchTerm, statusFilter, typeFilter);
+    } else {
+      setFilteredRecords(payrollRecords);
+    }
+  }, [payrollRecords, employees, searchTerm, statusFilter, typeFilter]);
+
+  const totalGrossPay = filteredRecords.reduce((sum, record) => sum + record.gross_pay, 0);
+  const totalNetPay = filteredRecords.reduce((sum, record) => sum + record.net_pay, 0);
   const totalDeductions = filteredRecords.reduce((sum, record) => sum + record.deductions, 0);
 
   return (
@@ -289,51 +216,57 @@ export function PayrollRecords() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredRecords.map((record) => (
-                <TableRow key={record.id}>
-                  <TableCell className="font-mono text-sm">{record.id}</TableCell>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">{record.employeeName}</div>
-                      <div className="text-sm text-muted-foreground">{record.employeeId}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1 text-sm">
-                      <Calendar className="h-3 w-3" />
-                      {new Date(record.payPeriod.start).toLocaleDateString()} - {new Date(record.payPeriod.end).toLocaleDateString()}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Paid: {new Date(record.payDate).toLocaleDateString()}
-                    </div>
-                  </TableCell>
-                  <TableCell>{getTypeBadge(record.payrollType)}</TableCell>
-                  <TableCell>
-                    {record.hoursWorked && (
-                      <div className="text-sm">
-                        <div>{record.hoursWorked}h regular</div>
-                        {record.overtimeHours && record.overtimeHours > 0 && (
-                          <div className="text-xs text-muted-foreground">+{record.overtimeHours}h OT</div>
-                        )}
+              {filteredRecords.map((record) => {
+                const employee = employees.find(emp => emp.id === record.employee_id);
+                const employeeName = employee ? `${employee.first_name} ${employee.last_name}` : 'Unknown Employee';
+                const employeeId = employee ? employee.employee_id : 'Unknown';
+                
+                return (
+                  <TableRow key={record.id}>
+                    <TableCell className="font-mono text-sm">{record.record_id}</TableCell>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">{employeeName}</div>
+                        <div className="text-sm text-muted-foreground">{employeeId}</div>
                       </div>
-                    )}
-                  </TableCell>
-                  <TableCell>${record.grossPay.toFixed(2)}</TableCell>
-                  <TableCell>${record.deductions.toFixed(2)}</TableCell>
-                  <TableCell className="font-medium">${record.netPay.toFixed(2)}</TableCell>
-                  <TableCell>{getStatusBadge(record.status)}</TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1 text-sm">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(record.pay_period_start).toLocaleDateString()} - {new Date(record.pay_period_end).toLocaleDateString()}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Paid: {new Date(record.pay_date).toLocaleDateString()}
+                      </div>
+                    </TableCell>
+                    <TableCell>{getTypeBadge(record.payroll_type)}</TableCell>
+                    <TableCell>
+                      {record.hours_worked && (
+                        <div className="text-sm">
+                          <div>{record.hours_worked}h regular</div>
+                          {record.overtime_hours && record.overtime_hours > 0 && (
+                            <div className="text-xs text-muted-foreground">+{record.overtime_hours}h OT</div>
+                          )}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>${record.gross_pay.toFixed(2)}</TableCell>
+                    <TableCell>${record.deductions.toFixed(2)}</TableCell>
+                    <TableCell className="font-medium">${record.net_pay.toFixed(2)}</TableCell>
+                    <TableCell>{getStatusBadge(record.status)}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="sm">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </CardContent>

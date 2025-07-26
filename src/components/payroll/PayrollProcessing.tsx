@@ -7,11 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Calculator, Users, DollarSign, FileText } from "lucide-react";
-import { Employee } from "./EmployeeManagement";
+import { PayrollEmployee } from "@/hooks/usePayroll";
 import { useToast } from "@/hooks/use-toast";
 
 interface PayrollCalculation {
-  employee: Employee;
+  employee: PayrollEmployee;
   period: {
     start: string;
     end: string;
@@ -248,19 +248,19 @@ export function PayrollProcessing() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">
-                        {calc.employee.firstName} {calc.employee.lastName}
+                        {calc.employee.first_name} {calc.employee.last_name}
                       </h4>
                       <p className="text-sm text-muted-foreground">
-                        {calc.employee.employeeId} • {calc.employee.position}
+                        {calc.employee.employee_id} • {calc.employee.position}
                       </p>
                     </div>
                     <Badge variant="outline">
-                      {calc.employee.salaryType}
+                      {calc.employee.salary_type}
                     </Badge>
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                    {calc.employee.salaryType === "hourly" && (
+                    {calc.employee.salary_type === "hourly" && (
                       <>
                         <div>
                           <div className="text-muted-foreground">Hours Worked</div>

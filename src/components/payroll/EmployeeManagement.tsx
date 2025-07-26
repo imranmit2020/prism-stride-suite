@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useGlobalization } from "@/contexts/GlobalizationContext";
+import { usePayroll, PayrollEmployee } from "@/hooks/usePayroll";
 import { 
   MoreHorizontal, 
   Edit, 
@@ -24,145 +25,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-
-export interface Employee {
-  id: string;
-  employeeId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  position: string;
-  department: string;
-  hireDate: string;
-  employmentType: "full-time" | "part-time" | "contract";
-  salaryType: "hourly" | "monthly" | "yearly";
-  baseSalary: number;
-  status: "active" | "inactive" | "terminated";
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
-  taxInfo: {
-    ssn: string;
-    filingStatus: string;
-    allowances: number;
-  };
-  bankInfo: {
-    accountNumber: string;
-    routingNumber: string;
-    bankName: string;
-  };
-}
-
-// Mock employee data
-const mockEmployees: Employee[] = [
-  {
-    id: "1",
-    employeeId: "EMP-001",
-    firstName: "John",
-    lastName: "Smith",
-    email: "john.smith@company.com",
-    phone: "(555) 123-4567",
-    position: "Store Manager",
-    department: "Operations",
-    hireDate: "2022-03-15",
-    employmentType: "full-time",
-    salaryType: "yearly",
-    baseSalary: 55000,
-    status: "active",
-    address: {
-      street: "123 Main St",
-      city: "Anytown",
-      state: "CA",
-      zipCode: "12345"
-    },
-    taxInfo: {
-      ssn: "***-**-1234",
-      filingStatus: "Single",
-      allowances: 1
-    },
-    bankInfo: {
-      accountNumber: "****1234",
-      routingNumber: "123456789",
-      bankName: "First National Bank"
-    }
-  },
-  {
-    id: "2",
-    employeeId: "EMP-002",
-    firstName: "Sarah",
-    lastName: "Johnson",
-    email: "sarah.johnson@company.com",
-    phone: "(555) 234-5678",
-    position: "Barista",
-    department: "Operations",
-    hireDate: "2023-01-10",
-    employmentType: "part-time",
-    salaryType: "hourly",
-    baseSalary: 18.50,
-    status: "active",
-    address: {
-      street: "456 Oak Ave",
-      city: "Anytown",
-      state: "CA",
-      zipCode: "12345"
-    },
-    taxInfo: {
-      ssn: "***-**-5678",
-      filingStatus: "Single",
-      allowances: 0
-    },
-    bankInfo: {
-      accountNumber: "****5678",
-      routingNumber: "123456789",
-      bankName: "Community Bank"
-    }
-  },
-  {
-    id: "3",
-    employeeId: "EMP-003",
-    firstName: "Mike",
-    lastName: "Wilson",
-    email: "mike.wilson@company.com",
-    phone: "(555) 345-6789",
-    position: "Kitchen Staff",
-    department: "Food Service",
-    hireDate: "2023-06-20",
-    employmentType: "full-time",
-    salaryType: "hourly",
-    baseSalary: 16.75,
-    status: "active",
-    address: {
-      street: "789 Pine St",
-      city: "Anytown",
-      state: "CA",
-      zipCode: "12345"
-    },
-    taxInfo: {
-      ssn: "***-**-9012",
-      filingStatus: "Married",
-      allowances: 2
-    },
-    bankInfo: {
-      accountNumber: "****9012",
-      routingNumber: "123456789",
-      bankName: "First National Bank"
-    }
-  }
-];
+import React from "react";
 
 interface EmployeeManagementProps {
   onAddEmployee: () => void;
-  onEditEmployee: (employee: Employee) => void;
+  onEditEmployee: (employee: PayrollEmployee) => void;
 }
 
 export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeManagementProps) {
   const { formatCurrency } = useGlobalization();
+  const { employees, deleteEmployee } = usePayroll();
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredEmployees, setFilteredEmployees] = useState(mockEmployees);
+  const [filteredEmployees, setFilteredEmployees] = useState<PayrollEmployee[]>([]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -192,25 +66,34 @@ export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeMa
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
-    const filtered = mockEmployees.filter(employee =>
-      `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(term.toLowerCase()) ||
-      employee.employeeId.toLowerCase().includes(term.toLowerCase()) ||
-      employee.email.toLowerCase().includes(term.toLowerCase()) ||
+    const filtered = employees.filter(employee =>
+      `${employee.first_name} ${employee.last_name}`.toLowerCase().includes(term.toLowerCase()) ||
+      employee.employee_id.toLowerCase().includes(term.toLowerCase()) ||
+      (employee.email || '').toLowerCase().includes(term.toLowerCase()) ||
       employee.position.toLowerCase().includes(term.toLowerCase()) ||
       employee.department.toLowerCase().includes(term.toLowerCase())
     );
     setFilteredEmployees(filtered);
   };
 
-  const formatSalary = (employee: Employee) => {
-    if (employee.salaryType === "hourly") {
-      return `${formatCurrency(employee.baseSalary)}/hr`;
-    } else if (employee.salaryType === "monthly") {
-      return `${formatCurrency(employee.baseSalary)}/mo`;
+  const formatSalary = (employee: PayrollEmployee) => {
+    if (employee.salary_type === "hourly") {
+      return `${formatCurrency(employee.base_salary)}/hr`;
+    } else if (employee.salary_type === "monthly") {
+      return `${formatCurrency(employee.base_salary)}/mo`;
     } else {
-      return `${formatCurrency(employee.baseSalary)}/yr`;
+      return `${formatCurrency(employee.base_salary)}/yr`;
     }
   };
+
+  // Update filtered employees when employees change
+  React.useEffect(() => {
+    if (searchTerm) {
+      handleSearch(searchTerm);
+    } else {
+      setFilteredEmployees(employees);
+    }
+  }, [employees]);
 
   return (
     <Card>
@@ -258,33 +141,33 @@ export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeMa
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarFallback>
-                        {employee.firstName[0]}{employee.lastName[0]}
+                        {employee.first_name[0]}{employee.last_name[0]}
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <div className="font-medium">
-                        {employee.firstName} {employee.lastName}
+                        {employee.first_name} {employee.last_name}
                       </div>
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Mail className="h-3 w-3" />
-                        {employee.email}
+                        {employee.email || 'No email'}
                       </div>
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Phone className="h-3 w-3" />
-                        {employee.phone}
+                        {employee.phone || 'No phone'}
                       </div>
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="font-mono text-sm">{employee.employeeId}</TableCell>
+                <TableCell className="font-mono text-sm">{employee.employee_id}</TableCell>
                 <TableCell>{employee.position}</TableCell>
                 <TableCell>{employee.department}</TableCell>
                 <TableCell>
                   <div className="space-y-1">
-                    {getEmploymentTypeBadge(employee.employmentType)}
+                    {getEmploymentTypeBadge(employee.employment_type)}
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
-                      Hired: {new Date(employee.hireDate).toLocaleDateString()}
+                      Hired: {new Date(employee.hire_date).toLocaleDateString()}
                     </div>
                   </div>
                 </TableCell>
@@ -307,7 +190,10 @@ export function EmployeeManagement({ onAddEmployee, onEditEmployee }: EmployeeMa
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">
+                      <DropdownMenuItem 
+                        className="text-destructive"
+                        onClick={() => deleteEmployee(employee.id)}
+                      >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Terminate
                       </DropdownMenuItem>

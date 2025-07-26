@@ -1,16 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Package, Home, AlertTriangle, TrendingDown } from "lucide-react";
+import { usePersonalInventory } from "@/hooks/usePersonalInventory";
 
 export function PersonalInventoryAnalytics() {
-  const inventoryItems = [
-    { category: "Kitchen Appliances", items: 12, value: 2400, condition: "Good" },
-    { category: "Electronics", items: 8, value: 3200, condition: "Excellent" },
-    { category: "Furniture", items: 15, value: 1800, condition: "Good" },
-    { category: "Clothing", items: 45, value: 900, condition: "Good" },
-    { category: "Books & Media", items: 23, value: 450, condition: "Fair" },
-    { category: "Tools & Equipment", items: 7, value: 650, condition: "Good" }
-  ];
+  const { loading, getInventoryStats, getItemsByCategory } = usePersonalInventory();
+  
+  const stats = getInventoryStats();
+  const inventoryItems = getItemsByCategory();
 
   return (
     <div className="space-y-6">
@@ -23,7 +20,7 @@ export function PersonalInventoryAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">110</div>
+            <div className="text-2xl font-bold text-primary">{loading ? '...' : stats.totalItems}</div>
             <div className="text-xs text-muted-foreground">Tracked items</div>
           </CardContent>
         </Card>
@@ -36,7 +33,7 @@ export function PersonalInventoryAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-500">$9,400</div>
+            <div className="text-2xl font-bold text-green-500">{loading ? '...' : `$${stats.totalValue.toLocaleString()}`}</div>
             <div className="text-xs text-muted-foreground">Estimated value</div>
           </CardContent>
         </Card>
@@ -49,7 +46,7 @@ export function PersonalInventoryAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-500">3</div>
+            <div className="text-2xl font-bold text-orange-500">{loading ? '...' : stats.needReplacement}</div>
             <div className="text-xs text-muted-foreground">Items to replace</div>
           </CardContent>
         </Card>
@@ -62,8 +59,8 @@ export function PersonalInventoryAnalytics() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">-$340</div>
-            <div className="text-xs text-muted-foreground">This year</div>
+            <div className="text-2xl font-bold text-blue-500">{loading ? '...' : `-$${stats.totalDepreciation.toLocaleString()}`}</div>
+            <div className="text-xs text-muted-foreground">Total depreciation</div>
           </CardContent>
         </Card>
       </div>
@@ -75,18 +72,24 @@ export function PersonalInventoryAnalytics() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {inventoryItems.map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-3 border rounded">
-                <div>
-                  <h4 className="font-medium">{item.category}</h4>
-                  <p className="text-sm text-muted-foreground">{item.items} items</p>
+            {loading ? (
+              <div className="text-center text-muted-foreground">Loading inventory data...</div>
+            ) : inventoryItems.length === 0 ? (
+              <div className="text-center text-muted-foreground">No inventory items found. Start by adding some items to track.</div>
+            ) : (
+              inventoryItems.map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border rounded">
+                  <div>
+                    <h4 className="font-medium">{item.category}</h4>
+                    <p className="text-sm text-muted-foreground">{item.items} items</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-medium">${item.value.toLocaleString()}</div>
+                    <Badge variant="outline">{item.condition}</Badge>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <div className="font-medium">${item.value.toLocaleString()}</div>
-                  <Badge variant="outline">{item.condition}</Badge>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

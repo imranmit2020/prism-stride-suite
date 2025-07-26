@@ -1910,6 +1910,223 @@ export type Database = {
         }
         Relationships: []
       }
+      pm_inv_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pm_inv_items: {
+        Row: {
+          brand: string | null
+          category_id: string | null
+          condition: string | null
+          created_at: string
+          current_value: number | null
+          depreciation_rate: number | null
+          description: string | null
+          id: string
+          image_url: string | null
+          insurance_policy: string | null
+          is_active: boolean | null
+          is_insured: boolean | null
+          location: string | null
+          model: string | null
+          name: string
+          notes: string | null
+          purchase_date: string | null
+          purchase_price: number | null
+          replacement_cost: number | null
+          room: string | null
+          serial_number: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+          warranty_expiry: string | null
+        }
+        Insert: {
+          brand?: string | null
+          category_id?: string | null
+          condition?: string | null
+          created_at?: string
+          current_value?: number | null
+          depreciation_rate?: number | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          insurance_policy?: string | null
+          is_active?: boolean | null
+          is_insured?: boolean | null
+          location?: string | null
+          model?: string | null
+          name: string
+          notes?: string | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          replacement_cost?: number | null
+          room?: string | null
+          serial_number?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+          warranty_expiry?: string | null
+        }
+        Update: {
+          brand?: string | null
+          category_id?: string | null
+          condition?: string | null
+          created_at?: string
+          current_value?: number | null
+          depreciation_rate?: number | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          insurance_policy?: string | null
+          is_active?: boolean | null
+          is_insured?: boolean | null
+          location?: string | null
+          model?: string | null
+          name?: string
+          notes?: string | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          replacement_cost?: number | null
+          room?: string | null
+          serial_number?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+          warranty_expiry?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pm_inv_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_inv_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_inv_locations: {
+        Row: {
+          created_at: string
+          description: string | null
+          floor_level: number | null
+          id: string
+          is_active: boolean | null
+          name: string
+          room_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          floor_level?: number | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          room_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          floor_level?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          room_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pm_inv_maintenance: {
+        Row: {
+          cost: number | null
+          created_at: string
+          date: string
+          description: string
+          id: string
+          item_id: string
+          maintenance_type: string
+          next_maintenance_date: string | null
+          notes: string | null
+          service_provider: string | null
+          updated_at: string
+          user_id: string
+          warranty_impact: string | null
+        }
+        Insert: {
+          cost?: number | null
+          created_at?: string
+          date: string
+          description: string
+          id?: string
+          item_id: string
+          maintenance_type: string
+          next_maintenance_date?: string | null
+          notes?: string | null
+          service_provider?: string | null
+          updated_at?: string
+          user_id: string
+          warranty_impact?: string | null
+        }
+        Update: {
+          cost?: number | null
+          created_at?: string
+          date?: string
+          description?: string
+          id?: string
+          item_id?: string
+          maintenance_type?: string
+          next_maintenance_date?: string | null
+          notes?: string | null
+          service_provider?: string | null
+          updated_at?: string
+          user_id?: string
+          warranty_impact?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pm_inv_maintenance_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "pm_inv_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null

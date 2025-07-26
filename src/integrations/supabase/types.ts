@@ -21,6 +21,7 @@ export type Database = {
           id: string
           name: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -28,6 +29,7 @@ export type Database = {
           id?: string
           name: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -35,6 +37,7 @@ export type Database = {
           id?: string
           name?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -52,6 +55,7 @@ export type Database = {
           supplier_id: string | null
           unit_price: number | null
           updated_at: string
+          user_id: string | null
           weight: number | null
         }
         Insert: {
@@ -67,6 +71,7 @@ export type Database = {
           supplier_id?: string | null
           unit_price?: number | null
           updated_at?: string
+          user_id?: string | null
           weight?: number | null
         }
         Update: {
@@ -82,6 +87,7 @@ export type Database = {
           supplier_id?: string | null
           unit_price?: number | null
           updated_at?: string
+          user_id?: string | null
           weight?: number | null
         }
         Relationships: [
@@ -260,6 +266,7 @@ export type Database = {
           name: string
           phone: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           address?: string | null
@@ -270,6 +277,7 @@ export type Database = {
           name: string
           phone?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           address?: string | null
@@ -280,6 +288,7 @@ export type Database = {
           name?: string
           phone?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -346,6 +355,7 @@ export type Database = {
           manager: string | null
           name: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           capacity?: number | null
@@ -355,6 +365,7 @@ export type Database = {
           manager?: string | null
           name: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           capacity?: number | null
@@ -364,32 +375,45 @@ export type Database = {
           manager?: string | null
           name?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
       profiles: {
         Row: {
           avatar_url: string | null
+          company_name: string | null
           created_at: string | null
+          department: string | null
           email: string | null
           full_name: string | null
           id: string
+          phone: string | null
+          role: string | null
           updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
+          company_name?: string | null
           created_at?: string | null
+          department?: string | null
           email?: string | null
           full_name?: string | null
           id: string
+          phone?: string | null
+          role?: string | null
           updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
+          company_name?: string | null
           created_at?: string | null
+          department?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
+          phone?: string | null
+          role?: string | null
           updated_at?: string | null
         }
         Relationships: []

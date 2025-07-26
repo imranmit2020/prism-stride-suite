@@ -30,6 +30,8 @@ export function POSInterface() {
   const [activeTab, setActiveTab] = useState("pos");
   const { toast } = useToast();
 
+  console.log('🛍️ POS Products:', products.length, products);
+
   // Convert POSProduct to Product format for compatibility
   const convertedProducts: Product[] = products.map(product => ({
     id: product.id,
@@ -262,9 +264,10 @@ export function POSInterface() {
               {/* Product Grid */}
               <div className="flex-1 overflow-y-auto">
                 {convertedProducts.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-                    <p className="text-muted-foreground">No products found in your inventory.</p>
-                    <Button onClick={handleSeedSampleData} variant="outline">
+                  <div className="flex flex-col items-center justify-center h-full text-center space-y-4 p-8">
+                    <div className="text-muted-foreground text-lg">No products found in your POS inventory.</div>
+                    <p className="text-sm text-muted-foreground">Get started by adding some sample products to your store.</p>
+                    <Button onClick={handleSeedSampleData} size="lg" className="mt-4">
                       Add Sample Products
                     </Button>
                   </div>

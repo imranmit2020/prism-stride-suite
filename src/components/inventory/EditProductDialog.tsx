@@ -48,8 +48,20 @@ export function EditProductDialog({ open, onOpenChange, product }: EditProductDi
       };
       console.log('New form data being set:', newFormData);
       setFormData(newFormData);
-    } else if (!product && open) {
-      console.log('Dialog opened but no product provided');
+    } else if (!open) {
+      // Reset form when dialog is closed
+      setFormData({
+        name: "",
+        sku: "",
+        category: "",
+        currentStock: 0,
+        minStock: 0,
+        maxStock: 0,
+        reorderPoint: 0,
+        unitCost: 0,
+        sellingPrice: 0,
+        supplier: ""
+      });
     }
   }, [product, open]);
 

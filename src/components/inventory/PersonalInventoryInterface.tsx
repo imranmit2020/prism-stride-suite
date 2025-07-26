@@ -23,11 +23,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePersonalInventory } from "@/hooks/usePersonalInventory";
+import { AddPersonalItemDialog } from "./AddPersonalItemDialog";
 import { PersonalInventoryAnalytics } from "@/components/personal-analytics/PersonalInventoryAnalytics";
 
 export function PersonalInventoryInterface() {
   const [activeTab, setActiveTab] = useState("overview");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAddDialog, setShowAddDialog] = useState(false);
   
   const { 
     items, 
@@ -54,6 +56,10 @@ export function PersonalInventoryInterface() {
     if (item.condition === 'fair') return <Badge variant="outline" className="border-warning text-warning">Fair</Badge>;
     if (item.condition === 'good') return <Badge variant="secondary">Good</Badge>;
     return <Badge variant="default">Excellent</Badge>;
+  };
+
+  const handleAddItem = async (item: any) => {
+    await addItem(item);
   };
 
   return (
@@ -151,7 +157,7 @@ export function PersonalInventoryInterface() {
                   <Package className="h-5 w-5" />
                   Personal Items
                 </CardTitle>
-                <Button>
+                <Button onClick={() => setShowAddDialog(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Item
                 </Button>
@@ -229,6 +235,12 @@ export function PersonalInventoryInterface() {
           <PersonalInventoryAnalytics />
         </TabsContent>
       </Tabs>
+
+      <AddPersonalItemDialog 
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+        onAddItem={handleAddItem}
+      />
     </div>
   );
 }

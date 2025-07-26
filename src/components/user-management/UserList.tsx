@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,50 +30,66 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AddUserDialog } from "./AddUserDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-// Mock data - replace with real data from your backend
-const mockUsers = [
-  {
-    id: "1",
-    name: "John Doe",
-    email: "john.doe@company.com",
-    phone: "+1 (555) 123-4567",
-    role: "Admin",
-    status: "Active",
-    lastLogin: "2024-01-15",
-    avatar: "/placeholder.svg"
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    email: "jane.smith@company.com",
-    phone: "+1 (555) 987-6543",
-    role: "Manager",
-    status: "Active",
-    lastLogin: "2024-01-14",
-    avatar: "/placeholder.svg"
-  },
-  {
-    id: "3",
-    name: "Mike Johnson",
-    email: "mike.johnson@company.com",
-    phone: "+1 (555) 456-7890",
-    role: "Employee",
-    status: "Inactive",
-    lastLogin: "2024-01-10",
-    avatar: "/placeholder.svg"
-  }
-];
+interface User {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  phone: string | null;
+  role: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
 export function UserList() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [users] = useState(mockUsers);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching users:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch users",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setUsers(data || []);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch users",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchTerm.toLowerCase())
+    (user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+    (user.email?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+    (user.role?.toLowerCase().includes(searchTerm.toLowerCase()) || false)
   );
 
   const getStatusBadge = (status: string) => {
@@ -139,7 +155,7 @@ export function UserList() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {users.filter(u => u.status === "Active").length}
+              {users.length}
             </div>
           </CardContent>
         </Card>
@@ -150,7 +166,7 @@ export function UserList() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {users.filter(u => u.role === "Admin").length}
+              {users.filter(u => u.role === "admin").length}
             </div>
           </CardContent>
         </Card>
@@ -186,34 +202,38 @@ export function UserList() {
               {filteredUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback>
-                          {user.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{user.name}</div>
-                        <div className="text-sm text-muted-foreground">{user.email}</div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Mail className="h-3 w-3" />
-                        {user.email}
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Phone className="h-3 w-3" />
-                        {user.phone}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{getRoleBadge(user.role)}</TableCell>
-                  <TableCell>{getStatusBadge(user.status)}</TableCell>
-                  <TableCell className="text-sm">{user.lastLogin}</TableCell>
+                     <div className="flex items-center gap-3">
+                       <Avatar className="h-8 w-8">
+                         <AvatarImage src={user.avatar_url || "/placeholder.svg"} alt={user.full_name || "User"} />
+                         <AvatarFallback>
+                           {user.full_name ? user.full_name.split(' ').map(n => n[0]).join('') : 'U'}
+                         </AvatarFallback>
+                       </Avatar>
+                       <div>
+                         <div className="font-medium">{user.full_name || "Unknown User"}</div>
+                         <div className="text-sm text-muted-foreground">{user.email}</div>
+                       </div>
+                     </div>
+                   </TableCell>
+                   <TableCell>
+                     <div className="space-y-1">
+                       <div className="flex items-center gap-2 text-sm">
+                         <Mail className="h-3 w-3" />
+                         {user.email || "No email"}
+                       </div>
+                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                         <Phone className="h-3 w-3" />
+                         {user.phone || "No phone"}
+                       </div>
+                     </div>
+                   </TableCell>
+                   <TableCell>{getRoleBadge(user.role || "user")}</TableCell>
+                   <TableCell>
+                     <Badge variant="secondary" className="bg-green-100 text-green-800">
+                       Active
+                     </Badge>
+                   </TableCell>
+                   <TableCell className="text-sm">{user.created_at ? new Date(user.created_at).toLocaleDateString() : "Unknown"}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

@@ -63,36 +63,6 @@ const inventoryStatsRaw = [
   }
 ];
 
-  // Generate category-based forecast from real data
-  const categoryStats = inventory.reduce((acc, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = { 
-        currentStock: 0, 
-        predictedDemand: 0, 
-        items: 0 
-      };
-    }
-    acc[item.category].currentStock += item.currentStock;
-    acc[item.category].predictedDemand += item.aiPrediction.nextWeekDemand;
-    acc[item.category].items += 1;
-    return acc;
-  }, {} as Record<string, { currentStock: number; predictedDemand: number; items: number }>);
-
-  const demandForecast = Object.entries(categoryStats).map(([category, stats]) => {
-    const ratio = stats.currentStock / Math.max(stats.predictedDemand, 1);
-    let status = "adequate";
-    if (ratio < 0.5) status = "critical";
-    else if (ratio < 1) status = "reorder"; 
-    else if (ratio > 2) status = "overstocked";
-    
-    return {
-      category,
-      currentStock: stats.currentStock,
-      predictedDemand: stats.predictedDemand,
-      status
-    };
-  });
-
 export function InventoryOverview({ inventory, getInventoryStats, getLowStockItems }: InventoryOverviewProps) {
   const { formatCurrency } = useGlobalization();
   
@@ -140,6 +110,37 @@ export function InventoryOverview({ inventory, getInventoryStats, getLowStockIte
       type: "number"
     }
   ];
+
+  // Generate category-based forecast from real data
+  const categoryStats = inventory.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = { 
+        currentStock: 0, 
+        predictedDemand: 0, 
+        items: 0 
+      };
+    }
+    acc[item.category].currentStock += item.currentStock;
+    acc[item.category].predictedDemand += item.aiPrediction.nextWeekDemand;
+    acc[item.category].items += 1;
+    return acc;
+  }, {} as Record<string, { currentStock: number; predictedDemand: number; items: number }>);
+
+  const demandForecast = Object.entries(categoryStats).map(([category, stats]) => {
+    const ratio = stats.currentStock / Math.max(stats.predictedDemand, 1);
+    let status = "adequate";
+    if (ratio < 0.5) status = "critical";
+    else if (ratio < 1) status = "reorder"; 
+    else if (ratio > 2) status = "overstocked";
+    
+    return {
+      category,
+      currentStock: stats.currentStock,
+      predictedDemand: stats.predictedDemand,
+      status
+    };
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "critical": return "bg-destructive";

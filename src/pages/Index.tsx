@@ -357,20 +357,17 @@ const MainApp = () => {
         );
       case "saas":
         if (isHomeMode) {
-          return (
-            <div className="space-y-6">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Personal Analytics</h1>
-                <p className="text-muted-foreground mt-2">
-                  SaaS tools are not available in Personal Mode. Use Personal Analytics for insights.
-                </p>
-              </div>
-              <div className="card-enhanced p-6">
-                <h3 className="text-lg font-semibold mb-4">Personal Insights</h3>
-                <p className="text-muted-foreground">View your personal financial and usage analytics.</p>
-              </div>
+        return (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Goals & Investments</h1>
+              <p className="text-muted-foreground mt-2">
+                Manage your financial goals, savings accounts, and investment portfolio.
+              </p>
             </div>
-          );
+            <PersonalGoalsInterface />
+          </div>
+        );
         }
         return (
           <div className="space-y-6">

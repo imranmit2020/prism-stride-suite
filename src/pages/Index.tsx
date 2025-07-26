@@ -22,6 +22,7 @@ import { FormsInterface } from "@/components/forms/FormsInterface";
 import { MarketingInterface } from "@/components/marketing/MarketingInterface";
 import { CRMInterface } from "@/components/crm/CRMInterface";
 import { SaaSInterface } from "@/components/saas/SaaSInterface";
+import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 import { ProductTrackingInterface } from "@/components/product-tracking/ProductTrackingInterface";
 import { UserManagementInterface } from "@/components/user-management/UserManagementInterface";
 import { AuthContainer } from "@/components/auth/AuthContainer";
@@ -242,7 +243,7 @@ const MainApp = () => {
                 Advanced AI-powered business intelligence and predictive analytics.
               </p>
             </div>
-            <PersonalFinanceAnalyticsInterface />
+            <AnalyticsInterface />
           </div>
         );
       case "marketing":

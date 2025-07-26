@@ -6,16 +6,57 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { usePersonalFinance } from "@/hooks/usePersonalFinance";
 import { DollarSign, TrendingUp, Calendar, FileText, Plus } from "lucide-react";
 
 export function PersonalIncomeInterface() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [formData, setFormData] = useState({
+    source: "",
+    amount: "",
+    income_type: "",
+    date: "",
+    description: "",
+    is_recurring: false,
+    recurrence_pattern: ""
+  });
+  
   const { toast } = useToast();
+  const { addIncome, income, loading, getIncomeStats } = usePersonalFinance();
+  const incomeStats = getIncomeStats();
 
-  const handleAddIncome = () => {
-    toast({
-      title: "Income Added",
-      description: "New income source has been tracked successfully"
+  const handleAddIncome = async () => {
+    if (!formData.source || !formData.amount || !formData.income_type || !formData.date) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    await addIncome({
+      source: formData.source,
+      amount: parseFloat(formData.amount),
+      income_type: formData.income_type as any,
+      date: formData.date,
+      description: formData.description || formData.source,
+      is_recurring: formData.is_recurring,
+      recurrence_pattern: formData.recurrence_pattern || undefined,
+      target_amount: parseFloat(formData.amount) * 1.1, // 10% target increase
+      net_amount: parseFloat(formData.amount) * 0.75, // Assuming 25% tax withholding
+      tax_withheld: parseFloat(formData.amount) * 0.25
+    });
+
+    // Reset form
+    setFormData({
+      source: "",
+      amount: "",
+      income_type: "",
+      date: "",
+      description: "",
+      is_recurring: false,
+      recurrence_pattern: ""
     });
   };
 
@@ -37,7 +78,7 @@ export function PersonalIncomeInterface() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$4,250</div>
+                <div className="text-2xl font-bold">{loading ? "..." : `$${incomeStats.totalIncome.toLocaleString()}`}</div>
                 <p className="text-xs text-muted-foreground">+12% from last month</p>
               </CardContent>
             </Card>
@@ -48,7 +89,7 @@ export function PersonalIncomeInterface() {
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$48,300</div>
+                <div className="text-2xl font-bold">{loading ? "..." : `$${(incomeStats.totalIncome * 12).toLocaleString()}`}</div>
                 <p className="text-xs text-muted-foreground">+8% from last year</p>
               </CardContent>
             </Card>
@@ -59,7 +100,7 @@ export function PersonalIncomeInterface() {
                 <FileText className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$12,075</div>
+                <div className="text-2xl font-bold">{loading ? "..." : `$${Math.round(incomeStats.totalIncome * 0.25).toLocaleString()}`}</div>
                 <p className="text-xs text-muted-foreground">25% effective rate</p>
               </CardContent>
             </Card>
@@ -72,26 +113,24 @@ export function PersonalIncomeInterface() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-3 border rounded-lg">
-                  <div>
-                    <div className="font-medium">Freelance Project</div>
-                    <div className="text-sm text-muted-foreground">Client: ABC Corp</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">$1,200</div>
-                    <div className="text-sm text-muted-foreground">Jan 15, 2024</div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center p-3 border rounded-lg">
-                  <div>
-                    <div className="font-medium">Salary</div>
-                    <div className="text-sm text-muted-foreground">Monthly Salary</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">$3,000</div>
-                    <div className="text-sm text-muted-foreground">Jan 1, 2024</div>
-                  </div>
-                </div>
+                {loading ? (
+                  <div className="text-center text-muted-foreground">Loading income data...</div>
+                ) : income.length === 0 ? (
+                  <div className="text-center text-muted-foreground">No income entries found. Start by adding your first income source.</div>
+                ) : (
+                  income.slice(0, 5).map((incomeItem, index) => (
+                    <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
+                      <div>
+                        <div className="font-medium">{incomeItem.source}</div>
+                        <div className="text-sm text-muted-foreground">{incomeItem.income_type}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold">${incomeItem.amount.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">{new Date(incomeItem.date).toLocaleDateString()}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
@@ -115,47 +154,63 @@ export function PersonalIncomeInterface() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="source">Income Source</Label>
-                  <Select>
+                  <Input 
+                    id="source" 
+                    placeholder="Enter income source name"
+                    value={formData.source}
+                    onChange={(e) => setFormData(prev => ({ ...prev, source: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="amount">Amount</Label>
+                  <Input 
+                    id="amount" 
+                    placeholder="0.00" 
+                    type="number"
+                    step="0.01"
+                    value={formData.amount}
+                    onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="income_type">Income Type</Label>
+                  <Select value={formData.income_type} onValueChange={(value) => setFormData(prev => ({ ...prev, income_type: value }))}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select source type" />
+                      <SelectValue placeholder="Select income type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="salary">Salary</SelectItem>
                       <SelectItem value="freelance">Freelance</SelectItem>
-                      <SelectItem value="consulting">Consulting</SelectItem>
-                      <SelectItem value="passive">Passive Income</SelectItem>
+                      <SelectItem value="investment">Investment</SelectItem>
+                      <SelectItem value="business">Business</SelectItem>
+                      <SelectItem value="passive">Passive</SelectItem>
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="amount">Amount</Label>
-                  <Input id="amount" placeholder="$0.00" type="number" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="frequency">Frequency</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select frequency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="once">One-time</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="biweekly">Bi-weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                      <SelectItem value="annually">Annually</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
                   <Label htmlFor="date">Date Received</Label>
-                  <Input id="date" type="date" />
+                  <Input 
+                    id="date" 
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                  />
                 </div>
               </div>
-              <Button onClick={handleAddIncome} className="w-full">
-                Add Income Entry
+              <div className="space-y-2">
+                <Label htmlFor="description">Description (Optional)</Label>
+                <Input 
+                  id="description" 
+                  placeholder="Additional details about this income"
+                  value={formData.description}
+                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                />
+              </div>
+              <Button onClick={handleAddIncome} className="w-full" disabled={loading}>
+                {loading ? "Adding..." : "Add Income Entry"}
               </Button>
             </CardContent>
           </Card>

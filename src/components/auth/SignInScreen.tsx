@@ -64,7 +64,7 @@ export function SignInScreen({ onSignIn, onSwitchToSignUp }: SignInScreenProps) 
           </div>
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
           <p className="text-muted-foreground">
-            Sign in to your Prism Stride Suite account
+            Sign in to your BizStack account
           </p>
         </div>
 
@@ -169,7 +169,7 @@ export function SignInScreen({ onSignIn, onSwitchToSignUp }: SignInScreenProps) 
 
         {/* Footer */}
         <div className="text-center text-xs text-muted-foreground">
-          <p>© 2024 Prism Stride Suite. All rights reserved.</p>
+          <p>© 2024 BizStack. All rights reserved.</p>
         </div>
       </div>
     </div>

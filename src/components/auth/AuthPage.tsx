@@ -175,7 +175,7 @@ export function AuthPage() {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Building2 className="h-8 w-8 text-primary" />
             <h1 className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              Prism Stride Suite
+              BizStack
             </h1>
           </div>
           <p className="text-muted-foreground">

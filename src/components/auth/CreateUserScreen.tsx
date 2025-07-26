@@ -162,7 +162,7 @@ export function CreateUserScreen({ onCreateUser, onSwitchToSignIn }: CreateUserS
           </div>
           <h1 className="text-3xl font-bold text-foreground">Create Account</h1>
           <p className="text-muted-foreground">
-            Join Prism Stride Suite and start managing your business
+            Join BizStack and start managing your business
           </p>
         </div>
 
@@ -421,7 +421,7 @@ export function CreateUserScreen({ onCreateUser, onSwitchToSignIn }: CreateUserS
 
         {/* Footer */}
         <div className="text-center text-xs text-muted-foreground">
-          <p>© 2024 Prism Stride Suite. All rights reserved.</p>
+          <p>© 2024 BizStack. All rights reserved.</p>
         </div>
       </div>
     </div>

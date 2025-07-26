@@ -11,6 +11,7 @@ import { AddProductDialog } from "./AddProductDialog";
 import { EditProductDialog } from "./EditProductDialog";
 import { ImportExportActions } from "./ImportExportActions";
 import { LocationTracker } from "./LocationTracker";
+import { InventoryTracking } from "./InventoryTracking";
 import { useInventory } from "@/hooks/useInventory";
 import { usePurchaseOrders } from "@/hooks/usePurchaseOrders";
 
@@ -66,6 +67,7 @@ export function InventoryInterface() {
         <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full">
           <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
           <TabsTrigger value="products" className="px-3 py-2 text-xs font-medium">Products</TabsTrigger>
+          <TabsTrigger value="tracking" className="px-3 py-2 text-xs font-medium">Inventory Tracking</TabsTrigger>
           <TabsTrigger value="locations" className="px-3 py-2 text-xs font-medium">Location Tracking</TabsTrigger>
           <TabsTrigger value="ai-demand" className="px-3 py-2 text-xs font-medium">Demand AI</TabsTrigger>
           <TabsTrigger value="ai-theft" className="px-3 py-2 text-xs font-medium">Theft AI</TabsTrigger>
@@ -89,6 +91,10 @@ export function InventoryInterface() {
             onAddProduct={handleAddProduct}
             onEditProduct={handleEditProduct}
           />
+        </TabsContent>
+
+        <TabsContent value="tracking" className="space-y-6">
+          <InventoryTracking />
         </TabsContent>
 
         <TabsContent value="locations" className="space-y-6">

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useInventoryTracking } from '@/hooks/useInventoryTracking';
 import { InventoryItem } from '@/components/inventory/InventoryTable';
 
 export function useInventory() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { logStockAdjustment } = useInventoryTracking();
 
   const loadInventory = async () => {
     try {
@@ -206,9 +208,30 @@ export function useInventory() {
         if (productError) throw productError;
       }
 
-      // Update stock levels
+      // Update stock levels with tracking
       if (updates.currentStock !== undefined || updates.minStock !== undefined || 
           updates.maxStock !== undefined || updates.reorderPoint !== undefined) {
+        
+        // Get current stock to log adjustment if quantity changed
+        if (updates.currentStock !== undefined) {
+          const { data: currentStockData } = await supabase
+            .from('bm_inv_stock')
+            .select('quantity, warehouse_id')
+            .eq('product_id', productId)
+            .single();
+
+          if (currentStockData && currentStockData.quantity !== updates.currentStock) {
+            // Log the stock adjustment
+            await logStockAdjustment(
+              productId,
+              currentStockData.warehouse_id,
+              currentStockData.quantity,
+              updates.currentStock,
+              'Manual stock adjustment via product update'
+            );
+          }
+        }
+
         const { error: stockError } = await supabase
           .from('bm_inv_stock')
           .update({

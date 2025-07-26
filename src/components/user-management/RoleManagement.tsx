@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
+import { AddRoleDialog } from "./AddRoleDialog";
 
 // Mock data - replace with real data from your backend
 const mockRoles = [
@@ -84,6 +85,7 @@ export function RoleManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roles] = useState(mockRoles);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
   const filteredRoles = roles.filter(role =>
     role.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,7 +116,7 @@ export function RoleManagement() {
             className="pl-10"
           />
         </div>
-        <Button>
+        <Button onClick={() => setShowAddDialog(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Role
         </Button>
@@ -246,6 +248,11 @@ export function RoleManagement() {
           )}
         </div>
       </div>
+
+      <AddRoleDialog 
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+      />
     </div>
   );
 }

@@ -29,6 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AddUserDialog } from "./AddUserDialog";
 
 // Mock data - replace with real data from your backend
 const mockUsers = [
@@ -67,6 +68,7 @@ const mockUsers = [
 export function UserList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users] = useState(mockUsers);
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -113,7 +115,7 @@ export function UserList() {
             className="pl-10"
           />
         </div>
-        <Button>
+        <Button onClick={() => setShowAddDialog(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add User
         </Button>
@@ -237,6 +239,11 @@ export function UserList() {
           </Table>
         </CardContent>
       </Card>
+
+      <AddUserDialog 
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+      />
     </div>
   );
 }

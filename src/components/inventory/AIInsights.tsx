@@ -1,48 +1,128 @@
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { TrendingUp, TrendingDown, AlertTriangle, Zap } from "lucide-react";
+import { TrendingUp, TrendingDown, AlertTriangle, Zap, Package, DollarSign } from "lucide-react";
+import { useInventory } from "@/hooks/useInventory";
 
-const aiInsights = [
-  {
-    type: "forecast",
-    title: "Demand Surge Predicted",
-    description: "Coffee products expected to increase 23% next week",
-    confidence: 87,
-    impact: "high",
-    icon: TrendingUp,
-    action: "Increase coffee inventory by 150 units"
-  },
-  {
-    type: "optimization",
-    title: "Price Optimization",
-    description: "Sandwich pricing could be optimized for better margins",
-    confidence: 92,
-    impact: "medium",
-    icon: Zap,
-    action: "Increase sandwich prices by $0.50"
-  },
-  {
-    type: "risk",
-    title: "Seasonal Drop Warning",
-    description: "Hot beverages demand will drop 35% in 2 weeks",
-    confidence: 78,
-    impact: "medium",
-    icon: TrendingDown,
-    action: "Reduce hot beverage orders by 40%"
-  },
-  {
-    type: "alert",
-    title: "Supply Chain Risk",
-    description: "Pastry supplier showing delivery delays",
-    confidence: 95,
-    impact: "high",
-    icon: AlertTriangle,
-    action: "Contact backup supplier for pastries"
-  }
-];
+interface AIInsight {
+  type: "forecast" | "optimization" | "risk" | "alert";
+  title: string;
+  description: string;
+  confidence: number;
+  impact: "high" | "medium" | "low";
+  icon: any;
+  action: string;
+}
 
 export function AIInsights() {
+  const { inventory, getLowStockItems, getReorderRecommendations } = useInventory();
+  
+  // Generate real AI insights from inventory data
+  const aiInsights = useMemo(() => {
+    const insights: AIInsight[] = [];
+    const lowStockItems = getLowStockItems();
+    const reorderItems = getReorderRecommendations();
+    
+    // Low stock alerts
+    if (lowStockItems.length > 0) {
+      const criticalItems = lowStockItems.filter(item => item.currentStock === 0);
+      if (criticalItems.length > 0) {
+        insights.push({
+          type: "alert",
+          title: "Critical Stock Alert",
+          description: `${criticalItems.length} products are out of stock`,
+          confidence: 100,
+          impact: "high",
+          icon: AlertTriangle,
+          action: `Immediate restocking needed for ${criticalItems[0]?.name || 'critical items'}`
+        });
+      } else {
+        insights.push({
+          type: "risk",
+          title: "Low Stock Warning",
+          description: `${lowStockItems.length} products below minimum stock levels`,
+          confidence: 95,
+          impact: "medium",
+          icon: TrendingDown,
+          action: `Review stock levels for ${lowStockItems[0]?.name || 'low stock items'}`
+        });
+      }
+    }
+
+    // Demand forecasting based on AI predictions
+    const highDemandItems = inventory.filter(item => 
+      item.aiPrediction.nextWeekDemand > item.currentStock * 1.5
+    );
+    if (highDemandItems.length > 0) {
+      insights.push({
+        type: "forecast",
+        title: "High Demand Forecast",
+        description: `${highDemandItems.length} products predicted to have high demand`,
+        confidence: Math.round(highDemandItems.reduce((sum, item) => sum + item.aiPrediction.confidence, 0) / highDemandItems.length),
+        impact: "high",
+        icon: TrendingUp,
+        action: `Increase inventory for ${highDemandItems[0]?.name || 'high-demand items'}`
+      });
+    }
+
+    // Price optimization opportunities
+    const lowMarginItems = inventory.filter(item => 
+      item.sellingPrice > 0 && ((item.sellingPrice - item.unitCost) / item.sellingPrice) < 0.3
+    );
+    if (lowMarginItems.length > 0) {
+      insights.push({
+        type: "optimization",
+        title: "Price Optimization Opportunity",
+        description: `${lowMarginItems.length} products have margins below 30%`,
+        confidence: 85,
+        impact: "medium",
+        icon: DollarSign,
+        action: `Review pricing for ${lowMarginItems[0]?.name || 'low-margin items'}`
+      });
+    }
+
+    // Overstock detection
+    const overstockedItems = inventory.filter(item => 
+      item.currentStock > item.maxStock * 0.9
+    );
+    if (overstockedItems.length > 0) {
+      insights.push({
+        type: "optimization",
+        title: "Overstock Alert",
+        description: `${overstockedItems.length} products approaching maximum capacity`,
+        confidence: 90,
+        impact: "medium",
+        icon: Package,
+        action: `Consider promotions for ${overstockedItems[0]?.name || 'overstocked items'}`
+      });
+    }
+
+    // Supplier diversification
+    const supplierCounts = inventory.reduce((acc, item) => {
+      acc[item.supplier] = (acc[item.supplier] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const dominantSupplier = Object.entries(supplierCounts).reduce((max, [supplier, count]) => 
+      count > max.count ? { supplier, count } : max, { supplier: '', count: 0 }
+    );
+    
+    if (dominantSupplier.count > inventory.length * 0.6) {
+      insights.push({
+        type: "risk",
+        title: "Supplier Concentration Risk",
+        description: `${Math.round((dominantSupplier.count / inventory.length) * 100)}% of products from single supplier`,
+        confidence: 95,
+        impact: "medium",
+        icon: AlertTriangle,
+        action: `Diversify supplier base beyond ${dominantSupplier.supplier}`
+      });
+    }
+
+    return insights;
+  }, [inventory, getLowStockItems, getReorderRecommendations]);
+
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case "high": return "destructive" as const;

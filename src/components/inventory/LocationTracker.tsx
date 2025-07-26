@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,9 @@ import {
   TrendingUp
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useInventory } from "@/hooks/useInventory";
+import { useWarehouses } from "@/hooks/useWarehouses";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Location {
   id: string;
@@ -49,86 +52,92 @@ interface LocationAssignment {
 
 export function LocationTracker() {
   const { toast } = useToast();
+  const { inventory } = useInventory();
+  const { warehouses, loading: warehousesLoading } = useWarehouses();
   const [activeView, setActiveView] = useState("map");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAssignDialog, setShowAssignDialog] = useState(false);
+  const [stockByWarehouse, setStockByWarehouse] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data for locations
-  const [locations] = useState<Location[]>([
-    {
-      id: "1",
-      warehouse: "Main Warehouse",
-      zone: "A",
+  // Load stock data by warehouse
+  const loadStockByWarehouse = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('bm_inv_stock')
+        .select(`
+          *,
+          bm_inv_products(name, sku),
+          bm_inv_warehouses(name, location, capacity)
+        `);
+
+      if (error) throw error;
+      setStockByWarehouse(data || []);
+    } catch (error) {
+      console.error('Error loading stock by warehouse:', error);
+      toast({
+        title: "Error Loading Data",
+        description: "Failed to load warehouse stock data",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadStockByWarehouse();
+  }, []);
+
+  // Transform warehouses into locations
+  const locations: Location[] = warehouses.map(warehouse => {
+    const warehouseStock = stockByWarehouse.filter(stock => 
+      stock.bm_inv_warehouses?.name === warehouse.name
+    );
+    const totalStock = warehouseStock.reduce((sum, stock) => sum + stock.quantity, 0);
+    const capacity = warehouse.capacity || 1000;
+
+    return {
+      id: warehouse.id,
+      warehouse: warehouse.name,
+      zone: "A", // Default - would be enhanced with location tables
       aisle: "01",
-      shelf: "3",
-      bin: "B",
-      capacity: 100,
-      currentStock: 75,
-      temperature: "Room Temperature",
-      description: "Electronics storage area"
-    },
-    {
-      id: "2",
-      warehouse: "Main Warehouse",
-      zone: "B",
-      aisle: "05",
-      shelf: "2",
+      shelf: "1", 
       bin: "A",
-      capacity: 200,
-      currentStock: 150,
-      temperature: "Climate Controlled",
-      description: "Clothing and textiles"
-    },
-    {
-      id: "3",
-      warehouse: "Distribution Center",
-      zone: "C",
-      aisle: "12",
-      shelf: "1",
-      bin: "C",
-      capacity: 50,
-      currentStock: 20,
-      temperature: "Refrigerated",
-      description: "Perishable goods"
-    }
-  ]);
+      capacity,
+      currentStock: totalStock,
+      temperature: "Room Temperature",
+      description: warehouse.location || "Warehouse location"
+    };
+  });
 
-  // Mock data for location assignments
-  const [assignments] = useState<LocationAssignment[]>([
-    {
-      id: "1",
-      productId: "P001",
-      productName: "Wireless Headphones",
-      sku: "WH-001",
-      quantity: 25,
-      location: locations[0],
-      assignedDate: "2024-01-15",
-      lastMovement: "2024-01-20",
-      status: 'active'
-    },
-    {
-      id: "2",
-      productId: "P002",
-      productName: "Cotton T-Shirt",
-      sku: "CT-002",
-      quantity: 80,
-      location: locations[1],
-      assignedDate: "2024-01-10",
-      lastMovement: "2024-01-22",
-      status: 'active'
-    },
-    {
-      id: "3",
-      productId: "P003",
-      productName: "Organic Milk",
-      sku: "OM-003",
-      quantity: 15,
-      location: locations[2],
-      assignedDate: "2024-01-23",
-      lastMovement: "2024-01-23",
-      status: 'moving'
-    }
-  ]);
+  // Transform stock data into assignments
+  const assignments: LocationAssignment[] = stockByWarehouse.map(stock => {
+    const warehouse = warehouses.find(w => w.name === stock.bm_inv_warehouses?.name);
+    const location: Location = {
+      id: warehouse?.id || '',
+      warehouse: stock.bm_inv_warehouses?.name || 'Unknown',
+      zone: "A",
+      aisle: "01", 
+      shelf: "1",
+      bin: "A",
+      capacity: warehouse?.capacity || 1000,
+      currentStock: stock.quantity,
+      description: warehouse?.location || "Storage location"
+    };
+
+    return {
+      id: stock.id,
+      productId: stock.product_id,
+      productName: stock.bm_inv_products?.name || 'Unknown Product',
+      sku: stock.bm_inv_products?.sku || 'N/A',
+      quantity: stock.quantity,
+      location,
+      assignedDate: stock.created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
+      lastMovement: stock.updated_at?.split('T')[0] || new Date().toISOString().split('T')[0],
+      status: stock.quantity > 0 ? 'active' as const : 'empty' as const
+    };
+  });
 
   const getLocationCode = (location: Location) => {
     return `${location.warehouse.charAt(0)}${location.zone}-${location.aisle}-${location.shelf}-${location.bin}`;
@@ -158,6 +167,10 @@ export function LocationTracker() {
     assignment.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
     getLocationCode(assignment.location).toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading || warehousesLoading) {
+    return <div>Loading location data...</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -374,7 +387,7 @@ export function LocationTracker() {
                     <Warehouse className="h-6 w-6 text-blue-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">3</p>
+                    <p className="text-2xl font-bold">{locations.length}</p>
                     <p className="text-sm text-muted-foreground">Total Locations</p>
                   </div>
                 </div>
@@ -388,7 +401,7 @@ export function LocationTracker() {
                     <Package className="h-6 w-6 text-green-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">245</p>
+                    <p className="text-2xl font-bold">{assignments.length}</p>
                     <p className="text-sm text-muted-foreground">Items Tracked</p>
                   </div>
                 </div>
@@ -402,7 +415,11 @@ export function LocationTracker() {
                     <TrendingUp className="h-6 w-6 text-yellow-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">73%</p>
+                    <p className="text-2xl font-bold">
+                      {locations.length > 0 ? 
+                        Math.round(locations.reduce((sum, loc) => sum + getUtilizationPercentage(loc), 0) / locations.length) 
+                        : 0}%
+                    </p>
                     <p className="text-sm text-muted-foreground">Avg Utilization</p>
                   </div>
                 </div>
@@ -416,8 +433,8 @@ export function LocationTracker() {
                     <Navigation className="h-6 w-6 text-purple-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold">12</p>
-                    <p className="text-sm text-muted-foreground">Movements Today</p>
+                    <p className="text-2xl font-bold">{assignments.filter(a => a.status === 'active').length}</p>
+                    <p className="text-sm text-muted-foreground">Active Assignments</p>
                   </div>
                 </div>
               </CardContent>

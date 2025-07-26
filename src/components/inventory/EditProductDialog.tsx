@@ -16,54 +16,60 @@ interface EditProductDialogProps {
 
 export function EditProductDialog({ open, onOpenChange, product }: EditProductDialogProps) {
   const { updateProduct } = useInventory();
-  const [formData, setFormData] = useState({
-    name: "",
-    sku: "",
-    category: "",
-    currentStock: 0,
-    minStock: 0,
-    maxStock: 0,
-    reorderPoint: 0,
-    unitCost: 0,
-    sellingPrice: 0,
-    supplier: ""
-  });
+  
+  // Initialize form data with product data or defaults
+  const getInitialFormData = () => {
+    if (product) {
+      return {
+        name: product.name || "",
+        sku: product.sku || "",
+        category: product.category || "",
+        currentStock: product.currentStock || 0,
+        minStock: product.minStock || 0,
+        maxStock: product.maxStock || 0,
+        reorderPoint: product.reorderPoint || 0,
+        unitCost: product.unitCost || 0,
+        sellingPrice: product.sellingPrice || 0,
+        supplier: product.supplier || ""
+      };
+    }
+    return {
+      name: "",
+      sku: "",
+      category: "",
+      currentStock: 0,
+      minStock: 0,
+      maxStock: 0,
+      reorderPoint: 0,
+      unitCost: 0,
+      sellingPrice: 0,
+      supplier: ""
+    };
+  };
+
+  const [formData, setFormData] = useState(getInitialFormData);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log('EditProductDialog useEffect:', { product, open });
-    if (product && open) {
+    if (product) {
       console.log('Setting form data with product:', product);
       const newFormData = {
-        name: product.name,
-        sku: product.sku,
-        category: product.category,
-        currentStock: product.currentStock,
-        minStock: product.minStock,
-        maxStock: product.maxStock,
-        reorderPoint: product.reorderPoint,
-        unitCost: product.unitCost,
-        sellingPrice: product.sellingPrice,
-        supplier: product.supplier
+        name: product.name || "",
+        sku: product.sku || "",
+        category: product.category || "",
+        currentStock: product.currentStock || 0,
+        minStock: product.minStock || 0,
+        maxStock: product.maxStock || 0,
+        reorderPoint: product.reorderPoint || 0,
+        unitCost: product.unitCost || 0,
+        sellingPrice: product.sellingPrice || 0,
+        supplier: product.supplier || ""
       };
       console.log('New form data being set:', newFormData);
       setFormData(newFormData);
-    } else if (!open) {
-      // Reset form when dialog is closed
-      setFormData({
-        name: "",
-        sku: "",
-        category: "",
-        currentStock: 0,
-        minStock: 0,
-        maxStock: 0,
-        reorderPoint: 0,
-        unitCost: 0,
-        sellingPrice: 0,
-        supplier: ""
-      });
     }
-  }, [product, open]);
+  }, [product]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

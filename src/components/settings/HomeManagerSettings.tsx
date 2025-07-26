@@ -190,7 +190,7 @@ export function HomeManagerSettings() {
                 Theme & Display
               </CardTitle>
               <CardDescription>
-                Customize the appearance of your home manager
+                Customize the appearance of your personal manager
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -525,7 +525,7 @@ export function HomeManagerSettings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Account Type</h4>
-                    <p className="text-sm text-muted-foreground">Personal Home Manager</p>
+                    <p className="text-sm text-muted-foreground">Personal Manager</p>
                   </div>
                   <Badge variant="default">Free</Badge>
                 </div>

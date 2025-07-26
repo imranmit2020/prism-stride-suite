@@ -76,7 +76,7 @@ export function Sidebar({
             {isHomeMode ? <Home className="h-5 w-5 text-white" /> : <Building className="h-5 w-5 text-white" />}
           </div>
           <h1 className="text-xl font-bold text-foreground">
-            {isHomeMode ? "Home Manager" : "BizStack"}
+            {isHomeMode ? "Personal Manager" : "BizStack"}
           </h1>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
@@ -124,7 +124,7 @@ export function Sidebar({
       <div className="p-3 border-t border-border bg-card flex-shrink-0">
         <div className="text-xs text-muted-foreground text-center">
           <div className="font-medium">
-            {isHomeMode ? "Home Manager" : "BizStack"}
+            {isHomeMode ? "Personal Manager" : "BizStack"}
           </div>
           <div className="mt-1">Version 1.0.0</div>
         </div>

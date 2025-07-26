@@ -12,6 +12,7 @@ import { EditProductDialog } from "./EditProductDialog";
 import { ImportExportActions } from "./ImportExportActions";
 import { LocationTracker } from "./LocationTracker";
 import { InventoryTracking } from "./InventoryTracking";
+import { QuickInventoryActions } from "./QuickInventoryActions";
 import { useInventory } from "@/hooks/useInventory";
 import { usePurchaseOrders } from "@/hooks/usePurchaseOrders";
 
@@ -94,6 +95,7 @@ export function InventoryInterface() {
         </TabsContent>
 
         <TabsContent value="tracking" className="space-y-6">
+          <QuickInventoryActions />
           <InventoryTracking />
         </TabsContent>
 

@@ -8,7 +8,7 @@ export function useInventory() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { logStockAdjustment } = useInventoryTracking();
+  const { logStockAdjustment, logPurchaseReceipt } = useInventoryTracking();
 
   const loadInventory = async () => {
     try {
@@ -175,9 +175,20 @@ export function useInventory() {
 
       if (stockError) throw stockError;
 
+      // Log initial stock if quantity > 0
+      if (product.currentStock > 0) {
+        await logPurchaseReceipt(
+          newProduct.id,
+          warehouseId,
+          product.currentStock,
+          product.unitCost,
+          'INITIAL-STOCK'
+        );
+      }
+
       toast({
         title: "Product Added Successfully",
-        description: `${product.name} has been added to inventory`
+        description: `${product.name} has been added to inventory with transaction logged`
       });
 
       await loadInventory();
@@ -247,7 +258,7 @@ export function useInventory() {
 
       toast({
         title: "Product Updated",
-        description: "Product has been successfully updated"
+        description: "Product has been successfully updated with transaction logged"
       });
 
       await loadInventory();
@@ -263,6 +274,23 @@ export function useInventory() {
 
   const deleteProduct = async (productId: string) => {
     try {
+      // Log deletion transaction first
+      const { data: stockData } = await supabase
+        .from('bm_inv_stock')
+        .select('quantity, warehouse_id')
+        .eq('product_id', productId)
+        .single();
+
+      if (stockData && stockData.quantity > 0) {
+        await logStockAdjustment(
+          productId,
+          stockData.warehouse_id,
+          stockData.quantity,
+          0,
+          'Product deletion - stock write-off'
+        );
+      }
+
       // Delete stock records first (foreign key constraint)
       const { error: stockError } = await supabase
         .from('bm_inv_stock')
@@ -281,7 +309,7 @@ export function useInventory() {
 
       toast({
         title: "Product Deleted",
-        description: "Product has been successfully deleted"
+        description: "Product has been successfully deleted with transaction logged"
       });
 
       await loadInventory();
@@ -292,6 +320,56 @@ export function useInventory() {
         description: "There was an error deleting the product",
         variant: "destructive"
       });
+    }
+  };
+
+  // Add function to adjust stock with tracking
+  const adjustStock = async (productId: string, warehouseId: string, newQuantity: number, reason: string) => {
+    try {
+      const { data: currentStock } = await supabase
+        .from('bm_inv_stock')
+        .select('quantity')
+        .eq('product_id', productId)
+        .eq('warehouse_id', warehouseId)
+        .single();
+
+      if (!currentStock) {
+        throw new Error('Stock record not found');
+      }
+
+      // Update stock
+      const { error: stockError } = await supabase
+        .from('bm_inv_stock')
+        .update({ quantity: newQuantity })
+        .eq('product_id', productId)
+        .eq('warehouse_id', warehouseId);
+
+      if (stockError) throw stockError;
+
+      // Log the adjustment
+      await logStockAdjustment(
+        productId,
+        warehouseId,
+        currentStock.quantity,
+        newQuantity,
+        reason
+      );
+
+      toast({
+        title: "Stock Adjusted",
+        description: "Stock level has been adjusted and transaction logged"
+      });
+
+      await loadInventory();
+      return true;
+    } catch (error) {
+      console.error('Error adjusting stock:', error);
+      toast({
+        title: "Failed to Adjust Stock",
+        description: "There was an error adjusting the stock level",
+        variant: "destructive"
+      });
+      return false;
     }
   };
 
@@ -327,6 +405,7 @@ export function useInventory() {
     addProduct,
     updateProduct,
     deleteProduct,
+    adjustStock,
     refreshInventory: loadInventory,
     getInventoryStats,
     getLowStockItems,

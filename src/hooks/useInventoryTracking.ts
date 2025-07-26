@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface TransactionRecord {
   productId: string;
@@ -15,6 +16,7 @@ interface TransactionRecord {
 
 export function useInventoryTracking() {
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Log a new inventory transaction
   const logTransaction = async (transaction: TransactionRecord) => {
@@ -29,7 +31,7 @@ export function useInventoryTracking() {
           unit_cost: transaction.unitCost,
           reference_number: transaction.referenceNumber,
           notes: transaction.notes,
-          user_id: transaction.userId,
+          user_id: transaction.userId || user?.id,
         }]);
 
       if (error) throw error;

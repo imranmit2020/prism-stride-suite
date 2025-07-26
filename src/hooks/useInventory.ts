@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useInventoryTracking } from '@/hooks/useInventoryTracking';
+import { useAuth } from '@/contexts/AuthContext';
 import { InventoryItem } from '@/components/inventory/InventoryTable';
 
 export function useInventory() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
   const { logStockAdjustment, logPurchaseReceipt } = useInventoryTracking();
 
   const loadInventory = async () => {
@@ -82,96 +84,107 @@ export function useInventory() {
 
   const addProduct = async (product: Omit<InventoryItem, 'id'>) => {
     try {
-      // Create category if it doesn't exist
-      let categoryId = null;
-      const { data: existingCategory } = await supabase
-        .from('bm_inv_categories')
-        .select('id')
-        .eq('name', product.category)
-        .maybeSingle();
+      setLoading(true);
 
-      if (existingCategory) {
-        categoryId = existingCategory.id;
-      } else {
-        const { data: newCategory, error: categoryError } = await supabase
+      // Create category if it doesn't exist
+      if (product.category) {
+        const { data: existingCategory } = await supabase
           .from('bm_inv_categories')
-          .insert({ name: product.category })
           .select('id')
+          .eq('name', product.category)
           .single();
 
-        if (categoryError) throw categoryError;
-        categoryId = newCategory.id;
+        if (!existingCategory) {
+          const { error: categoryError } = await supabase
+            .from('bm_inv_categories')
+            .insert([{ name: product.category, user_id: user?.id }]);
+          
+          if (categoryError) throw categoryError;
+        }
       }
 
       // Create supplier if it doesn't exist
-      let supplierId = null;
-      const { data: existingSupplier } = await supabase
-        .from('bm_inv_suppliers')
-        .select('id')
-        .eq('name', product.supplier)
-        .maybeSingle();
-
-      if (existingSupplier) {
-        supplierId = existingSupplier.id;
-      } else {
-        const { data: newSupplier, error: supplierError } = await supabase
+      if (product.supplier) {
+        const { data: existingSupplier } = await supabase
           .from('bm_inv_suppliers')
-          .insert({ name: product.supplier })
           .select('id')
+          .eq('name', product.supplier)
           .single();
 
-        if (supplierError) throw supplierError;
-        supplierId = newSupplier.id;
+        if (!existingSupplier) {
+          const { error: supplierError } = await supabase
+            .from('bm_inv_suppliers')
+            .insert([{ name: product.supplier, user_id: user?.id }]);
+          
+          if (supplierError) throw supplierError;
+        }
       }
+
+      // Get category and supplier IDs
+      const { data: categoryData } = await supabase
+        .from('bm_inv_categories')
+        .select('id')
+        .eq('name', product.category || '')
+        .single();
+
+      const { data: supplierData } = await supabase
+        .from('bm_inv_suppliers')
+        .select('id')
+        .eq('name', product.supplier || '')
+        .single();
 
       // Create the product
       const { data: newProduct, error: productError } = await supabase
         .from('bm_inv_products')
-        .insert({
+        .insert([{
           name: product.name,
           sku: product.sku,
-          category_id: categoryId,
-          supplier_id: supplierId,
-          cost_price: product.unitCost,
+          category_id: categoryData?.id,
+          supplier_id: supplierData?.id,
           unit_price: product.sellingPrice,
-          description: `${product.category} product`
-        })
-        .select('id')
+          cost_price: product.unitCost,
+          user_id: user?.id
+        }])
+        .select()
         .single();
 
       if (productError) throw productError;
 
       // Get or create default warehouse
-      let { data: warehouses } = await supabase
+      let { data: warehouse } = await supabase
         .from('bm_inv_warehouses')
         .select('id')
-        .limit(1);
+        .eq('user_id', user?.id)
+        .limit(1)
+        .single();
 
-      let warehouseId = null;
-      if (warehouses && warehouses.length > 0) {
-        warehouseId = warehouses[0].id;
-      } else {
+      if (!warehouse) {
         const { data: newWarehouse, error: warehouseError } = await supabase
           .from('bm_inv_warehouses')
-          .insert({ name: 'Main Warehouse', location: 'Primary Location' })
-          .select('id')
+          .insert([{
+            name: 'Main Warehouse',
+            location: 'Default Location',
+            capacity: 10000,
+            user_id: user?.id
+          }])
+          .select()
           .single();
 
         if (warehouseError) throw warehouseError;
-        warehouseId = newWarehouse.id;
+        warehouse = newWarehouse;
       }
 
       // Create stock record
       const { error: stockError } = await supabase
         .from('bm_inv_stock')
-        .insert({
+        .insert([{
           product_id: newProduct.id,
-          warehouse_id: warehouseId,
+          warehouse_id: warehouse.id,
           quantity: product.currentStock,
           min_stock: product.minStock,
           max_stock: product.maxStock,
           reorder_point: product.reorderPoint
-        });
+        }]);
 
       if (stockError) throw stockError;
 
@@ -179,7 +192,7 @@ export function useInventory() {
       if (product.currentStock > 0) {
         await logPurchaseReceipt(
           newProduct.id,
-          warehouseId,
+          warehouse.id,
           product.currentStock,
           product.unitCost,
           'INITIAL-STOCK'
@@ -187,8 +200,8 @@ export function useInventory() {
       }
 
       toast({
-        title: "Product Added Successfully",
-        description: `${product.name} has been added to inventory with transaction logged`
+        title: "Product Added",
+        description: "Product has been successfully added with transaction logged"
       });
 
       await loadInventory();
@@ -196,9 +209,11 @@ export function useInventory() {
       console.error('Error adding product:', error);
       toast({
         title: "Failed to Add Product",
-        description: "There was an error adding the product to inventory",
+        description: "There was an error adding the product",
         variant: "destructive"
       });
+    } finally {
+      setLoading(false);
     }
   };
 

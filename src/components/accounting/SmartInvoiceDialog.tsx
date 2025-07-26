@@ -404,7 +404,17 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log("🔍 Form validation check:", {
+      invoiceNumber: formData.invoiceNumber,
+      vendorName: formData.vendor.name,
+      formData: formData
+    });
+    
     if (!formData.invoiceNumber || !formData.vendor.name) {
+      console.log("❌ Validation failed:", {
+        invoiceNumber: formData.invoiceNumber,
+        vendorName: formData.vendor.name
+      });
       toast({
         title: "Validation Error",
         description: "Invoice number and vendor name are required",

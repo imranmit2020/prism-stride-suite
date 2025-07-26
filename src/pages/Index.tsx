@@ -225,7 +225,7 @@ const MainApp = () => {
                 }
               </p>
             </div>
-            <AccountingInterface />
+            <AccountingInterface isHomeMode={isHomeMode} />
           </div>
         );
       case "analytics":

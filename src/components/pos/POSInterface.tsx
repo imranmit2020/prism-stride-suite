@@ -16,10 +16,11 @@ import { CustomerManagementDialog } from "./CustomerManagementDialog";
 import { LoyaltyProgramDialog } from "./LoyaltyProgramDialog";
 import { useToast } from "@/hooks/use-toast";
 import { usePOS, POSProduct } from "@/hooks/usePOS";
+import { supabase } from "@/integrations/supabase/client";
 
 export function POSInterface() {
   const { formatCurrency } = useGlobalization();
-  const { products, createTransaction, createCustomer } = usePOS();
+  const { products, createTransaction, createCustomer, refetch } = usePOS();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -194,6 +195,28 @@ export function POSInterface() {
     });
   };
 
+  const handleSeedSampleData = async () => {
+    try {
+      const { error } = await supabase.rpc('seed_pos_data_for_user');
+      
+      if (error) throw error;
+      
+      await refetch();
+      
+      toast({
+        title: "Sample Data Added",
+        description: "Sample products, categories, and customers have been added to your POS system."
+      });
+    } catch (error) {
+      console.error('Error seeding sample data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add sample data",
+        variant: "destructive"
+      });
+    }
+  };
+
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.08; // Including 8% tax
 
   return (
@@ -238,11 +261,20 @@ export function POSInterface() {
 
               {/* Product Grid */}
               <div className="flex-1 overflow-y-auto">
-                <ProductGrid
-                  products={filteredProducts}
-                  onAddToCart={addToCart}
-                  selectedCategory={selectedCategory}
-                />
+                {convertedProducts.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+                    <p className="text-muted-foreground">No products found in your inventory.</p>
+                    <Button onClick={handleSeedSampleData} variant="outline">
+                      Add Sample Products
+                    </Button>
+                  </div>
+                ) : (
+                  <ProductGrid
+                    products={filteredProducts}
+                    onAddToCart={addToCart}
+                    selectedCategory={selectedCategory}
+                  />
+                )}
               </div>
             </div>
 

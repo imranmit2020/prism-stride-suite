@@ -1910,6 +1910,154 @@ export type Database = {
         }
         Relationships: []
       }
+      pm_document_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          parent_category_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          parent_category_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          parent_category_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pm_document_categories_parent"
+            columns: ["parent_category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_document_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_documents: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string | null
+          document_date: string | null
+          document_type: string | null
+          expiry_date: string | null
+          file_name: string | null
+          file_size: number | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          is_archived: boolean | null
+          is_important: boolean | null
+          notes: string | null
+          related_expense_id: string | null
+          related_income_id: string | null
+          related_item_id: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          document_date?: string | null
+          document_type?: string | null
+          expiry_date?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_important?: boolean | null
+          notes?: string | null
+          related_expense_id?: string | null
+          related_income_id?: string | null
+          related_item_id?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          document_date?: string | null
+          document_type?: string | null
+          expiry_date?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          is_archived?: boolean | null
+          is_important?: boolean | null
+          notes?: string | null
+          related_expense_id?: string | null
+          related_income_id?: string | null
+          related_item_id?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pm_documents_category"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "pm_document_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_pm_documents_expense"
+            columns: ["related_expense_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_expenses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_pm_documents_income"
+            columns: ["related_income_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_income"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_pm_documents_item"
+            columns: ["related_item_id"]
+            isOneToOne: false
+            referencedRelation: "pm_inv_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pm_fnc_budgets: {
         Row: {
           alert_threshold: number | null
@@ -2275,6 +2423,69 @@ export type Database = {
           },
         ]
       }
+      pm_goals_general: {
+        Row: {
+          category: string
+          completion_date: string | null
+          created_at: string
+          current_value: number | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          milestones: Json | null
+          notes: string | null
+          priority: string | null
+          status: string | null
+          tags: string[] | null
+          target_date: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          completion_date?: string | null
+          created_at?: string
+          current_value?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          milestones?: Json | null
+          notes?: string | null
+          priority?: string | null
+          status?: string | null
+          tags?: string[] | null
+          target_date?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          completion_date?: string | null
+          created_at?: string
+          current_value?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          milestones?: Json | null
+          notes?: string | null
+          priority?: string | null
+          status?: string | null
+          tags?: string[] | null
+          target_date?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pm_inv_categories: {
         Row: {
           color: string | null
@@ -2488,6 +2699,282 @@ export type Database = {
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "pm_inv_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_investments: {
+        Row: {
+          account_type: string | null
+          broker_name: string | null
+          created_at: string
+          current_price: number | null
+          goal_id: string | null
+          id: string
+          investment_name: string
+          investment_type: string
+          is_active: boolean | null
+          notes: string | null
+          purchase_date: string | null
+          purchase_price: number | null
+          quantity: number | null
+          symbol: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_type?: string | null
+          broker_name?: string | null
+          created_at?: string
+          current_price?: number | null
+          goal_id?: string | null
+          id?: string
+          investment_name: string
+          investment_type: string
+          is_active?: boolean | null
+          notes?: string | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          quantity?: number | null
+          symbol?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_type?: string | null
+          broker_name?: string | null
+          created_at?: string
+          current_price?: number | null
+          goal_id?: string | null
+          id?: string
+          investment_name?: string
+          investment_type?: string
+          is_active?: boolean | null
+          notes?: string | null
+          purchase_date?: string | null
+          purchase_price?: number | null
+          quantity?: number | null
+          symbol?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pm_investments_goal"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_report_history: {
+        Row: {
+          error_message: string | null
+          file_url: string | null
+          generated_at: string
+          generation_time: number | null
+          id: string
+          report_data: Json | null
+          report_id: string | null
+          schedule_id: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          error_message?: string | null
+          file_url?: string | null
+          generated_at?: string
+          generation_time?: number | null
+          id?: string
+          report_data?: Json | null
+          report_id?: string | null
+          schedule_id?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          error_message?: string | null
+          file_url?: string | null
+          generated_at?: string
+          generation_time?: number | null
+          id?: string
+          report_data?: Json | null
+          report_id?: string | null
+          schedule_id?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pm_report_history_report"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "pm_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_pm_report_history_schedule"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "pm_report_schedules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_report_schedules: {
+        Row: {
+          created_at: string
+          email_recipients: string[] | null
+          id: string
+          is_active: boolean | null
+          last_run: string | null
+          next_run: string | null
+          report_id: string
+          schedule_config: Json | null
+          schedule_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_recipients?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          last_run?: string | null
+          next_run?: string | null
+          report_id: string
+          schedule_config?: Json | null
+          schedule_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_recipients?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          last_run?: string | null
+          next_run?: string | null
+          report_id?: string
+          schedule_config?: Json | null
+          schedule_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pm_report_schedules_report"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "pm_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pm_reports: {
+        Row: {
+          created_at: string
+          description: string | null
+          filters: Json | null
+          id: string
+          is_active: boolean | null
+          name: string
+          report_type: string
+          settings: Json | null
+          template_data: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          filters?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          report_type: string
+          settings?: Json | null
+          template_data?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          filters?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          report_type?: string
+          settings?: Json | null
+          template_data?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pm_savings_accounts: {
+        Row: {
+          account_name: string
+          account_number_last4: string | null
+          account_type: string
+          bank_name: string | null
+          created_at: string
+          current_balance: number | null
+          goal_id: string | null
+          id: string
+          interest_rate: number | null
+          is_active: boolean | null
+          is_primary: boolean | null
+          minimum_balance: number | null
+          monthly_fee: number | null
+          notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_name: string
+          account_number_last4?: string | null
+          account_type: string
+          bank_name?: string | null
+          created_at?: string
+          current_balance?: number | null
+          goal_id?: string | null
+          id?: string
+          interest_rate?: number | null
+          is_active?: boolean | null
+          is_primary?: boolean | null
+          minimum_balance?: number | null
+          monthly_fee?: number | null
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_name?: string
+          account_number_last4?: string | null
+          account_type?: string
+          bank_name?: string | null
+          created_at?: string
+          current_balance?: number | null
+          goal_id?: string | null
+          id?: string
+          interest_rate?: number | null
+          is_active?: boolean | null
+          is_primary?: boolean | null
+          minimum_balance?: number | null
+          monthly_fee?: number | null
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_pm_savings_accounts_goal"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "pm_fnc_goals"
             referencedColumns: ["id"]
           },
         ]

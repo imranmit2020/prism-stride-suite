@@ -19,7 +19,7 @@ interface PaymentModalProps {
   onClose: () => void;
   items: CartItem[];
   total: number;
-  onPaymentComplete: (transactionId: string) => void;
+  onPaymentComplete: (transactionId: string, paymentMethod: 'cash' | 'card' | 'digital', cashReceived?: number) => void;
 }
 
 export function PaymentModal({ isOpen, onClose, items, total, onPaymentComplete }: PaymentModalProps) {
@@ -49,7 +49,9 @@ export function PaymentModal({ isOpen, onClose, items, total, onPaymentComplete 
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     const transactionId = `TXN-${Date.now()}`;
-    onPaymentComplete(transactionId);
+    const cashAmount = paymentMethod === "cash" ? parseFloat(cashReceived) : undefined;
+    
+    onPaymentComplete(transactionId, paymentMethod, cashAmount);
     
     toast({
       title: "Payment Successful",

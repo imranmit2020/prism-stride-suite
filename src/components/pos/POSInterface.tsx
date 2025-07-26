@@ -15,23 +15,11 @@ import { AISecurityFraudDetection } from "./AISecurityFraudDetection";
 import { CustomerManagementDialog } from "./CustomerManagementDialog";
 import { LoyaltyProgramDialog } from "./LoyaltyProgramDialog";
 import { useToast } from "@/hooks/use-toast";
-
-// Mock data - replace with real data from your backend
-const mockProducts: Product[] = [
-  { id: "1", name: "Coffee - Espresso", price: 3.50, category: "beverages", stock: 50, barcode: "123456789" },
-  { id: "2", name: "Croissant - Butter", price: 2.25, category: "pastries", stock: 20 },
-  { id: "3", name: "Sandwich - Ham & Cheese", price: 8.95, category: "food", stock: 15 },
-  { id: "4", name: "Coffee - Latte", price: 4.25, category: "beverages", stock: 45 },
-  { id: "5", name: "Muffin - Blueberry", price: 3.75, category: "pastries", stock: 12 },
-  { id: "6", name: "Salad - Caesar", price: 9.50, category: "food", stock: 8 },
-  { id: "7", name: "Tea - Earl Grey", price: 2.95, category: "beverages", stock: 30 },
-  { id: "8", name: "Bagel - Everything", price: 2.50, category: "pastries", stock: 25 },
-  { id: "9", name: "Soup - Tomato", price: 6.75, category: "food", stock: 10 },
-  { id: "10", name: "Smoothie - Berry", price: 5.95, category: "beverages", stock: 18 }
-];
+import { usePOS, POSProduct } from "@/hooks/usePOS";
 
 export function POSInterface() {
   const { formatCurrency } = useGlobalization();
+  const { products, createTransaction, createCustomer } = usePOS();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,9 +29,19 @@ export function POSInterface() {
   const [activeTab, setActiveTab] = useState("pos");
   const { toast } = useToast();
 
-  const categories = [...new Set(mockProducts.map(p => p.category))];
+  // Convert POSProduct to Product format for compatibility
+  const convertedProducts: Product[] = products.map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    category: product.category,
+    stock: product.stock_quantity,
+    barcode: product.barcode
+  }));
+
+  const categories = [...new Set(convertedProducts.map(p => p.category))];
   
-  const filteredProducts = mockProducts.filter(product => {
+  const filteredProducts = convertedProducts.filter(product => {
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.barcode?.includes(searchTerm);
@@ -117,25 +115,76 @@ export function POSInterface() {
     setShowPayment(true);
   };
 
-  const handlePaymentComplete = (transactionId: string) => {
-    // Here you would typically:
-    // 1. Update inventory
-    // 2. Save transaction to database
-    // 3. Print receipt
-    // 4. Clear cart
-    
-    clearCart();
-    toast({
-      title: "Sale Complete",
-      description: `Transaction ${transactionId} processed successfully.`
-    });
+  const handlePaymentComplete = async (transactionId: string, paymentMethod: 'cash' | 'card' | 'digital', cashReceived?: number) => {
+    try {
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const taxAmount = subtotal * 0.08; // 8% tax
+      const total = subtotal + taxAmount;
+      
+      // Create transaction in database
+      const transactionData = {
+        transaction_number: transactionId,
+        subtotal,
+        tax_amount: taxAmount,
+        total_amount: total,
+        payment_method: paymentMethod,
+        payment_status: 'completed' as const,
+        cash_received: cashReceived,
+        change_given: cashReceived ? Math.max(0, cashReceived - total) : undefined
+      };
+
+      const transactionItems = cartItems.map(item => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        unit_price: item.price,
+        line_total: item.price * item.quantity
+      }));
+
+      await createTransaction(transactionData, transactionItems);
+      
+      clearCart();
+      toast({
+        title: "Sale Complete",
+        description: `Transaction ${transactionId} processed successfully.`
+      });
+    } catch (error) {
+      console.error('Error completing transaction:', error);
+      toast({
+        title: "Error",
+        description: "Failed to complete transaction",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleSaveCustomer = (customer: any) => {
-    toast({
-      title: "Customer Added",
-      description: `${customer.name} has been added to the system`
-    });
+  const handleSaveCustomer = async (customerData: any) => {
+    try {
+      const customer = {
+        customer_code: `CUST-${Date.now()}`,
+        name: customerData.name,
+        email: customerData.email,
+        phone: customerData.phone,
+        address: customerData.address,
+        loyalty_points: 0,
+        total_spent: 0,
+        visit_count: 0,
+        is_active: true
+      };
+
+      await createCustomer(customer);
+      
+      toast({
+        title: "Customer Added",
+        description: `${customerData.name} has been added to the system`
+      });
+    } catch (error) {
+      console.error('Error saving customer:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save customer",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleSaveLoyaltyProgram = (program: any) => {

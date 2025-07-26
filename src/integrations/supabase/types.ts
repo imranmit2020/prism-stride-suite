@@ -1493,6 +1493,423 @@ export type Database = {
         }
         Relationships: []
       }
+      bm_pos_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_pos_customers: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          customer_code: string
+          date_of_birth: string | null
+          email: string | null
+          id: string
+          is_active: boolean | null
+          last_visit: string | null
+          loyalty_points: number | null
+          name: string
+          notes: string | null
+          phone: string | null
+          postal_code: string | null
+          state: string | null
+          total_spent: number | null
+          updated_at: string
+          user_id: string
+          visit_count: number | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          customer_code: string
+          date_of_birth?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_visit?: string | null
+          loyalty_points?: number | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          total_spent?: number | null
+          updated_at?: string
+          user_id: string
+          visit_count?: number | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          customer_code?: string
+          date_of_birth?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_visit?: string | null
+          loyalty_points?: number | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          total_spent?: number | null
+          updated_at?: string
+          user_id?: string
+          visit_count?: number | null
+        }
+        Relationships: []
+      }
+      bm_pos_discounts: {
+        Row: {
+          applicable_categories: Json | null
+          applicable_products: Json | null
+          created_at: string
+          current_uses: number | null
+          description: string | null
+          discount_type: string
+          discount_value: number
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          max_uses: number | null
+          maximum_discount: number | null
+          minimum_purchase: number | null
+          name: string
+          start_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applicable_categories?: Json | null
+          applicable_products?: Json | null
+          created_at?: string
+          current_uses?: number | null
+          description?: string | null
+          discount_type: string
+          discount_value?: number
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          maximum_discount?: number | null
+          minimum_purchase?: number | null
+          name: string
+          start_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applicable_categories?: Json | null
+          applicable_products?: Json | null
+          created_at?: string
+          current_uses?: number | null
+          description?: string | null
+          discount_type?: string
+          discount_value?: number
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          maximum_discount?: number | null
+          minimum_purchase?: number | null
+          name?: string
+          start_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_pos_loyalty_programs: {
+        Row: {
+          created_at: string
+          description: string | null
+          dollar_per_point: number | null
+          end_date: string | null
+          expiry_months: number | null
+          id: string
+          is_active: boolean | null
+          minimum_points_to_redeem: number | null
+          name: string
+          points_per_dollar: number | null
+          start_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          dollar_per_point?: number | null
+          end_date?: string | null
+          expiry_months?: number | null
+          id?: string
+          is_active?: boolean | null
+          minimum_points_to_redeem?: number | null
+          name: string
+          points_per_dollar?: number | null
+          start_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          dollar_per_point?: number | null
+          end_date?: string | null
+          expiry_months?: number | null
+          id?: string
+          is_active?: boolean | null
+          minimum_points_to_redeem?: number | null
+          name?: string
+          points_per_dollar?: number | null
+          start_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_pos_products: {
+        Row: {
+          barcode: string | null
+          category: string
+          cost_price: number | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          price: number
+          product_code: string
+          stock_quantity: number
+          tax_rate: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          barcode?: string | null
+          category: string
+          cost_price?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          price?: number
+          product_code: string
+          stock_quantity?: number
+          tax_rate?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          barcode?: string | null
+          category?: string
+          cost_price?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          price?: number
+          product_code?: string
+          stock_quantity?: number
+          tax_rate?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_pos_shifts: {
+        Row: {
+          cash_difference: number | null
+          cashier_id: string
+          closing_cash: number | null
+          created_at: string
+          end_time: string | null
+          expected_cash: number | null
+          id: string
+          notes: string | null
+          opening_cash: number | null
+          shift_number: string
+          start_time: string
+          status: string | null
+          total_sales: number | null
+          transaction_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cash_difference?: number | null
+          cashier_id: string
+          closing_cash?: number | null
+          created_at?: string
+          end_time?: string | null
+          expected_cash?: number | null
+          id?: string
+          notes?: string | null
+          opening_cash?: number | null
+          shift_number: string
+          start_time?: string
+          status?: string | null
+          total_sales?: number | null
+          transaction_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cash_difference?: number | null
+          cashier_id?: string
+          closing_cash?: number | null
+          created_at?: string
+          end_time?: string | null
+          expected_cash?: number | null
+          id?: string
+          notes?: string | null
+          opening_cash?: number | null
+          shift_number?: string
+          start_time?: string
+          status?: string | null
+          total_sales?: number | null
+          transaction_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bm_pos_transaction_items: {
+        Row: {
+          created_at: string
+          discount_amount: number | null
+          id: string
+          line_total: number
+          product_id: string
+          quantity: number
+          tax_amount: number | null
+          transaction_id: string
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          discount_amount?: number | null
+          id?: string
+          line_total?: number
+          product_id: string
+          quantity?: number
+          tax_amount?: number | null
+          transaction_id: string
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          discount_amount?: number | null
+          id?: string
+          line_total?: number
+          product_id?: string
+          quantity?: number
+          tax_amount?: number | null
+          transaction_id?: string
+          unit_price?: number
+        }
+        Relationships: []
+      }
+      bm_pos_transactions: {
+        Row: {
+          cash_received: number | null
+          cashier_id: string | null
+          change_given: number | null
+          created_at: string
+          customer_id: string | null
+          discount_amount: number | null
+          id: string
+          notes: string | null
+          payment_method: string
+          payment_status: string | null
+          receipt_number: string | null
+          subtotal: number
+          tax_amount: number
+          total_amount: number
+          transaction_number: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cash_received?: number | null
+          cashier_id?: string | null
+          change_given?: number | null
+          created_at?: string
+          customer_id?: string | null
+          discount_amount?: number | null
+          id?: string
+          notes?: string | null
+          payment_method: string
+          payment_status?: string | null
+          receipt_number?: string | null
+          subtotal?: number
+          tax_amount?: number
+          total_amount?: number
+          transaction_number: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cash_received?: number | null
+          cashier_id?: string | null
+          change_given?: number | null
+          created_at?: string
+          customer_id?: string | null
+          discount_amount?: number | null
+          id?: string
+          notes?: string | null
+          payment_method?: string
+          payment_status?: string | null
+          receipt_number?: string | null
+          subtotal?: number
+          tax_amount?: number
+          total_amount?: number
+          transaction_number?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

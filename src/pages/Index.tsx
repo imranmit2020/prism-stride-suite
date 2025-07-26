@@ -12,6 +12,7 @@ import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInterface";
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
 import { PersonalFinanceAnalyticsInterface } from "@/components/personal-analytics/PersonalFinanceAnalyticsInterface";
+import { PersonalGoalsInterface } from "@/components/personal-finance/PersonalGoalsInterface";
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { PersonalReportsInterface } from "@/components/reports/PersonalReportsInterface";
 import { SettingsInterface } from "@/components/settings/SettingsInterface";

@@ -656,7 +656,7 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
                       <Label>Invoice Number *</Label>
                       <Input
                         value={formData.invoiceNumber}
-                        onChange={(e) => handleInputChange('details', 'invoiceNumber', e.target.value)}
+                        onChange={(e) => setFormData(prev => ({ ...prev, invoiceNumber: e.target.value }))}
                         placeholder="INV-001"
                       />
                     </div>
@@ -694,7 +694,7 @@ export function SmartInvoiceDialog({ open, onOpenChange, invoice, onSaveInvoice 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Payment Terms</Label>
-                      <Select value={formData.paymentTerms} onValueChange={(value) => handleInputChange('details', 'paymentTerms', value)}>
+                      <Select value={formData.paymentTerms} onValueChange={(value) => setFormData(prev => ({ ...prev, paymentTerms: value }))}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>

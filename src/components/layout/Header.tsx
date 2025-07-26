@@ -29,10 +29,11 @@ interface HeaderProps {
     tenant: string;
   };
   onTenantChange?: (tenant: string) => void;
+  onSignOut?: () => void;
   tenants?: Array<{ id: string; name: string; plan: string }>;
 }
 
-export function Header({ currentUser, onTenantChange, tenants = [] }: HeaderProps) {
+export function Header({ currentUser, onTenantChange, onSignOut, tenants = [] }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const mockUser = {
@@ -142,7 +143,10 @@ export function Header({ currentUser, onTenantChange, tenants = [] }: HeaderProp
                 Switch Tenant
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem 
+                className="text-destructive"
+                onClick={onSignOut}
+              >
                 Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>

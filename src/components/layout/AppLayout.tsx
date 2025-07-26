@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { TenantBranding } from "./TenantBranding";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Tenant {
   id: string;
@@ -27,6 +29,8 @@ export function AppLayout({
   isHomeMode = false, 
   onHomeModeChange 
 }: AppLayoutProps) {
+  const { user, signOut } = useAuth();
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [currentTenant, setCurrentTenant] = useState<Tenant>({
     id: "acme",
     name: "Acme Corporation",
@@ -35,6 +39,23 @@ export function AppLayout({
       theme: "enterprise",
     }
   });
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        setUserProfile(profile);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
 
   const handleTenantChange = (tenantId: string) => {
     // In a real app, this would fetch tenant data and update the state
@@ -63,12 +84,14 @@ export function AppLayout({
         <div className="ml-64">
           <Header 
             onTenantChange={handleTenantChange}
-            currentUser={{
-              name: "John Smith",
-              email: "john@company.com",
-              role: "Administrator",
-              tenant: currentTenant.name
-            }}
+            currentUser={userProfile ? {
+              name: userProfile.full_name || user?.email || "User",
+              email: userProfile.email || user?.email || "",
+              role: userProfile.role || "User",
+              tenant: currentTenant.name,
+              avatar: userProfile.avatar_url
+            } : undefined}
+            onSignOut={signOut}
           />
           <main className="min-h-screen">
             <div className="container mx-auto py-6 px-6">

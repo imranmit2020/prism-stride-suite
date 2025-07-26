@@ -69,6 +69,7 @@ export function usePersonalInventory() {
   const loadData = async () => {
     try {
       setLoading(true);
+      console.log('🏠 Loading personal inventory data...');
       
       // Load categories
       const { data: categoriesData, error: categoriesError } = await supabase
@@ -76,6 +77,8 @@ export function usePersonalInventory() {
         .select('*')
         .eq('is_active', true)
         .order('name');
+
+      console.log('🏠 Categories loaded:', categoriesData?.length || 0, categoriesError);
 
       if (categoriesError) throw categoriesError;
       setCategories(categoriesData || []);
@@ -87,6 +90,7 @@ export function usePersonalInventory() {
         .eq('is_active', true)
         .order('name');
 
+      console.log('🏠 Locations loaded:', locationsData?.length || 0, locationsError);
       if (locationsError) throw locationsError;
       setLocations(locationsData || []);
 
@@ -100,6 +104,7 @@ export function usePersonalInventory() {
         .eq('is_active', true)
         .order('name');
 
+      console.log('🏠 Items loaded:', itemsData?.length || 0, itemsError);
       if (itemsError) throw itemsError;
       setItems(itemsData || []);
 

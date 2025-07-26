@@ -15,6 +15,7 @@ import { AITaxQuantumEngine } from "./AITaxQuantumEngine";
 import { AICountryIntelligence } from "./AICountryIntelligence";
 import { SmartInvoiceDialog } from "./SmartInvoiceDialog";
 import { ExpenseManagementDialog } from "./ExpenseManagementDialog";
+import { useAccounting } from "@/hooks/useAccounting";
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Receipt } from "lucide-react";
 
@@ -24,12 +25,13 @@ export function AccountingInterface() {
   const [showInvoiceDialog, setShowInvoiceDialog] = useState(false);
   const [showExpenseDialog, setShowExpenseDialog] = useState(false);
   const { toast } = useToast();
+  const { saveInvoice, loading } = useAccounting();
 
-  const handleSaveInvoice = (invoice: any) => {
-    toast({
-      title: "Invoice Processed",
-      description: `Invoice ${invoice.invoiceNumber} has been saved with AI validation`
-    });
+  const handleSaveInvoice = async (invoice: any) => {
+    const result = await saveInvoice(invoice);
+    if (result.success) {
+      setShowInvoiceDialog(false);
+    }
   };
 
   const handleSaveExpense = (expense: any) => {

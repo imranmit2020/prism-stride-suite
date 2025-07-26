@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { usePersonalInventory } from "@/hooks/usePersonalInventory";
 import { AddPersonalItemDialog } from "./AddPersonalItemDialog";
+import { PersonalImportExportActions } from "./PersonalImportExportActions";
 import { PersonalInventoryAnalytics } from "@/components/personal-analytics/PersonalInventoryAnalytics";
 
 export function PersonalInventoryInterface() {
@@ -62,12 +63,37 @@ export function PersonalInventoryInterface() {
     await addItem(item);
   };
 
+  const handleImportItems = async (importedItems: any[]) => {
+    for (const item of importedItems) {
+      await addItem(item);
+    }
+  };
+
+  // Transform items for import/export component
+  const transformedItems = items.map(item => ({
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    category: item.category?.name || '',
+    location: item.location,
+    condition: item.condition,
+    purchase_date: item.purchase_date,
+    purchase_price: item.purchase_price,
+    current_value: item.current_value,
+    warranty_expiry: item.warranty_expiry,
+    serial_number: item.serial_number,
+    model: item.model,
+    brand: item.brand,
+    notes: item.notes
+  }));
+
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full">
           <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
           <TabsTrigger value="items" className="px-3 py-2 text-xs font-medium">My Items</TabsTrigger>
+          <TabsTrigger value="import-export" className="px-3 py-2 text-xs font-medium">Import/Export</TabsTrigger>
           <TabsTrigger value="analytics" className="px-3 py-2 text-xs font-medium">Analytics</TabsTrigger>
         </TabsList>
 
@@ -229,6 +255,13 @@ export function PersonalInventoryInterface() {
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="import-export" className="space-y-6">
+          <PersonalImportExportActions 
+            items={transformedItems}
+            onImportItems={handleImportItems}
+          />
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-6">

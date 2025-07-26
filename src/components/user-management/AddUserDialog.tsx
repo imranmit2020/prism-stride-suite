@@ -9,9 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 interface AddUserDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onUserCreated?: () => void;
 }
 
-export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
+export function AddUserDialog({ open, onOpenChange, onUserCreated }: AddUserDialogProps) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -54,6 +55,7 @@ export function AddUserDialog({ open, onOpenChange }: AddUserDialogProps) {
         role: ""
       });
       
+      onUserCreated?.(); // Call the callback to refresh the user list
       onOpenChange(false);
     } catch (error) {
       toast({

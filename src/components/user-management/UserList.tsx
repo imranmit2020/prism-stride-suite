@@ -30,6 +30,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AddUserDialog } from "./AddUserDialog";
+import { EditUserDialog } from "./EditUserDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -49,6 +50,8 @@ export function UserList() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -83,6 +86,46 @@ export function UserList() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
+    setShowEditDialog(true);
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+    
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', userId);
+
+      if (error) {
+        console.error('Error deleting user:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete user",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Success",
+        description: "User deleted successfully",
+      });
+
+      fetchUsers(); // Refresh the list
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete user",
+        variant: "destructive",
+      });
     }
   };
 
@@ -241,15 +284,18 @@ export function UserList() {
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Delete
-                        </DropdownMenuItem>
+                       <DropdownMenuContent align="end">
+                         <DropdownMenuItem onClick={() => handleEditUser(user)}>
+                           <Edit className="h-4 w-4 mr-2" />
+                           Edit
+                         </DropdownMenuItem>
+                         <DropdownMenuItem 
+                           className="text-destructive"
+                           onClick={() => handleDeleteUser(user.id)}
+                         >
+                           <Trash2 className="h-4 w-4 mr-2" />
+                           Delete
+                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -263,6 +309,14 @@ export function UserList() {
       <AddUserDialog 
         open={showAddDialog}
         onOpenChange={setShowAddDialog}
+        onUserCreated={fetchUsers}
+      />
+      
+      <EditUserDialog 
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        user={selectedUser}
+        onUserUpdated={fetchUsers}
       />
     </div>
   );

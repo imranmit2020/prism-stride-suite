@@ -411,8 +411,10 @@ export function useInventory() {
   };
 
   useEffect(() => {
-    loadInventory();
-  }, []);
+    if (user) {
+      loadInventory();
+    }
+  }, [user]);
 
   return {
     inventory,

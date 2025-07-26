@@ -188,14 +188,14 @@ export function useInventory() {
 
       if (stockError) throw stockError;
 
-      // Log initial stock if quantity > 0
+      // Log initial stock if quantity > 0 using correct transaction type
       if (product.currentStock > 0) {
-        await logPurchaseReceipt(
+        await logStockAdjustment(
           newProduct.id,
           warehouse.id,
+          0,
           product.currentStock,
-          product.unitCost,
-          'INITIAL-STOCK'
+          'Initial stock entry'
         );
       }
 

@@ -31,7 +31,9 @@ export function EditProductDialog({ open, onOpenChange, product }: EditProductDi
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('EditProductDialog useEffect:', { product, open });
     if (product && open) {
+      console.log('Setting form data with product:', product);
       setFormData({
         name: product.name,
         sku: product.sku,
@@ -44,6 +46,8 @@ export function EditProductDialog({ open, onOpenChange, product }: EditProductDi
         sellingPrice: product.sellingPrice,
         supplier: product.supplier
       });
+    } else if (!product && open) {
+      console.log('Dialog opened but no product provided');
     }
   }, [product, open]);
 

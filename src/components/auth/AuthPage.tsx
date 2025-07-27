@@ -534,18 +534,20 @@ export function AuthPage() {
               </div>
             ) : (
               <Tabs value={currentView} onValueChange={(value) => setCurrentView(value as "login" | "signup")} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 h-12 bg-slate-50 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-600">
+                <TabsList className="grid w-full grid-cols-2 h-14 bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-700 p-1.5 rounded-xl border border-slate-200/60 dark:border-slate-600/60 shadow-lg shadow-slate-900/5 dark:shadow-slate-900/20">
                   <TabsTrigger 
                     value="login" 
-                    className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm transition-all duration-200 rounded-md"
+                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-slate-50 dark:data-[state=active]:from-slate-700 dark:data-[state=active]:to-slate-600 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-lg data-[state=active]:shadow-slate-900/10 dark:data-[state=active]:shadow-slate-900/30 data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-500 transition-all duration-300 rounded-lg hover:scale-[1.02] data-[state=active]:scale-[1.02]"
                   >
-                    Sign In
+                    <span className="relative z-10">Sign In</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 data-[state=active]:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="signup" 
-                    className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-sm transition-all duration-200 rounded-md"
+                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-slate-50 dark:data-[state=active]:from-slate-700 dark:data-[state=active]:to-slate-600 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-lg data-[state=active]:shadow-slate-900/10 dark:data-[state=active]:shadow-slate-900/30 data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-500 transition-all duration-300 rounded-lg hover:scale-[1.02] data-[state=active]:scale-[1.02]"
                   >
-                    Create Account
+                    <span className="relative z-10">Create Account</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 data-[state=active]:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                   </TabsTrigger>
                 </TabsList>
               

@@ -231,31 +231,29 @@ export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
   return (
     <div className="space-y-6">
       {/* AI Activity Stream */}
-      <Card className="card-holographic overflow-hidden border-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
-        <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-        <CardHeader className="relative z-10">
+      <Card className="card-modern">
+        <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-glow">
-              <Activity className="h-5 w-5 text-primary-foreground" />
+            <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+              <Activity className="h-5 w-5 text-primary" />
             </div>
-            <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">AI Activity Stream</span>
-            <Badge className="ml-auto bg-gradient-to-r from-accent to-accent/80 text-accent-foreground border-0 shadow-subtle">
-              <Brain className="h-3 w-3 mr-1 animate-pulse" />
+            AI Activity Stream
+            <Badge className="ml-auto bg-accent/10 text-accent border border-accent/20">
+              <Brain className="h-3 w-3 mr-1" />
               Real-time
             </Badge>
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription>
             {isHomeMode ? "Live feed of AI decisions, optimizations, and insights happening in your home" : "Live feed of AI decisions, optimizations, and insights happening across your business"}
           </CardDescription>
         </CardHeader>
-        <CardContent className="relative z-10">
+        <CardContent>
           <div className="space-y-4">
             {aiActivities.map((activity, index) => {
               const Icon = activity.icon;
               return (
-                <div key={index} className="group flex items-start gap-4 p-4 rounded-2xl bg-gradient-to-r from-background/50 to-muted/20 border border-border/50 hover:shadow-glow hover:border-primary/30 transition-all duration-300">
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 group-hover:shadow-subtle transition-all duration-300">
+                <div key={index} className="group flex items-start gap-4 p-4 rounded-lg border border-border hover:bg-muted/50 hover:border-border transition-all duration-200">
+                  <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors duration-200">
                     <Icon className="h-4 w-4 text-primary" />
                   </div>
                   

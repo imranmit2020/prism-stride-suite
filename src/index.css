@@ -6,108 +6,59 @@
 
 @layer base {
   :root {
-    /* Enhanced color palette with gradients and sophisticated tones */
-    --background: 210 20% 98%;
-    --foreground: 215 30% 12%;
-
+    /* Professional Color Palette */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 215 30% 12%;
-
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 215 30% 12%;
-
-    /* Primary - Sophisticated business blue with depth */
-    --primary: 214 88% 58%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 214 88% 52%;
-    --primary-light: 214 88% 95%;
-    --primary-dark: 214 88% 35%;
-
-    /* Secondary - Enhanced slate with warmth */
-    --secondary: 215 20% 90%;
-    --secondary-foreground: 215 30% 20%;
-    --secondary-hover: 215 20% 85%;
-
-    --muted: 215 20% 93%;
-    --muted-foreground: 215 15% 42%;
-
-    /* Accent - Modern teal for CTAs and highlights */
-    --accent: 185 85% 55%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 185 85% 92%;
-
-    /* Status colors - Professional palette */
-    --success: 142 76% 45%;
-    --success-foreground: 0 0% 100%;
-    --success-light: 142 76% 92%;
-
-    --warning: 43 96% 56%;
-    --warning-foreground: 0 0% 100%;
-    --warning-light: 43 96% 92%;
-
-    --error: 0 84% 60%;
-    --error-foreground: 0 0% 100%;
-    --error-light: 0 84% 95%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --destructive-light: 0 84% 95%;
-
-    --info: 214 88% 58%;
-    --info-foreground: 0 0% 100%;
-    --info-light: 214 88% 95%;
-
-    /* Borders and inputs */
-    --border: 215 16% 86%;
-    --input: 215 16% 86%;
-    --ring: 214 88% 58%;
-
-    /* Enhanced radius system */
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 262.1 83.3% 57.8%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
-    --radius-sm: 0.25rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
+    
+    /* Professional Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(221.2 83.2% 53.3%) 0%, hsl(262.1 83.3% 57.8%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(262.1 83.3% 57.8%) 0%, hsl(291.1 83.3% 57.8%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(210 40% 98%) 0%, hsl(214.3 31.8% 91.4%) 100%);
+    
+    /* Professional Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 8px 10px -6px hsl(0 0% 0% / 0.1);
+    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-interactive: 0 4px 12px hsl(221.2 83.2% 53.3% / 0.15);
 
-    /* Revolutionary gradients for futuristic UI */
-    --gradient-primary: linear-gradient(135deg, hsl(214 88% 58%), hsl(280 85% 60%), hsl(214 88% 45%));
-    --gradient-secondary: linear-gradient(135deg, hsl(215 20% 90%), hsl(280 20% 85%), hsl(215 20% 80%));
-    --gradient-accent: linear-gradient(135deg, hsl(185 85% 55%), hsl(320 85% 55%), hsl(185 85% 45%));
-    --gradient-hero: linear-gradient(135deg, hsl(214 88% 58%) 0%, hsl(280 85% 60%) 50%, hsl(185 85% 55%) 100%);
-    --gradient-quantum: linear-gradient(45deg, hsl(214 88% 58%), hsl(280 85% 60%), hsl(320 85% 55%), hsl(185 85% 55%));
-    --gradient-neural: conic-gradient(from 0deg, hsl(214 88% 58%), hsl(280 85% 60%), hsl(320 85% 55%), hsl(185 85% 55%), hsl(214 88% 58%));
-
-    /* Ultra-premium shadows with color dynamics */
-    --shadow-sm: 0 2px 4px 0 hsl(215 30% 12% / 0.08);
-    --shadow: 0 4px 12px 0 hsl(215 30% 12% / 0.15), 0 2px 4px -2px hsl(280 85% 60% / 0.1);
-    --shadow-md: 0 8px 25px -5px hsl(215 30% 12% / 0.2), 0 4px 8px -4px hsl(280 85% 60% / 0.15);
-    --shadow-lg: 0 20px 40px -12px hsl(215 30% 12% / 0.25), 0 8px 16px -8px hsl(280 85% 60% / 0.2);
-    --shadow-primary: 0 25px 50px -12px hsl(214 88% 58% / 0.4), 0 0 40px hsl(280 85% 60% / 0.3);
-    --shadow-neural: 0 30px 60px -12px hsl(214 88% 58% / 0.3), 0 18px 36px -18px hsl(280 85% 60% / 0.2), 0 0 80px hsl(185 85% 55% / 0.15);
-
-    /* Typography scale */
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-    --font-size-4xl: 2.25rem;
+    /* Animation Variables */
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Chart colors */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -306,75 +257,71 @@
     @apply bg-black/10 backdrop-blur-sm border border-white/10;
   }
 
-  /* Futuristic card styles */
-  .card-enhanced {
-    @apply bg-gradient-to-br from-card via-card/90 to-card/70 border-2 border-border/20 rounded-3xl shadow-neural hover:shadow-primary transition-all duration-700 backdrop-blur-xl hover:border-primary/60 hover:-translate-y-2 hover:scale-[1.01] relative overflow-hidden;
+  /* Professional Card Styles */
+  .card-modern {
+    @apply bg-card border border-border shadow-card;
+    @apply transition-all duration-200 hover:shadow-interactive;
   }
 
-  .card-enhanced::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-quantum opacity-0 hover:opacity-5 transition-opacity duration-700 pointer-events-none;
+  .card-floating {
+    @apply bg-gradient-to-br from-card to-muted/20;
+    @apply border border-border/50 shadow-md;
+    @apply transition-all duration-200;
+    @apply hover:shadow-lg hover:border-border hover:-translate-y-0.5;
   }
 
   .card-interactive {
-    @apply card-enhanced hover:scale-[1.05] cursor-pointer hover:border-primary/80 hover:shadow-neural hover:rotate-1;
+    @apply bg-card border border-border shadow-card;
+    @apply transition-all duration-200;
+    @apply hover:shadow-interactive hover:border-primary/20;
   }
 
-  .card-gradient {
-    @apply bg-gradient-to-br from-primary/10 via-accent/10 to-primary/15 border-2 border-primary/30 rounded-3xl shadow-neural hover:shadow-primary transition-all duration-700 hover:from-primary/20 hover:via-accent/20 hover:to-primary/25 relative overflow-hidden;
+  .card-accent {
+    @apply bg-gradient-to-br from-primary/5 to-accent/5;
+    @apply border border-primary/20 shadow-md;
   }
 
-  .card-gradient::after {
-    content: '';
-    @apply absolute inset-0 bg-gradient-neural opacity-10 mix-blend-overlay pointer-events-none;
-  }
-
-  .card-glass {
-    @apply bg-white/10 backdrop-blur-2xl border-2 border-white/20 rounded-3xl shadow-neural hover:shadow-primary transition-all duration-700 hover:bg-white/20 hover:border-white/40 relative overflow-hidden;
-  }
-
-  .card-glass::before {
-    content: '';
-    @apply absolute top-0 left-0 w-full h-1 bg-gradient-quantum opacity-60;
-  }
-
-  .dark .card-glass {
-    @apply bg-black/10 backdrop-blur-2xl border-white/10 hover:bg-black/20 hover:border-white/30;
-  }
-
-  /* Revolutionary status indicators */
+  /* Professional Status Indicators */
   .status-success {
-    @apply bg-gradient-to-r from-success/20 to-success/10 text-success border-2 border-success/50 rounded-2xl px-6 py-3 shadow-lg backdrop-blur-sm;
+    @apply bg-green-50 text-green-700 border-green-200;
+    @apply dark:bg-green-950 dark:text-green-300 dark:border-green-800;
   }
 
   .status-warning {
-    @apply bg-gradient-to-r from-warning/20 to-warning/10 text-warning border-2 border-warning/50 rounded-2xl px-6 py-3 shadow-lg backdrop-blur-sm;
+    @apply bg-yellow-50 text-yellow-700 border-yellow-200;
+    @apply dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800;
   }
 
   .status-error {
-    @apply bg-gradient-to-r from-error/20 to-error/10 text-error border-2 border-error/50 rounded-2xl px-6 py-3 shadow-lg backdrop-blur-sm;
+    @apply bg-red-50 text-red-700 border-red-200;
+    @apply dark:bg-red-950 dark:text-red-300 dark:border-red-800;
   }
 
   .status-info {
-    @apply bg-gradient-to-r from-info/20 to-info/10 text-info border-2 border-info/50 rounded-2xl px-6 py-3 shadow-lg backdrop-blur-sm;
+    @apply bg-blue-50 text-blue-700 border-blue-200;
+    @apply dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800;
   }
 
-  /* Ultra-premium hover effects */
-  .hover-levitate {
-    @apply transition-all duration-500 hover:-translate-y-3 hover:scale-105 hover:rotate-1;
+  /* Professional Interactive Effects */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
   }
 
-  .hover-quantum {
-    @apply transition-all duration-700 hover:shadow-neural hover:bg-gradient-quantum;
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
   }
 
-  /* Responsive utilities */
+  /* Layout Utilities */
   .container-responsive {
-    @apply px-4 sm:px-6 lg:px-8 max-w-8xl mx-auto;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .grid-auto-fit {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
   }
 
   .grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-10;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 }
 

@@ -74,24 +74,24 @@ export function DashboardStats() {
   return (
     <div className="space-y-8">
       {/* AI Status Header */}
-      <Card className="card-gradient border-primary/20">
+      <Card className="card-accent">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-xl">
+              <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
                 <Brain className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-xl">AI Command Center</CardTitle>
-                <p className="text-sm text-muted-foreground">Real-time business intelligence</p>
+                <CardTitle className="text-xl text-foreground">Business Intelligence</CardTitle>
+                <p className="text-sm text-muted-foreground">Real-time analytics and insights</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
-                <Activity className="h-3 w-3 mr-1 animate-pulse" />
-                AI Active
+              <Badge className="bg-green-50 text-green-700 border border-green-200">
+                <Activity className="h-3 w-3 mr-1" />
+                Active
               </Badge>
-              <Badge variant="outline">94% Confidence</Badge>
+              <Badge variant="outline">94% Accuracy</Badge>
             </div>
           </div>
         </CardHeader>
@@ -105,63 +105,46 @@ export function DashboardStats() {
           const TrendIcon = isIncrease ? TrendingUp : TrendingDown;
           
           return (
-            <Card 
-              key={stat.title} 
-              className="card-enhanced group hover:shadow-primary/10 relative overflow-hidden animate-slide-up"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {/* Background gradient overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-50`} />
-              
-              <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-3">
+            <Card key={stat.title} className="card-floating group">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {stat.title}
                 </CardTitle>
-                <div className={`p-2.5 rounded-xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-200 shadow-sm`}>
-                  <Icon className={`h-5 w-5 ${stat.iconColor}`} />
+                <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors duration-200">
+                  <Icon className="h-4 w-4 text-primary" />
                 </div>
               </CardHeader>
               
-              <CardContent className="relative space-y-4">
-                {/* Main Value */}
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-200">
-                    {stat.value}
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-sm">
-                    <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full ${
-                      isIncrease 
-                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' 
-                        : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                    }`}>
-                      <TrendIcon className="h-3 w-3" />
-                      <span className="font-medium">{stat.change}</span>
-                    </div>
-                    <span className="text-muted-foreground">{stat.description}</span>
-                  </div>
+              <CardContent className="space-y-3">
+                <div className="text-2xl font-bold text-foreground">
+                  {stat.value}
                 </div>
-
-                {/* AI Prediction Section */}
-                <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-blue-200/50 dark:border-blue-800/50">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="h-3 w-3 text-blue-600" />
-                    <span className="text-xs font-semibold text-blue-800 dark:text-blue-300">AI Prediction</span>
-                    <Badge variant="outline" className="text-xs bg-blue-100 text-blue-700 border-blue-300">
-                      96%
-                    </Badge>
+                
+                <div className="flex items-center gap-2 text-sm">
+                  <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium ${
+                    isIncrease 
+                      ? 'bg-green-50 text-green-700 border border-green-200' 
+                      : 'bg-red-50 text-red-700 border border-red-200'
+                  }`}>
+                    <TrendIcon className="h-3 w-3" />
+                    {stat.change}
                   </div>
-                  <div className="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-1">
+                  <span className="text-muted-foreground">{stat.description}</span>
+                </div>
+                
+                <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Sparkles className="h-3 w-3 text-blue-600" />
+                    <span className="text-xs font-medium text-blue-800">Insight</span>
+                  </div>
+                  <div className="text-xs text-blue-700 mb-1 font-medium">
                     {stat.prediction}
                   </div>
-                  <div className="text-xs text-blue-600 dark:text-blue-400">
+                  <div className="text-xs text-blue-600">
                     {stat.aiInsight}
                   </div>
                 </div>
               </CardContent>
-              
-              {/* Hover effect overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </Card>
           );
         })}

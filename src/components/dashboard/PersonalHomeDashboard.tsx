@@ -74,22 +74,19 @@ export function PersonalHomeDashboard() {
   return (
     <div className="space-y-6">
       {/* Home Overview Header */}
-      <Card className="card-holographic overflow-hidden border-0 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/10 rounded-full blur-2xl" />
-        <CardHeader className="pb-3 relative z-10">
+      <Card className="card-accent">
+        <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br from-primary to-primary/80 rounded-2xl shadow-glow">
-                <Home className="h-6 w-6 text-primary-foreground" />
+              <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
+                <Home className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-xl bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">My Home 🏠</CardTitle>
+                <CardTitle className="text-xl text-foreground">My Home 🏠</CardTitle>
                 <p className="text-sm text-muted-foreground">Keep track of what you spend and what you have</p>
               </div>
             </div>
-            <Badge className="bg-gradient-to-r from-accent to-accent/80 text-accent-foreground border-0 shadow-subtle">
+            <Badge className="bg-accent/10 text-accent border border-accent/20">
               <Heart className="h-3 w-3 mr-1" />
               Personal
             </Badge>
@@ -103,22 +100,20 @@ export function PersonalHomeDashboard() {
           const Icon = item.icon;
           
           return (
-            <Card key={item.title} className="card-floating group hover:card-levitate transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-background via-background/50 to-muted/20 rounded-lg" />
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
+            <Card key={item.title} className="card-floating group">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {item.title}
                 </CardTitle>
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 group-hover:shadow-glow transition-all duration-300">
+                <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors duration-200">
                   <Icon className="h-4 w-4 text-primary" />
                 </div>
               </CardHeader>
               
-              <CardContent className="space-y-2 relative z-10">
-                <div className="text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">{item.value}</div>
+              <CardContent className="space-y-2">
+                <div className="text-2xl font-bold text-foreground">{item.value}</div>
                 <div className="text-sm text-muted-foreground">{item.note}</div>
-                <div className="text-xs text-primary italic">{item.detail}</div>
+                <div className="text-xs text-primary/80 italic">{item.detail}</div>
               </CardContent>
             </Card>
           );

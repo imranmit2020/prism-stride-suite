@@ -168,74 +168,47 @@ export function QuickActions({ onActionClick, isHomeMode = false }: QuickActions
   return (
     <div className="space-y-6">
       {/* AI Quick Actions */}
-      <Card className="card-enhanced">
+      <Card className="card-modern">
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-primary rounded-xl">
-              <Rocket className="h-5 w-5 text-white" />
+          <CardTitle className="flex items-center gap-2">
+            <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+              <Zap className="h-5 w-5 text-primary" />
             </div>
-            <div>
-              <CardTitle className="text-xl">AI Quick Actions</CardTitle>
-              <CardDescription>Supercharge your business with one-click AI magic</CardDescription>
-            </div>
-          </div>
+            Quick Actions
+          </CardTitle>
+          <CardDescription>
+            Access key business tools and features
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 md:grid-cols-2">
             {aiQuickActions.map((action, index) => {
               const Icon = action.icon;
               return (
                 <Button
                   key={action.id}
-                  variant="ghost"
-                  className="h-auto p-0 hover:scale-[1.02] transition-all duration-300 animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  variant="outline"
+                  className="h-auto p-4 justify-start group hover:shadow-interactive hover:border-primary/20 transition-all duration-200"
                   onClick={() => onActionClick(action.id)}
                 >
-                  <div className={`
-                    w-full p-4 rounded-xl border border-border/50 
-                    bg-gradient-to-br ${action.bgGradient} 
-                    dark:from-card dark:to-card/80
-                    hover:shadow-lg hover:border-primary/30 
-                    transition-all duration-300 group
-                    relative overflow-hidden
-                  `}>
-                    {/* Background pattern */}
-                    <div className="absolute inset-0 opacity-5">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${action.gradient}`} />
+                  <div className="flex items-start gap-3 w-full">
+                    <div className="p-2 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/15 transition-colors duration-200">
+                      <Icon className="h-4 w-4 text-primary" />
                     </div>
                     
-                    <div className="relative space-y-3">
-                      <div className="flex items-start gap-3">
-                        <div className="p-2 bg-white/80 dark:bg-card/80 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                          <Icon className="h-5 w-5 text-primary group-hover:text-primary" />
-                        </div>
-                        
-                        <div className="flex-1 text-left">
-                          <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors duration-300">
-                            {action.title}
-                          </h3>
-                          <p className="text-xs text-muted-foreground group-hover:text-muted-foreground/80 mt-1">
-                            {action.description}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="text-xs bg-white/60 dark:bg-card/60">
+                    <div className="flex-1 text-left space-y-1">
+                      <h3 className="font-medium text-sm text-foreground">
+                        {action.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {action.description}
+                      </p>
+                      <div className="flex items-center gap-2 pt-1">
+                        <Badge variant="secondary" className="text-xs">
                           {action.improvement}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
-                          {action.confidence}% confident
-                        </span>
                       </div>
                     </div>
-                    
-                    {/* Hover gradient overlay */}
-                    <div className={`
-                      absolute inset-0 bg-gradient-to-br ${action.gradient} 
-                      opacity-0 group-hover:opacity-10 transition-opacity duration-300
-                    `} />
                   </div>
                 </Button>
               );

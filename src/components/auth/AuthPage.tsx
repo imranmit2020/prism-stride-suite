@@ -346,74 +346,40 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-primary opacity-20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-gradient-accent opacity-15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-hero opacity-10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-primary/20 rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
-            }}
-          />
-        ))}
-      </div>
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-muted/30 to-background"></div>
       
-      <div className="w-full max-w-lg relative z-10">
-        {/* Enhanced Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="flex items-center justify-center gap-4 mb-8 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-              <div className="relative bg-gradient-primary p-4 rounded-2xl shadow-2xl group-hover:shadow-primary/25 transition-all duration-500 group-hover:scale-105">
-                <Building2 className="h-12 w-12 text-white" />
-              </div>
+      <div className="w-full max-w-md relative z-10">
+        {/* Professional Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="bg-primary p-3 rounded-lg shadow-sm">
+              <Building2 className="h-8 w-8 text-primary-foreground" />
             </div>
-            <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                BizStack
-              </h1>
-              <div className="w-24 h-1 bg-gradient-primary rounded-full mx-auto opacity-60"></div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">BizStack</h1>
+              <p className="text-sm text-muted-foreground">Business Management</p>
             </div>
           </div>
-          <p className="text-muted-foreground text-xl font-medium max-w-md mx-auto leading-relaxed">
-            {currentView === "reset" 
-              ? "Secure your account with a new password" 
-              : "Your intelligent business management platform"
-            }
-          </p>
         </div>
 
-        {/* Enhanced Card */}
-        <Card className="backdrop-blur-2xl bg-card/95 border border-border/50 shadow-2xl animate-scale-in overflow-hidden">
-          {/* Gradient header bar */}
-          <div className="h-1 bg-gradient-primary"></div>
-          
-          <CardHeader className="space-y-6 text-center pb-8 pt-8">
-            <CardTitle className="text-3xl font-bold text-foreground">
-              {currentView === "reset" ? "Create New Password" : 
-               currentView === "forgot" ? "Reset Password" : 
-               currentView === "signup" ? "Join BizStack" : "Welcome Back"}
+        {/* Clean Card */}
+        <Card className="bg-card border shadow-lg">
+          <CardHeader className="text-center pb-6">
+            <CardTitle className="text-2xl font-semibold text-foreground">
+              {currentView === "reset" ? "Reset Password" : 
+               currentView === "forgot" ? "Forgot Password" : 
+               currentView === "signup" ? "Create Account" : "Sign In"}
             </CardTitle>
-            <CardDescription className="text-lg text-muted-foreground max-w-sm mx-auto leading-relaxed">
+            <CardDescription className="text-muted-foreground">
               {currentView === "reset" 
-                ? "Choose a strong password to secure your account" 
+                ? "Enter a new password for your account" 
                 : currentView === "forgot"
-                ? "Enter your email to receive a password reset link"
+                ? "We'll send you a reset link"
                 : currentView === "signup"
-                ? "Create your account and start managing your business"
-                : "Sign in to access your business dashboard"
+                ? "Join BizStack to manage your business"
+                : "Access your business dashboard"
               }
             </CardDescription>
           </CardHeader>

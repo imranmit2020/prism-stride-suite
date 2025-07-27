@@ -55,8 +55,11 @@ export function AuthPage() {
         }
       }
       
-      if (session && type !== 'recovery') {
-        navigate("/");
+      // Only redirect if user has session AND they're not in a special auth flow
+      // Allow users to access auth page even if logged in (they might want to switch accounts)
+      if (session && type !== 'recovery' && !searchParams.get('force_auth')) {
+        // Don't auto-redirect, let user choose to sign out or continue
+        console.log("User already has active session but is on auth page");
       }
     };
     checkUser();

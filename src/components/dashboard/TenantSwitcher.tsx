@@ -89,7 +89,7 @@ export function TenantSwitcher({ currentTenant, tenants, onTenantChange }: Tenan
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-background/60 backdrop-blur"
+          className="w-full justify-between bg-gradient-to-r from-background/80 to-muted/40 backdrop-blur-xl border-border/50 hover:shadow-glow hover:border-primary/30 transition-all duration-300"
         >
           <div className="flex items-center space-x-3">
             <Avatar className="h-6 w-6">

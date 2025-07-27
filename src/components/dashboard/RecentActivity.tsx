@@ -231,38 +231,32 @@ export function RecentActivity({ isHomeMode = false }: RecentActivityProps) {
   return (
     <div className="space-y-6">
       {/* AI Activity Stream */}
-      <Card>
-        <CardHeader>
+      <Card className="card-holographic overflow-hidden border-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
+        <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+        <CardHeader className="relative z-10">
           <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5 text-blue-600" />
-            AI Activity Stream
-            <Badge variant="outline" className="ml-auto">
-              <Brain className="h-3 w-3 mr-1" />
+            <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-glow">
+              <Activity className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">AI Activity Stream</span>
+            <Badge className="ml-auto bg-gradient-to-r from-accent to-accent/80 text-accent-foreground border-0 shadow-subtle">
+              <Brain className="h-3 w-3 mr-1 animate-pulse" />
               Real-time
             </Badge>
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-muted-foreground">
             {isHomeMode ? "Live feed of AI decisions, optimizations, and insights happening in your home" : "Live feed of AI decisions, optimizations, and insights happening across your business"}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="relative z-10">
           <div className="space-y-4">
             {aiActivities.map((activity, index) => {
               const Icon = activity.icon;
               return (
-                <div key={index} className="flex items-start gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className={`p-2 rounded-full ${
-                    activity.status === 'completed' ? 'bg-green-100' :
-                    activity.status === 'action-needed' ? 'bg-red-100' :
-                    activity.status === 'opportunity' ? 'bg-blue-100' :
-                    'bg-yellow-100'
-                  }`}>
-                    <Icon className={`h-4 w-4 ${
-                      activity.status === 'completed' ? 'text-green-600' :
-                      activity.status === 'action-needed' ? 'text-red-600' :
-                      activity.status === 'opportunity' ? 'text-blue-600' :
-                      'text-yellow-600'
-                    }`} />
+                <div key={index} className="group flex items-start gap-4 p-4 rounded-2xl bg-gradient-to-r from-background/50 to-muted/20 border border-border/50 hover:shadow-glow hover:border-primary/30 transition-all duration-300">
+                  <div className="p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 group-hover:shadow-subtle transition-all duration-300">
+                    <Icon className="h-4 w-4 text-primary" />
                   </div>
                   
                   <div className="flex-1 space-y-2">

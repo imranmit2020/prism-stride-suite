@@ -172,45 +172,60 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Building2 className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+    <div className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 animate-pulse"></div>
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-primary opacity-20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-accent opacity-20 rounded-full blur-3xl"></div>
+      
+      <div className="w-full max-w-md relative z-10">
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="flex items-center justify-center gap-3 mb-6 group">
+            <div className="relative">
+              <Building2 className="h-10 w-10 text-primary drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+              <div className="absolute inset-0 h-10 w-10 bg-primary/20 rounded-full blur-md animate-pulse"></div>
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
               BizStack
             </h1>
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-lg font-medium">
             Access your business management platform
           </p>
+          <div className="w-16 h-1 bg-gradient-primary mx-auto mt-4 rounded-full"></div>
         </div>
 
-        <Card className="card-glass">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl">Welcome</CardTitle>
-            <CardDescription>
+        <Card className="backdrop-blur-xl bg-card/80 border-border/50 shadow-large animate-scale-in">
+          <CardHeader className="space-y-4 text-center pb-6">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+              Welcome
+            </CardTitle>
+            <CardDescription className="text-lg text-muted-foreground">
               Sign in to your account or create a new one
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 h-12 bg-muted/50 backdrop-blur-sm p-1">
+                <TabsTrigger value="login" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
+                  Sign In
+                </TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
+                  Sign Up
+                </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="login" className="space-y-4 mt-6">
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <TabsContent value="login" className="space-y-6 mt-8">
+                <form onSubmit={handleLogin} className="space-y-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="login-email" className="text-sm font-semibold text-foreground">Email</Label>
+                    <div className="relative group">
+                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                       <Input
                         id="login-email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10"
+                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
                         value={loginForm.email}
                         onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
                         required
@@ -218,15 +233,15 @@ export function AuthPage() {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-3">
+                    <Label htmlFor="login-password" className="text-sm font-semibold text-foreground">Password</Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                       <Input
                         id="login-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
-                        className="pl-10 pr-10"
+                        className="pl-12 pr-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
                         value={loginForm.password}
                         onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
                         required
@@ -235,7 +250,7 @@ export function AuthPage() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -249,25 +264,32 @@ export function AuthPage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-primary hover:shadow-lg transition-all duration-300" 
+                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
                     disabled={isLoading}
                   >
-                    {isLoading ? "Signing in..." : "Sign In"}
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Signing in...
+                      </div>
+                    ) : (
+                      "Sign In"
+                    )}
                   </Button>
                 </form>
               </TabsContent>
               
-              <TabsContent value="signup" className="space-y-4 mt-6">
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <TabsContent value="signup" className="space-y-6 mt-8">
+                <form onSubmit={handleSignup} className="space-y-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="signup-name" className="text-sm font-semibold text-foreground">Full Name</Label>
+                    <div className="relative group">
+                      <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                       <Input
                         id="signup-name"
                         type="text"
                         placeholder="Enter your full name"
-                        className="pl-10"
+                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
                         value={signupForm.fullName}
                         onChange={(e) => setSignupForm(prev => ({ ...prev, fullName: e.target.value }))}
                         required
@@ -275,15 +297,15 @@ export function AuthPage() {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-3">
+                    <Label htmlFor="signup-email" className="text-sm font-semibold text-foreground">Email</Label>
+                    <div className="relative group">
+                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                       <Input
                         id="signup-email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10"
+                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
                         value={signupForm.email}
                         onChange={(e) => setSignupForm(prev => ({ ...prev, email: e.target.value }))}
                         required
@@ -292,8 +314,8 @@ export function AuthPage() {
                   </div>
                   
                   {/* Mode Selection */}
-                  <div className="space-y-3">
-                    <Label>Choose Your Mode</Label>
+                  <div className="space-y-4">
+                    <Label className="text-sm font-semibold text-foreground">Choose Your Mode</Label>
                     <RadioGroup 
                       value={signupForm.preferredMode} 
                       onValueChange={(value) => setSignupForm(prev => ({ ...prev, preferredMode: value as "business" | "personal" }))}
@@ -303,11 +325,11 @@ export function AuthPage() {
                         <RadioGroupItem value="business" id="business" className="peer sr-only" />
                         <Label
                           htmlFor="business"
-                          className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer transition-colors"
+                          className="flex flex-col items-center justify-center rounded-xl border-2 border-border/60 bg-background/50 p-6 hover:bg-background hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all duration-300 group"
                         >
-                          <Briefcase className="mb-3 h-6 w-6" />
-                          <div className="font-medium">Business</div>
-                          <div className="text-xs text-muted-foreground text-center">
+                          <Briefcase className="mb-3 h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+                          <div className="font-semibold text-foreground">Business</div>
+                          <div className="text-sm text-muted-foreground text-center mt-2">
                             For companies, teams, and professional use
                           </div>
                         </Label>
@@ -316,11 +338,11 @@ export function AuthPage() {
                         <RadioGroupItem value="personal" id="personal" className="peer sr-only" />
                         <Label
                           htmlFor="personal"
-                          className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer transition-colors"
+                          className="flex flex-col items-center justify-center rounded-xl border-2 border-border/60 bg-background/50 p-6 hover:bg-background hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all duration-300 group"
                         >
-                          <Home className="mb-3 h-6 w-6" />
-                          <div className="font-medium">Personal</div>
-                          <div className="text-xs text-muted-foreground text-center">
+                          <Home className="mb-3 h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+                          <div className="font-semibold text-foreground">Personal</div>
+                          <div className="text-sm text-muted-foreground text-center mt-2">
                             For personal finance and home management
                           </div>
                         </Label>
@@ -328,15 +350,15 @@ export function AuthPage() {
                     </RadioGroup>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-3">
+                    <Label htmlFor="signup-password" className="text-sm font-semibold text-foreground">Password</Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                       <Input
                         id="signup-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
-                        className="pl-10 pr-10"
+                        className="pl-12 pr-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
                         value={signupForm.password}
                         onChange={(e) => setSignupForm(prev => ({ ...prev, password: e.target.value }))}
                         required
@@ -345,7 +367,7 @@ export function AuthPage() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -357,15 +379,15 @@ export function AuthPage() {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-confirm">Confirm Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-3">
+                    <Label htmlFor="signup-confirm" className="text-sm font-semibold text-foreground">Confirm Password</Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
                       <Input
                         id="signup-confirm"
                         type={showPassword ? "text" : "password"}
                         placeholder="Confirm your password"
-                        className="pl-10"
+                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
                         value={signupForm.confirmPassword}
                         onChange={(e) => setSignupForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
                         required
@@ -375,10 +397,17 @@ export function AuthPage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-primary hover:shadow-lg transition-all duration-300" 
+                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
                     disabled={isLoading}
                   >
-                    {isLoading ? "Creating account..." : "Create Account"}
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Creating account...
+                      </div>
+                    ) : (
+                      "Create Account"
+                    )}
                   </Button>
                 </form>
               </TabsContent>
@@ -386,9 +415,16 @@ export function AuthPage() {
           </CardContent>
         </Card>
 
-        <div className="text-center mt-6">
-          <p className="text-sm text-muted-foreground">
-            By signing up, you agree to our terms of service and privacy policy
+        <div className="text-center mt-8 animate-fade-in">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            By signing up, you agree to our{" "}
+            <span className="text-primary hover:underline cursor-pointer transition-colors duration-200">
+              terms of service
+            </span>{" "}
+            and{" "}
+            <span className="text-primary hover:underline cursor-pointer transition-colors duration-200">
+              privacy policy
+            </span>
           </p>
         </div>
       </div>

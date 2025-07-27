@@ -371,14 +371,13 @@ export function AuthPage() {
               </p>
             </div>
           </div>
-          <div className="max-w-md mx-auto">
-            <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
-              {currentView === "reset" 
-                ? "Secure your account with a new password" 
-                : "Comprehensive management platform for businesses and individuals"
-              }
-            </p>
-          </div>
+          {currentView === "reset" && (
+            <div className="max-w-md mx-auto">
+              <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+                Secure your account with a new password
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Professional Card */}

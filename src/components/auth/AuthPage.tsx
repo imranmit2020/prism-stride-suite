@@ -378,19 +378,6 @@ export function AuthPage() {
                 : "Comprehensive management platform for businesses and individuals"
               }
             </p>
-            {currentView !== "reset" && currentView !== "forgot" && (
-              <div className="flex items-center justify-center gap-6 mt-4 text-sm text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-2">
-                  <Briefcase className="h-4 w-4" />
-                  <span>Business</span>
-                </div>
-                <div className="w-px h-4 bg-slate-300 dark:bg-slate-600"></div>
-                <div className="flex items-center gap-2">
-                  <Home className="h-4 w-4" />
-                  <span>Personal</span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 

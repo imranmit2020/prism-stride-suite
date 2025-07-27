@@ -13,7 +13,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 export function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [currentView, setCurrentView] = useState<"login" | "signup" | "forgot">("login");
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [forgotPasswordForm, setForgotPasswordForm] = useState({ email: "" });
   const [signupForm, setSignupForm] = useState({ 
     email: "", 
     password: "", 
@@ -171,6 +173,44 @@ export function AuthPage() {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        forgotPasswordForm.email,
+        {
+          redirectTo: `${window.location.origin}/auth?tab=login`
+        }
+      );
+
+      if (error) {
+        toast({
+          title: "Reset Password Error",
+          description: error.message,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Password Reset Email Sent",
+        description: "Check your email for a link to reset your password."
+      });
+      setCurrentView("login");
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
@@ -205,15 +245,66 @@ export function AuthPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 h-12 bg-muted/50 backdrop-blur-sm p-1">
-                <TabsTrigger value="login" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
-                  Sign In
-                </TabsTrigger>
-                <TabsTrigger value="signup" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
-                  Sign Up
-                </TabsTrigger>
-              </TabsList>
+            {currentView === "forgot" ? (
+              <div className="space-y-6">
+                <div className="text-center space-y-2">
+                  <h3 className="text-xl font-semibold">Reset Password</h3>
+                  <p className="text-muted-foreground">Enter your email to receive a reset link</p>
+                </div>
+                
+                <form onSubmit={handleForgotPassword} className="space-y-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="forgot-email" className="text-sm font-semibold text-foreground">Email</Label>
+                    <div className="relative group">
+                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
+                      <Input
+                        id="forgot-email"
+                        type="email"
+                        placeholder="Enter your email"
+                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
+                        value={forgotPasswordForm.email}
+                        onChange={(e) => setForgotPasswordForm(prev => ({ ...prev, email: e.target.value }))}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Sending...
+                      </div>
+                    ) : (
+                      "Send Reset Link"
+                    )}
+                  </Button>
+                </form>
+
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView("login")}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Back to Sign In
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Tabs value={currentView} onValueChange={(value) => setCurrentView(value as "login" | "signup")} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 h-12 bg-muted/50 backdrop-blur-sm p-1">
+                  <TabsTrigger value="login" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
+                    Sign In
+                  </TabsTrigger>
+                  <TabsTrigger value="signup" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
+                    Sign Up
+                  </TabsTrigger>
+                </TabsList>
               
               <TabsContent value="login" className="space-y-6 mt-8">
                 <form onSubmit={handleLogin} className="space-y-6">
@@ -260,6 +351,16 @@ export function AuthPage() {
                         )}
                       </Button>
                     </div>
+                  </div>
+                  
+                  <div className="text-right">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentView("forgot")}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Forgot password?
+                    </button>
                   </div>
                   
                   <Button 
@@ -412,6 +513,7 @@ export function AuthPage() {
                 </form>
               </TabsContent>
             </Tabs>
+            )}
           </CardContent>
         </Card>
 

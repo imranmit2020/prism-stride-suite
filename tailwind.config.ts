@@ -120,11 +120,12 @@ export default {
 			},
 			boxShadow: {
 				'sm': 'var(--shadow-sm)',
-				'DEFAULT': 'var(--shadow)',
+				'DEFAULT': 'var(--shadow-md)',
 				'md': 'var(--shadow-md)',
 				'lg': 'var(--shadow-lg)',
-				'primary': 'var(--shadow-primary)',
-				'neural': 'var(--shadow-neural)'
+				'xl': 'var(--shadow-xl)',
+				'card': 'var(--shadow-card)',
+				'interactive': 'var(--shadow-interactive)'
 			},
 			borderRadius: {
 				'none': '0',

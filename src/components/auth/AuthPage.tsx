@@ -525,7 +525,7 @@ export function AuthPage() {
                       type="button"
                       variant="ghost"
                       onClick={() => setCurrentView("login")}
-                      className="w-full h-12 hover:bg-muted/50 transition-colors duration-300 rounded-xl"
+                      className="w-full h-12 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 rounded-lg border border-slate-200 dark:border-slate-600"
                     >
                       Back to Sign In
                     </Button>

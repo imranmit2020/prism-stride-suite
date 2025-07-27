@@ -9,12 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User, Building2, Home, Briefcase, Shield } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [currentView, setCurrentView] = useState<"login" | "signup" | "forgot" | "reset">("login");
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [loginForm, setLoginForm] = useState({ email: "", password: "", rememberMe: false });
   const [forgotPasswordForm, setForgotPasswordForm] = useState({ email: "" });
   const [resetPasswordForm, setResetPasswordForm] = useState({ 
     password: "", 
@@ -72,27 +73,19 @@ export function AuthPage() {
       });
 
       if (error) {
-        if (error.message === "Invalid login credentials") {
-          toast({
-            title: "Login Failed",
-            description: "Invalid email or password. Please check your credentials and try again.",
-            variant: "destructive"
-          });
-        } else if (error.message.includes("Email not confirmed")) {
-          toast({
-            title: "Email Not Confirmed",
-            description: "Please check your email and click the confirmation link.",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Login Error",
-            description: error.message,
-            variant: "destructive"
-          });
-        }
-        return;
+        throw error;
       }
+
+      // Handle session persistence based on remember me
+      if (data.session && loginForm.rememberMe) {
+        // Store a flag in localStorage to indicate long-term session preference
+        localStorage.setItem('rememberMe', 'true');
+        // The session will persist automatically due to Supabase client configuration
+      } else {
+        // Remove any previous remember me preference
+        localStorage.removeItem('rememberMe');
+      }
+
 
       if (data.user) {
         toast({
@@ -101,13 +94,28 @@ export function AuthPage() {
         });
         navigate("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
-      toast({
-        title: "Login Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive"
-      });
+      
+      if (error.message === "Invalid login credentials") {
+        toast({
+          title: "Login Failed",
+          description: "Invalid email or password. Please check your credentials and try again.",
+          variant: "destructive"
+        });
+      } else if (error.message.includes("Email not confirmed")) {
+        toast({
+          title: "Email Not Confirmed",
+          description: "Please check your email and click the confirmation link.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Login Error",
+          description: error.message || "An unexpected error occurred. Please try again.",
+          variant: "destructive"
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -551,8 +559,19 @@ export function AuthPage() {
                       </Button>
                     </div>
                   </div>
-                  
-                  <div className="text-right">
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox
+                        id="remember-me"
+                        checked={loginForm.rememberMe}
+                        onCheckedChange={(checked) => setLoginForm(prev => ({ ...prev, rememberMe: !!checked }))}
+                        className="border-border/60 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                      />
+                      <Label htmlFor="remember-me" className="text-sm font-medium text-foreground cursor-pointer">
+                        Remember me on this device
+                      </Label>
+                    </div>
                     <button
                       type="button"
                       onClick={() => setCurrentView("forgot")}

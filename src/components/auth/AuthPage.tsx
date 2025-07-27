@@ -89,7 +89,6 @@ export function AuthPage() {
         localStorage.removeItem('rememberMe');
       }
 
-
       if (data.user) {
         toast({
           title: "Welcome back!",
@@ -347,62 +346,100 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 animate-pulse"></div>
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-primary opacity-20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-accent opacity-20 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-primary opacity-20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-gradient-accent opacity-15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-hero opacity-10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      </div>
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-primary/20 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
       
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-lg relative z-10">
+        {/* Enhanced Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="flex items-center justify-center gap-3 mb-6 group">
+          <div className="flex items-center justify-center gap-4 mb-8 group">
             <div className="relative">
-              <Building2 className="h-10 w-10 text-primary drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 h-10 w-10 bg-primary/20 rounded-full blur-md animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+              <div className="relative bg-gradient-primary p-4 rounded-2xl shadow-2xl group-hover:shadow-primary/25 transition-all duration-500 group-hover:scale-105">
+                <Building2 className="h-12 w-12 text-white" />
+              </div>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              BizStack
-            </h1>
+            <div className="space-y-2">
+              <h1 className="text-4xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+                BizStack
+              </h1>
+              <div className="w-24 h-1 bg-gradient-primary rounded-full mx-auto opacity-60"></div>
+            </div>
           </div>
-          <p className="text-muted-foreground text-lg font-medium">
-            Access your business management platform
+          <p className="text-muted-foreground text-xl font-medium max-w-md mx-auto leading-relaxed">
+            {currentView === "reset" 
+              ? "Secure your account with a new password" 
+              : "Your intelligent business management platform"
+            }
           </p>
-          <div className="w-16 h-1 bg-gradient-primary mx-auto mt-4 rounded-full"></div>
         </div>
 
-        <Card className="backdrop-blur-xl bg-card/80 border-border/50 shadow-large animate-scale-in">
-          <CardHeader className="space-y-4 text-center pb-6">
-            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
-              {currentView === "reset" ? "Set New Password" : "Welcome"}
+        {/* Enhanced Card */}
+        <Card className="backdrop-blur-2xl bg-card/95 border border-border/50 shadow-2xl animate-scale-in overflow-hidden">
+          {/* Gradient header bar */}
+          <div className="h-1 bg-gradient-primary"></div>
+          
+          <CardHeader className="space-y-6 text-center pb-8 pt-8">
+            <CardTitle className="text-3xl font-bold text-foreground">
+              {currentView === "reset" ? "Create New Password" : 
+               currentView === "forgot" ? "Reset Password" : 
+               currentView === "signup" ? "Join BizStack" : "Welcome Back"}
             </CardTitle>
-            <CardDescription className="text-lg text-muted-foreground">
+            <CardDescription className="text-lg text-muted-foreground max-w-sm mx-auto leading-relaxed">
               {currentView === "reset" 
-                ? "Choose a strong password for your account" 
-                : "Sign in to your account or create a new one"
+                ? "Choose a strong password to secure your account" 
+                : currentView === "forgot"
+                ? "Enter your email to receive a password reset link"
+                : currentView === "signup"
+                ? "Create your account and start managing your business"
+                : "Sign in to access your business dashboard"
               }
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          
+          <CardContent className="px-8 pb-8">
             {currentView === "reset" ? (
-              <div className="space-y-6">
-                <div className="text-center space-y-2">
+              <div className="space-y-8">
+                <div className="text-center space-y-4">
                   <div className="flex items-center justify-center">
-                    <Shield className="h-12 w-12 text-primary mb-4" />
+                    <div className="bg-gradient-primary p-4 rounded-full">
+                      <Shield className="h-8 w-8 text-white" />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold">Create New Password</h3>
-                  <p className="text-muted-foreground">Enter your new password below</p>
                 </div>
                 
                 <form onSubmit={handleResetPassword} className="space-y-6">
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <Label htmlFor="reset-password" className="text-sm font-semibold text-foreground">New Password</Label>
                     <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
+                      <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
                       <Input
                         id="reset-password"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Enter new password"
-                        className="pl-12 pr-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
+                        placeholder="Enter your new password"
+                        className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
                         value={resetPasswordForm.password}
                         onChange={(e) => setResetPasswordForm(prev => ({ ...prev, password: e.target.value }))}
                         required
@@ -411,7 +448,7 @@ export function AuthPage() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200 z-10"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
@@ -423,15 +460,16 @@ export function AuthPage() {
                     </div>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <Label htmlFor="reset-confirm-password" className="text-sm font-semibold text-foreground">Confirm New Password</Label>
                     <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
+                      <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
                       <Input
                         id="reset-confirm-password"
                         type="password"
-                        placeholder="Confirm new password"
-                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
+                        placeholder="Confirm your new password"
+                        className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
                         value={resetPasswordForm.confirmPassword}
                         onChange={(e) => setResetPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
                         required
@@ -441,12 +479,12 @@ export function AuthPage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
+                    className="w-full h-14 bg-gradient-primary hover:shadow-xl hover:shadow-primary/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
                     disabled={isLoading}
                   >
                     {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                         Updating Password...
                       </div>
                     ) : (
@@ -456,22 +494,26 @@ export function AuthPage() {
                 </form>
               </div>
             ) : currentView === "forgot" ? (
-              <div className="space-y-6">
-                <div className="text-center space-y-2">
-                  <h3 className="text-xl font-semibold">Reset Password</h3>
-                  <p className="text-muted-foreground">Enter your email to receive a reset link</p>
+              <div className="space-y-8">
+                <div className="text-center space-y-4">
+                  <div className="flex items-center justify-center">
+                    <div className="bg-gradient-accent p-4 rounded-full">
+                      <Mail className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
                 </div>
                 
                 <form onSubmit={handleForgotPassword} className="space-y-6">
-                  <div className="space-y-3">
-                    <Label htmlFor="forgot-email" className="text-sm font-semibold text-foreground">Email</Label>
+                  <div className="space-y-4">
+                    <Label htmlFor="forgot-email" className="text-sm font-semibold text-foreground">Email Address</Label>
                     <div className="relative group">
-                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
+                      <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
                       <Input
                         id="forgot-email"
                         type="email"
-                        placeholder="Enter your email"
-                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
+                        placeholder="Enter your email address"
+                        className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
                         value={forgotPasswordForm.email}
                         onChange={(e) => setForgotPasswordForm(prev => ({ ...prev, email: e.target.value }))}
                         required
@@ -479,275 +521,284 @@ export function AuthPage() {
                     </div>
                   </div>
                   
-                  <Button 
-                    type="submit" 
-                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        Sending...
-                      </div>
-                    ) : (
-                      "Send Reset Link"
-                    )}
-                  </Button>
+                  <div className="space-y-4">
+                    <Button 
+                      type="submit" 
+                      className="w-full h-14 bg-gradient-accent hover:shadow-xl hover:shadow-accent/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Sending Reset Link...
+                        </div>
+                      ) : (
+                        "Send Reset Link"
+                      )}
+                    </Button>
+                    
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => setCurrentView("login")}
+                      className="w-full h-12 hover:bg-muted/50 transition-colors duration-300 rounded-xl"
+                    >
+                      Back to Sign In
+                    </Button>
+                  </div>
                 </form>
-
-                <div className="text-center">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentView("login")}
-                    className="text-sm text-primary hover:underline"
-                  >
-                    Back to Sign In
-                  </button>
-                </div>
               </div>
             ) : (
               <Tabs value={currentView} onValueChange={(value) => setCurrentView(value as "login" | "signup")} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 h-12 bg-muted/50 backdrop-blur-sm p-1">
-                  <TabsTrigger value="login" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
+                <TabsList className="grid w-full grid-cols-2 h-14 bg-muted/30 backdrop-blur-sm p-1 rounded-xl border border-border/30">
+                  <TabsTrigger 
+                    value="login" 
+                    className="text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+                  >
                     Sign In
                   </TabsTrigger>
-                  <TabsTrigger value="signup" className="text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300">
-                    Sign Up
+                  <TabsTrigger 
+                    value="signup" 
+                    className="text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+                  >
+                    Create Account
                   </TabsTrigger>
                 </TabsList>
               
-              <TabsContent value="login" className="space-y-6 mt-8">
-                <form onSubmit={handleLogin} className="space-y-6">
-                  <div className="space-y-3">
-                    <Label htmlFor="login-email" className="text-sm font-semibold text-foreground">Email</Label>
-                    <div className="relative group">
-                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
-                      <Input
-                        id="login-email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
-                        value={loginForm.email}
-                        onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
-                        required
-                      />
+                <TabsContent value="login" className="space-y-6 mt-8">
+                  <form onSubmit={handleLogin} className="space-y-6">
+                    <div className="space-y-4">
+                      <Label htmlFor="login-email" className="text-sm font-semibold text-foreground">Email Address</Label>
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                        <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
+                        <Input
+                          id="login-email"
+                          type="email"
+                          placeholder="Enter your email"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          value={loginForm.email}
+                          onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <Label htmlFor="login-password" className="text-sm font-semibold text-foreground">Password</Label>
-                    <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
-                      <Input
-                        id="login-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        className="pl-12 pr-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
-                        value={loginForm.password}
-                        onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
-                        required
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
-                      </Button>
+                    
+                    <div className="space-y-4">
+                      <Label htmlFor="login-password" className="text-sm font-semibold text-foreground">Password</Label>
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                        <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
+                        <Input
+                          id="login-password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter your password"
+                          className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          value={loginForm.password}
+                          onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                          required
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200 z-10"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                          ) : (
+                            <Eye className="h-4 w-4 text-muted-foreground" />
+                          )}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Checkbox
-                        id="remember-me"
-                        checked={loginForm.rememberMe}
-                        onCheckedChange={(checked) => setLoginForm(prev => ({ ...prev, rememberMe: !!checked }))}
-                        className="border-border/60 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                      />
-                      <Label htmlFor="remember-me" className="text-sm font-medium text-foreground cursor-pointer">
-                        Remember me on this device
-                      </Label>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setCurrentView("forgot")}
-                      className="text-sm text-primary hover:underline"
-                    >
-                      Forgot password?
-                    </button>
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        Signing in...
-                      </div>
-                    ) : (
-                      "Sign In"
-                    )}
-                  </Button>
-                </form>
-              </TabsContent>
-              
-              <TabsContent value="signup" className="space-y-6 mt-8">
-                <form onSubmit={handleSignup} className="space-y-6">
-                  <div className="space-y-3">
-                    <Label htmlFor="signup-name" className="text-sm font-semibold text-foreground">Full Name</Label>
-                    <div className="relative group">
-                      <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
-                      <Input
-                        id="signup-name"
-                        type="text"
-                        placeholder="Enter your full name"
-                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
-                        value={signupForm.fullName}
-                        onChange={(e) => setSignupForm(prev => ({ ...prev, fullName: e.target.value }))}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <Label htmlFor="signup-email" className="text-sm font-semibold text-foreground">Email</Label>
-                    <div className="relative group">
-                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
-                      <Input
-                        id="signup-email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
-                        value={signupForm.email}
-                        onChange={(e) => setSignupForm(prev => ({ ...prev, email: e.target.value }))}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* Mode Selection */}
-                  <div className="space-y-4">
-                    <Label className="text-sm font-semibold text-foreground">Choose Your Mode</Label>
-                    <RadioGroup 
-                      value={signupForm.preferredMode} 
-                      onValueChange={(value) => setSignupForm(prev => ({ ...prev, preferredMode: value as "business" | "personal" }))}
-                      className="grid grid-cols-2 gap-4"
-                    >
-                      <div>
-                        <RadioGroupItem value="business" id="business" className="peer sr-only" />
-                        <Label
-                          htmlFor="business"
-                          className="flex flex-col items-center justify-center rounded-xl border-2 border-border/60 bg-background/50 p-6 hover:bg-background hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all duration-300 group"
-                        >
-                          <Briefcase className="mb-3 h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
-                          <div className="font-semibold text-foreground">Business</div>
-                          <div className="text-sm text-muted-foreground text-center mt-2">
-                            For companies, teams, and professional use
-                          </div>
+                    <div className="flex items-center justify-between py-2">
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="remember-me"
+                          checked={loginForm.rememberMe}
+                          onCheckedChange={(checked) => setLoginForm(prev => ({ ...prev, rememberMe: !!checked }))}
+                          className="border-border/60 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded-md"
+                        />
+                        <Label htmlFor="remember-me" className="text-sm font-medium text-foreground cursor-pointer">
+                          Remember me
                         </Label>
                       </div>
-                      <div>
-                        <RadioGroupItem value="personal" id="personal" className="peer sr-only" />
-                        <Label
-                          htmlFor="personal"
-                          className="flex flex-col items-center justify-center rounded-xl border-2 border-border/60 bg-background/50 p-6 hover:bg-background hover:border-primary/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all duration-300 group"
-                        >
-                          <Home className="mb-3 h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
-                          <div className="font-semibold text-foreground">Personal</div>
-                          <div className="text-sm text-muted-foreground text-center mt-2">
-                            For personal finance and home management
-                          </div>
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <Label htmlFor="signup-password" className="text-sm font-semibold text-foreground">Password</Label>
-                    <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
-                      <Input
-                        id="signup-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Create a password"
-                        className="pl-12 pr-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
-                        value={signupForm.password}
-                        onChange={(e) => setSignupForm(prev => ({ ...prev, password: e.target.value }))}
-                        required
-                      />
                       <Button
                         type="button"
                         variant="ghost"
-                        size="sm"
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => setCurrentView("forgot")}
+                        className="text-sm text-primary hover:text-primary/80 hover:underline p-0 h-auto"
                       >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
+                        Forgot password?
                       </Button>
                     </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <Label htmlFor="signup-confirm" className="text-sm font-semibold text-foreground">Confirm Password</Label>
-                    <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
-                      <Input
-                        id="signup-confirm"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Confirm your password"
-                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
-                        value={signupForm.confirmPassword}
-                        onChange={(e) => setSignupForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        Creating account...
+                    
+                    <Button 
+                      type="submit" 
+                      className="w-full h-14 bg-gradient-primary hover:shadow-xl hover:shadow-primary/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Signing in...
+                        </div>
+                      ) : (
+                        "Sign In"
+                      )}
+                    </Button>
+                  </form>
+                </TabsContent>
+                
+                <TabsContent value="signup" className="space-y-6 mt-8">
+                  <form onSubmit={handleSignup} className="space-y-6">
+                    <div className="space-y-4">
+                      <Label htmlFor="signup-name" className="text-sm font-semibold text-foreground">Full Name</Label>
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
+                        <Input
+                          id="signup-name"
+                          type="text"
+                          placeholder="Enter your full name"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          value={signupForm.fullName}
+                          onChange={(e) => setSignupForm(prev => ({ ...prev, fullName: e.target.value }))}
+                          required
+                        />
                       </div>
-                    ) : (
-                      "Create Account"
-                    )}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <Label htmlFor="signup-email" className="text-sm font-semibold text-foreground">Email Address</Label>
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                        <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
+                        <Input
+                          id="signup-email"
+                          type="email"
+                          placeholder="Enter your email"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          value={signupForm.email}
+                          onChange={(e) => setSignupForm(prev => ({ ...prev, email: e.target.value }))}
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <Label htmlFor="signup-password" className="text-sm font-semibold text-foreground">Password</Label>
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                        <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
+                        <Input
+                          id="signup-password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Create a password"
+                          className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          value={signupForm.password}
+                          onChange={(e) => setSignupForm(prev => ({ ...prev, password: e.target.value }))}
+                          required
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200 z-10"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
+                          ) : (
+                            <Eye className="h-4 w-4 text-muted-foreground" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <Label htmlFor="signup-confirm-password" className="text-sm font-semibold text-foreground">Confirm Password</Label>
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
+                        <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
+                        <Input
+                          id="signup-confirm-password"
+                          type="password"
+                          placeholder="Confirm your password"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          value={signupForm.confirmPassword}
+                          onChange={(e) => setSignupForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label className="text-sm font-semibold text-foreground">Preferred Mode</Label>
+                      <RadioGroup
+                        value={signupForm.preferredMode}
+                        onValueChange={(value) => setSignupForm(prev => ({ ...prev, preferredMode: value as "business" | "personal" }))}
+                        className="grid grid-cols-2 gap-4"
+                      >
+                        <div className="relative">
+                          <RadioGroupItem value="business" id="business" className="sr-only" />
+                          <Label 
+                            htmlFor="business" 
+                            className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-accent/50 ${
+                              signupForm.preferredMode === "business" 
+                                ? "border-accent bg-accent/10 shadow-lg" 
+                                : "border-border/30 hover:bg-muted/20"
+                            }`}
+                          >
+                            <Briefcase className={`h-6 w-6 mb-2 ${signupForm.preferredMode === "business" ? "text-accent" : "text-muted-foreground"}`} />
+                            <span className="text-sm font-medium">Business</span>
+                          </Label>
+                        </div>
+                        <div className="relative">
+                          <RadioGroupItem value="personal" id="personal" className="sr-only" />
+                          <Label 
+                            htmlFor="personal" 
+                            className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-accent/50 ${
+                              signupForm.preferredMode === "personal" 
+                                ? "border-accent bg-accent/10 shadow-lg" 
+                                : "border-border/30 hover:bg-muted/20"
+                            }`}
+                          >
+                            <Home className={`h-6 w-6 mb-2 ${signupForm.preferredMode === "personal" ? "text-accent" : "text-muted-foreground"}`} />
+                            <span className="text-sm font-medium">Personal</span>
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                    
+                    <Button 
+                      type="submit" 
+                      className="w-full h-14 bg-gradient-accent hover:shadow-xl hover:shadow-accent/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Creating Account...
+                        </div>
+                      ) : (
+                        "Create Account"
+                      )}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
             )}
           </CardContent>
         </Card>
 
+        {/* Footer */}
         <div className="text-center mt-8 animate-fade-in">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            By signing up, you agree to our{" "}
-            <span className="text-primary hover:underline cursor-pointer transition-colors duration-200">
-              terms of service
-            </span>{" "}
-            and{" "}
-            <span className="text-primary hover:underline cursor-pointer transition-colors duration-200">
-              privacy policy
-            </span>
+          <p className="text-muted-foreground text-sm">
+            © 2024 BizStack. All rights reserved.
           </p>
         </div>
       </div>

@@ -346,40 +346,60 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-muted/30 to-background"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4 relative">
+      {/* Subtle geometric pattern */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }}></div>
       
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-lg relative z-10">
         {/* Professional Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="bg-primary p-3 rounded-lg shadow-sm">
-              <Building2 className="h-8 w-8 text-primary-foreground" />
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg"></div>
+              <div className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-lg">
+                <Building2 className="h-10 w-10 text-primary" />
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">BizStack</h1>
-              <p className="text-sm text-muted-foreground">Business Management</p>
+            <div className="text-left">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+                BizStack
+              </h1>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400 tracking-wide">
+                BUSINESS MANAGEMENT SUITE
+              </p>
             </div>
+          </div>
+          <div className="max-w-md mx-auto">
+            <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+              {currentView === "reset" 
+                ? "Secure your account with a new password" 
+                : "Enterprise-grade business management platform for modern companies"
+              }
+            </p>
           </div>
         </div>
 
-        {/* Clean Card */}
-        <Card className="bg-card border shadow-lg">
-          <CardHeader className="text-center pb-6">
-            <CardTitle className="text-2xl font-semibold text-foreground">
-              {currentView === "reset" ? "Reset Password" : 
-               currentView === "forgot" ? "Forgot Password" : 
-               currentView === "signup" ? "Create Account" : "Sign In"}
+        {/* Professional Card */}
+        <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-xl shadow-slate-900/5 dark:shadow-slate-900/20">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+          
+          <CardHeader className="text-center pb-8 pt-8 px-8">
+            <div className="mx-auto w-16 h-1 bg-gradient-to-r from-primary/50 to-primary rounded-full mb-6"></div>
+            <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              {currentView === "reset" ? "Reset Your Password" : 
+               currentView === "forgot" ? "Forgot Your Password?" : 
+               currentView === "signup" ? "Create Your Account" : "Welcome Back"}
             </CardTitle>
-            <CardDescription className="text-muted-foreground">
+            <CardDescription className="text-slate-600 dark:text-slate-400 text-base mt-3 leading-relaxed max-w-sm mx-auto">
               {currentView === "reset" 
-                ? "Enter a new password for your account" 
+                ? "Please enter a new secure password for your account" 
                 : currentView === "forgot"
-                ? "We'll send you a reset link"
+                ? "Enter your email address and we'll send you a secure reset link"
                 : currentView === "signup"
-                ? "Join BizStack to manage your business"
-                : "Access your business dashboard"
+                ? "Join thousands of businesses already using BizStack to streamline operations"
+                : "Sign in to access your business dashboard and continue where you left off"
               }
             </CardDescription>
           </CardHeader>
@@ -389,23 +409,22 @@ export function AuthPage() {
               <div className="space-y-8">
                 <div className="text-center space-y-4">
                   <div className="flex items-center justify-center">
-                    <div className="bg-gradient-primary p-4 rounded-full">
-                      <Shield className="h-8 w-8 text-white" />
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-4 rounded-full">
+                      <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
                     </div>
                   </div>
                 </div>
                 
                 <form onSubmit={handleResetPassword} className="space-y-6">
-                  <div className="space-y-4">
-                    <Label htmlFor="reset-password" className="text-sm font-semibold text-foreground">New Password</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="reset-password" className="text-sm font-semibold text-slate-700 dark:text-slate-300">New Password</Label>
                     <div className="relative group">
-                      <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
-                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors duration-200 z-10" />
                       <Input
                         id="reset-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your new password"
-                        className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                        className="pl-12 pr-12 h-12 bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600 focus:border-primary focus:bg-white dark:focus:bg-slate-700 transition-all duration-200 text-base rounded-lg"
                         value={resetPasswordForm.password}
                         onChange={(e) => setResetPasswordForm(prev => ({ ...prev, password: e.target.value }))}
                         required
@@ -414,13 +433,13 @@ export function AuthPage() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200 z-10"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-slate-100 dark:hover:bg-slate-600 rounded-md transition-colors duration-200 z-10"
                         onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                          <EyeOff className="h-4 w-4 text-slate-400" />
                         ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
+                          <Eye className="h-4 w-4 text-slate-400" />
                         )}
                       </Button>
                     </div>

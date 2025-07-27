@@ -367,7 +367,7 @@ export function AuthPage() {
                 BizStack
               </h1>
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400 tracking-wide">
-                BUSINESS MANAGEMENT SUITE
+                BUSINESS & PERSONAL MANAGEMENT
               </p>
             </div>
           </div>
@@ -375,9 +375,22 @@ export function AuthPage() {
             <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
               {currentView === "reset" 
                 ? "Secure your account with a new password" 
-                : "Enterprise-grade business management platform for modern companies"
+                : "Comprehensive management platform for businesses and individuals"
               }
             </p>
+            {currentView !== "reset" && currentView !== "forgot" && (
+              <div className="flex items-center justify-center gap-6 mt-4 text-sm text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="h-4 w-4" />
+                  <span>Business</span>
+                </div>
+                <div className="w-px h-4 bg-slate-300 dark:bg-slate-600"></div>
+                <div className="flex items-center gap-2">
+                  <Home className="h-4 w-4" />
+                  <span>Personal</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -398,8 +411,8 @@ export function AuthPage() {
                 : currentView === "forgot"
                 ? "Enter your email address and we'll send you a secure reset link"
                 : currentView === "signup"
-                ? "Join thousands of businesses already using BizStack to streamline operations"
-                : "Sign in to access your business dashboard and continue where you left off"
+                ? "Join BizStack to manage your business operations or personal finances efficiently"
+                : "Access your dashboard and manage your business or personal activities"
               }
             </CardDescription>
           </CardHeader>
@@ -722,7 +735,10 @@ export function AuthPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <Label className="text-sm font-semibold text-foreground">Preferred Mode</Label>
+                      <Label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Choose Your Mode</Label>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 mb-3">
+                        Select how you'll primarily use BizStack
+                      </div>
                       <RadioGroup
                         value={signupForm.preferredMode}
                         onValueChange={(value) => setSignupForm(prev => ({ ...prev, preferredMode: value as "business" | "personal" }))}
@@ -732,28 +748,30 @@ export function AuthPage() {
                           <RadioGroupItem value="business" id="business" className="sr-only" />
                           <Label 
                             htmlFor="business" 
-                            className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-accent/50 ${
+                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-primary/50 ${
                               signupForm.preferredMode === "business" 
-                                ? "border-accent bg-accent/10 shadow-lg" 
-                                : "border-border/30 hover:bg-muted/20"
+                                ? "border-primary bg-primary/5 shadow-sm" 
+                                : "border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/30"
                             }`}
                           >
-                            <Briefcase className={`h-6 w-6 mb-2 ${signupForm.preferredMode === "business" ? "text-accent" : "text-muted-foreground"}`} />
-                            <span className="text-sm font-medium">Business</span>
+                            <Briefcase className={`h-8 w-8 mb-3 ${signupForm.preferredMode === "business" ? "text-primary" : "text-slate-400"}`} />
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white">Business</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 text-center">Inventory, POS, Payroll & more</span>
                           </Label>
                         </div>
                         <div className="relative">
                           <RadioGroupItem value="personal" id="personal" className="sr-only" />
                           <Label 
                             htmlFor="personal" 
-                            className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-accent/50 ${
+                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-primary/50 ${
                               signupForm.preferredMode === "personal" 
-                                ? "border-accent bg-accent/10 shadow-lg" 
-                                : "border-border/30 hover:bg-muted/20"
+                                ? "border-primary bg-primary/5 shadow-sm" 
+                                : "border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/30"
                             }`}
                           >
-                            <Home className={`h-6 w-6 mb-2 ${signupForm.preferredMode === "personal" ? "text-accent" : "text-muted-foreground"}`} />
-                            <span className="text-sm font-medium">Personal</span>
+                            <Home className={`h-8 w-8 mb-3 ${signupForm.preferredMode === "personal" ? "text-primary" : "text-slate-400"}`} />
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white">Personal</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 text-center">Budgets, Expenses & Goals</span>
                           </Label>
                         </div>
                       </RadioGroup>
@@ -781,8 +799,8 @@ export function AuthPage() {
         </Card>
 
         {/* Footer */}
-        <div className="text-center mt-8 animate-fade-in">
-          <p className="text-muted-foreground text-sm">
+        <div className="text-center mt-8">
+          <p className="text-slate-500 dark:text-slate-400 text-sm">
             © 2024 BizStack. All rights reserved.
           </p>
         </div>

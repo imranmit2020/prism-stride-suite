@@ -534,16 +534,16 @@ export function AuthPage() {
               </div>
             ) : (
               <Tabs value={currentView} onValueChange={(value) => setCurrentView(value as "login" | "signup")} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 h-14 bg-muted/30 backdrop-blur-sm p-1 rounded-xl border border-border/30">
+                <TabsList className="grid w-full grid-cols-2 h-14 bg-slate-100 dark:bg-slate-700 p-1 rounded-lg border-2 border-slate-200 dark:border-slate-600 shadow-sm">
                   <TabsTrigger 
                     value="login" 
-                    className="text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+                    className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-600 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-300 dark:data-[state=active]:border-slate-500 transition-all duration-200 rounded-md"
                   >
                     Sign In
                   </TabsTrigger>
                   <TabsTrigger 
                     value="signup" 
-                    className="text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+                    className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-600 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-300 dark:data-[state=active]:border-slate-500 transition-all duration-200 rounded-md"
                   >
                     Create Account
                   </TabsTrigger>

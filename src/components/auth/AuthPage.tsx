@@ -598,23 +598,23 @@ export function AuthPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between py-2">
+                    <div className="flex items-center justify-between py-4">
                       <div className="flex items-center space-x-3">
                         <Checkbox
                           id="remember-me"
                           checked={loginForm.rememberMe}
                           onCheckedChange={(checked) => setLoginForm(prev => ({ ...prev, rememberMe: !!checked }))}
-                          className="border-border/60 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded-md"
+                          className="h-4 w-4 border-2 border-slate-300 dark:border-slate-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary rounded-sm"
                         />
-                        <Label htmlFor="remember-me" className="text-sm font-medium text-foreground cursor-pointer">
-                          Remember me
+                        <Label htmlFor="remember-me" className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                          Remember me on this device
                         </Label>
                       </div>
                       <Button
                         type="button"
                         variant="ghost"
                         onClick={() => setCurrentView("forgot")}
-                        className="text-sm text-primary hover:text-primary/80 hover:underline p-0 h-auto"
+                        className="text-sm text-primary hover:text-primary/80 hover:underline p-0 h-auto font-medium"
                       >
                         Forgot password?
                       </Button>

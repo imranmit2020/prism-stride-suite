@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,15 +7,19 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Mail, Lock, User, Building2, Home, Briefcase } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Building2, Home, Briefcase, Shield } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [currentView, setCurrentView] = useState<"login" | "signup" | "forgot">("login");
+  const [currentView, setCurrentView] = useState<"login" | "signup" | "forgot" | "reset">("login");
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [forgotPasswordForm, setForgotPasswordForm] = useState({ email: "" });
+  const [resetPasswordForm, setResetPasswordForm] = useState({ 
+    password: "", 
+    confirmPassword: "" 
+  });
   const [signupForm, setSignupForm] = useState({ 
     email: "", 
     password: "", 
@@ -25,17 +29,37 @@ export function AuthPage() {
   });
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    // Check if user is already logged in
+    // Check if user is already logged in and handle password reset flow
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      
+      // Check if this is a password reset flow
+      const access_token = searchParams.get('access_token');
+      const refresh_token = searchParams.get('refresh_token');
+      const type = searchParams.get('type');
+      
+      if (access_token && refresh_token && type === 'recovery') {
+        // Set the session for password reset
+        const { error } = await supabase.auth.setSession({
+          access_token,
+          refresh_token
+        });
+        
+        if (!error) {
+          setCurrentView("reset");
+          return;
+        }
+      }
+      
+      if (session && type !== 'recovery') {
         navigate("/");
       }
     };
     checkUser();
-  }, [navigate]);
+  }, [navigate, searchParams]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -178,10 +202,11 @@ export function AuthPage() {
     setIsLoading(true);
 
     try {
+      const resetUrl = `${window.location.origin}/auth`;
       const { error } = await supabase.auth.resetPasswordForEmail(
         forgotPasswordForm.email,
         {
-          redirectTo: `${window.location.origin}/auth?tab=login`
+          redirectTo: resetUrl
         }
       );
 
@@ -194,13 +219,112 @@ export function AuthPage() {
         return;
       }
 
+      // Send custom branded email
+      try {
+        await fetch(`https://aqliyaglegptltfayjuh.supabase.co/functions/v1/send-password-reset`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxbGl5YWdsZWdwdGx0ZmF5anVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0Njg2MTQsImV4cCI6MjA2OTA0NDYxNH0.PPX7qrtv54Y59JPH9FNGNDcCJh4ICg97wgA7IfjjCtU`
+          },
+          body: JSON.stringify({
+            email: forgotPasswordForm.email,
+            resetUrl: resetUrl
+          })
+        });
+      } catch (emailError) {
+        console.error("Custom email error:", emailError);
+        // Continue even if custom email fails
+      }
+
       toast({
         title: "Password Reset Email Sent",
-        description: "Check your email for a link to reset your password."
+        description: "Check your email for a link to reset your password from BizStack."
       });
       setCurrentView("login");
     } catch (error) {
       console.error("Forgot password error:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Validate passwords match
+    if (resetPasswordForm.password !== resetPasswordForm.confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords do not match. Please try again.",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate password strength
+    if (resetPasswordForm.password.length < 6) {
+      toast({
+        title: "Weak Password",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase.auth.updateUser({
+        password: resetPasswordForm.password
+      });
+
+      if (error) {
+        toast({
+          title: "Password Update Error",
+          description: error.message,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (data.user) {
+        // Send confirmation email
+        try {
+          await fetch(`https://aqliyaglegptltfayjuh.supabase.co/functions/v1/send-password-confirmation`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxbGl5YWdsZWdwdGx0ZmF5anVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0Njg2MTQsImV4cCI6MjA2OTA0NDYxNH0.PPX7qrtv54Y59JPH9FNGNDcCJh4ICg97wgA7IfjjCtU`
+            },
+            body: JSON.stringify({
+              email: data.user.email,
+              userName: data.user.user_metadata?.full_name
+            })
+          });
+        } catch (emailError) {
+          console.error("Confirmation email error:", emailError);
+        }
+
+        toast({
+          title: "Password Updated Successfully",
+          description: "Your password has been changed. You can now use your new password to sign in."
+        });
+        
+        // Sign out user so they can sign in with new password
+        await supabase.auth.signOut();
+        setCurrentView("login");
+        // Clear the URL parameters
+        window.history.replaceState({}, document.title, "/auth");
+      }
+    } catch (error) {
+      console.error("Reset password error:", error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
@@ -238,14 +362,89 @@ export function AuthPage() {
         <Card className="backdrop-blur-xl bg-card/80 border-border/50 shadow-large animate-scale-in">
           <CardHeader className="space-y-4 text-center pb-6">
             <CardTitle className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
-              Welcome
+              {currentView === "reset" ? "Set New Password" : "Welcome"}
             </CardTitle>
             <CardDescription className="text-lg text-muted-foreground">
-              Sign in to your account or create a new one
+              {currentView === "reset" 
+                ? "Choose a strong password for your account" 
+                : "Sign in to your account or create a new one"
+              }
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {currentView === "forgot" ? (
+            {currentView === "reset" ? (
+              <div className="space-y-6">
+                <div className="text-center space-y-2">
+                  <div className="flex items-center justify-center">
+                    <Shield className="h-12 w-12 text-primary mb-4" />
+                  </div>
+                  <h3 className="text-xl font-semibold">Create New Password</h3>
+                  <p className="text-muted-foreground">Enter your new password below</p>
+                </div>
+                
+                <form onSubmit={handleResetPassword} className="space-y-6">
+                  <div className="space-y-3">
+                    <Label htmlFor="reset-password" className="text-sm font-semibold text-foreground">New Password</Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
+                      <Input
+                        id="reset-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter new password"
+                        className="pl-12 pr-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
+                        value={resetPasswordForm.password}
+                        onChange={(e) => setResetPasswordForm(prev => ({ ...prev, password: e.target.value }))}
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 hover:bg-muted/50 rounded-lg transition-colors duration-200"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <Label htmlFor="reset-confirm-password" className="text-sm font-semibold text-foreground">Confirm New Password</Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-200" />
+                      <Input
+                        id="reset-confirm-password"
+                        type="password"
+                        placeholder="Confirm new password"
+                        className="pl-12 h-12 bg-background/50 border-border/60 focus:border-primary focus:bg-background transition-all duration-300 text-base"
+                        value={resetPasswordForm.confirmPassword}
+                        onChange={(e) => setResetPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 bg-gradient-primary hover:shadow-primary/25 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-base font-semibold" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Updating Password...
+                      </div>
+                    ) : (
+                      "Update Password"
+                    )}
+                  </Button>
+                </form>
+              </div>
+            ) : currentView === "forgot" ? (
               <div className="space-y-6">
                 <div className="text-center space-y-2">
                   <h3 className="text-xl font-semibold">Reset Password</h3>

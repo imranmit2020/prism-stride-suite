@@ -411,7 +411,7 @@ export function AuthPage() {
                 : currentView === "forgot"
                 ? "Enter your email address and we'll send you a secure reset link"
                 : currentView === "signup"
-                ? "Join BizStack to manage your business operations or personal finances efficiently"
+                ? "Join BizStack to manage your business or personal operations"
                 : "Access your dashboard and manage your business or personal activities"
               }
             </CardDescription>

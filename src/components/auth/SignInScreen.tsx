@@ -60,7 +60,7 @@ export function SignInScreen({ onSignIn, onSwitchToSignUp }: SignInScreenProps) 
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center mb-4">
-            <img src="/src/assets/bizstack-logo.webp" alt="BizStack Logo" className="h-16 w-16 object-contain" />
+            <img src="/lovable-uploads/a4c28e25-9a4f-4d2c-8490-970f19e740db.png" alt="BizStack Logo" className="h-20 w-auto object-contain" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
           <p className="text-muted-foreground">

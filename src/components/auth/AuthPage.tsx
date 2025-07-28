@@ -355,7 +355,7 @@ export function AuthPage() {
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-2xl blur-lg opacity-60"></div>
               <div className="relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 p-6 rounded-2xl shadow-2xl hover:shadow-blue-500/20 transition-shadow duration-300">
-                <Building2 className="h-12 w-12 text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text" />
+                <Building2 className="h-12 w-12 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
             <div className="text-left">

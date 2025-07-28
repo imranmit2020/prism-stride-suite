@@ -60,8 +60,8 @@ export function SignInScreen({ onSignIn, onSwitchToSignUp }: SignInScreenProps) 
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center mb-4">
-            <div className="bg-primary/10 p-4 rounded-2xl">
-              <div className="text-2xl font-bold text-primary">BizStack</div>
+            <div className="bg-blue-50 dark:bg-blue-950 border-2 border-blue-200 dark:border-blue-800 p-6 rounded-2xl">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">BizStack</div>
             </div>
           </div>
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>

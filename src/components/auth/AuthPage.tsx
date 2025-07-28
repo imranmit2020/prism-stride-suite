@@ -346,25 +346,41 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-tr from-indigo-400/20 to-cyan-600/20 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-violet-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse animation-delay-2000"></div>
+      </div>
+
+      {/* Floating geometric shapes */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-4 h-4 bg-blue-400/30 rounded-full animate-bounce animation-delay-500"></div>
+        <div className="absolute top-40 right-32 w-6 h-6 bg-purple-400/30 rounded-full animate-bounce animation-delay-1500"></div>
+        <div className="absolute bottom-32 left-16 w-3 h-3 bg-indigo-400/30 rounded-full animate-bounce animation-delay-2500"></div>
+        <div className="absolute bottom-20 right-20 w-5 h-5 bg-cyan-400/30 rounded-full animate-bounce animation-delay-3000"></div>
+      </div>
       
-      <div className="w-full max-w-lg relative z-10">
-        {/* Professional Header */}
-        <div className="text-center mb-10">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg"></div>
-              <div className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-lg">
-                <Building2 className="h-10 w-10 text-primary" />
+      <div className="w-full max-w-lg relative z-10 animate-fade-in">
+        {/* Enhanced Header */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-6 mb-10">
+            <div className="relative group">
+              {/* Glowing effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-2xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity duration-500 animate-pulse"></div>
+              <div className="relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 group-hover:scale-105">
+                <Building2 className="h-12 w-12 text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text" />
               </div>
             </div>
             <div className="text-left">
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent tracking-tight leading-tight">
                 BizStack
               </h1>
-              <p className="text-sm font-medium text-slate-600 dark:text-slate-400 tracking-wide">
-                BUSINESS & PERSONAL MANAGEMENT
+              <p className="text-sm font-semibold text-slate-600 dark:text-slate-300 tracking-wider uppercase">
+                Business & Personal Management
               </p>
+              <div className="w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 animate-pulse"></div>
             </div>
           </div>
           {currentView === "reset" && (
@@ -376,9 +392,16 @@ export function AuthPage() {
           )}
         </div>
 
-        {/* Professional Card */}
-        <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-xl shadow-slate-900/5 dark:shadow-slate-900/20">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+        {/* Enhanced Beautiful Card */}
+        <Card className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-lg border border-white/20 dark:border-slate-700/30 shadow-2xl shadow-blue-500/10 dark:shadow-blue-500/20 overflow-hidden animate-scale-in">
+          {/* Gradient border effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-lg p-[1px]">
+            <div className="bg-white/95 dark:bg-slate-800/95 h-full w-full rounded-lg"></div>
+          </div>
+          {/* Animated top border */}
+          <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 via-purple-500 to-transparent animate-pulse"></div>
+          {/* Glass effect overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
           
           <CardHeader className="text-center pb-8 pt-8 px-8">
             <div className="mx-auto w-16 h-1 bg-gradient-to-r from-primary/50 to-primary rounded-full mb-6"></div>
@@ -530,20 +553,20 @@ export function AuthPage() {
               </div>
             ) : (
               <Tabs value={currentView} onValueChange={(value) => setCurrentView(value as "login" | "signup")} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 h-14 bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-700 p-1.5 rounded-xl border border-slate-200/60 dark:border-slate-600/60 shadow-lg shadow-slate-900/5 dark:shadow-slate-900/20">
+                <TabsList className="grid w-full grid-cols-2 h-16 bg-gradient-to-r from-white/80 via-slate-50/90 to-white/80 dark:from-slate-800/80 dark:via-slate-700/90 dark:to-slate-800/80 backdrop-blur-lg p-2 rounded-2xl border border-white/30 dark:border-slate-600/30 shadow-xl shadow-blue-500/10 dark:shadow-blue-500/20">
                   <TabsTrigger 
                     value="login" 
-                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-slate-50 dark:data-[state=active]:from-slate-700 dark:data-[state=active]:to-slate-600 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-lg data-[state=active]:shadow-slate-900/10 dark:data-[state=active]:shadow-slate-900/30 data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-500 transition-all duration-300 rounded-lg hover:scale-[1.02] data-[state=active]:scale-[1.02]"
+                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/30 transition-all duration-500 rounded-xl hover:scale-[1.02] data-[state=active]:scale-[1.02] overflow-hidden"
                   >
                     <span className="relative z-10">Sign In</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 data-[state=active]:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="signup" 
-                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-white data-[state=active]:to-slate-50 dark:data-[state=active]:from-slate-700 dark:data-[state=active]:to-slate-600 data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-100 data-[state=active]:shadow-lg data-[state=active]:shadow-slate-900/10 dark:data-[state=active]:shadow-slate-900/30 data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-500 transition-all duration-300 rounded-lg hover:scale-[1.02] data-[state=active]:scale-[1.02]"
+                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-purple-500/30 transition-all duration-500 rounded-xl hover:scale-[1.02] data-[state=active]:scale-[1.02] overflow-hidden"
                   >
                     <span className="relative z-10">Create Account</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 data-[state=active]:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-indigo-400/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                   </TabsTrigger>
                 </TabsList>
               

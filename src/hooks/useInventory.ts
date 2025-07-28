@@ -306,7 +306,15 @@ export function useInventory() {
         );
       }
 
-      // Delete stock records first (foreign key constraint)
+      // Delete transaction records first (foreign key constraint)
+      const { error: transactionError } = await supabase
+        .from('bm_inv_transactions')
+        .delete()
+        .eq('product_id', productId);
+
+      if (transactionError) throw transactionError;
+
+      // Delete stock records (foreign key constraint)
       const { error: stockError } = await supabase
         .from('bm_inv_stock')
         .delete()

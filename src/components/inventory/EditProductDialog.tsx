@@ -31,7 +31,9 @@ export function EditProductDialog({ open, onOpenChange, product, onUpdateProduct
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('EditProductDialog useEffect triggered:', { product, open });
     if (product && open) {
+      console.log('Product data received:', product);
       const newFormData = {
         name: product.name || "",
         sku: product.sku || "",
@@ -44,6 +46,7 @@ export function EditProductDialog({ open, onOpenChange, product, onUpdateProduct
         sellingPrice: product.sellingPrice || 0,
         supplier: product.supplier || ""
       };
+      console.log('Setting form data to:', newFormData);
       setFormData(newFormData);
     } else if (!open) {
       // Reset form when dialog closes

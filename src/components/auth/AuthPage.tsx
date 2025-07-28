@@ -725,7 +725,7 @@ export function AuthPage() {
                           >
                             <Briefcase className={`h-8 w-8 mb-3 ${signupForm.preferredMode === "business" ? "text-primary" : "text-slate-400"}`} />
                             <span className="text-sm font-semibold text-slate-900 dark:text-white">Business</span>
-                            <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 text-center">Inventory, POS, Payroll & more</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400 mt-1 text-center">Inventory, Payroll & more</span>
                           </Label>
                         </div>
                         <div className="relative">

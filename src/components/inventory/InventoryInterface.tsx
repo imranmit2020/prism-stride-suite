@@ -26,6 +26,8 @@ export function InventoryInterface() {
     inventory, 
     loading, 
     addProduct, 
+    updateProduct,
+    deleteProduct,
     refreshInventory, 
     getInventoryStats,
     getLowStockItems,
@@ -54,6 +56,18 @@ export function InventoryInterface() {
   const handleEditProduct = (item: InventoryItem) => {
     setSelectedProduct(item);
     setShowEditDialog(true);
+  };
+
+  const handleUpdateProduct = async (productId: string, updates: Partial<InventoryItem>) => {
+    await updateProduct(productId, updates);
+    setShowEditDialog(false);
+    setSelectedProduct(null);
+  };
+
+  const handleDeleteProduct = async (item: InventoryItem) => {
+    if (confirm(`Are you sure you want to delete ${item.name}?`)) {
+      await deleteProduct(item.id);
+    }
   };
 
   const handleProcessReorder = async (reorderId: string) => {
@@ -91,6 +105,7 @@ export function InventoryInterface() {
             loading={loading}
             onAddProduct={handleAddProduct}
             onEditProduct={handleEditProduct}
+            onDeleteProduct={handleDeleteProduct}
           />
         </TabsContent>
 
@@ -142,6 +157,7 @@ export function InventoryInterface() {
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
         product={selectedProduct}
+        onUpdateProduct={handleUpdateProduct}
       />
     </div>
   );

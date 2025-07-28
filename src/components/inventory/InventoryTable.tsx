@@ -146,9 +146,10 @@ interface InventoryTableProps {
   loading: boolean;
   onAddProduct: () => void;
   onEditProduct: (item: InventoryItem) => void;
+  onDeleteProduct: (item: InventoryItem) => void;
 }
 
-export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct }: InventoryTableProps) {
+export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct, onDeleteProduct }: InventoryTableProps) {
   const { formatCurrency } = useGlobalization();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -308,7 +309,10 @@ export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct
                           <Edit className="h-4 w-4 mr-2" />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
+                        <DropdownMenuItem 
+                          className="text-destructive"
+                          onClick={() => onDeleteProduct(item)}
+                        >
                           <Trash2 className="h-4 w-4 mr-2" />
                           Delete
                         </DropdownMenuItem>

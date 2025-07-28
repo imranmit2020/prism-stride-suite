@@ -12,10 +12,11 @@ interface EditProductDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   product: InventoryItem | null;
+  onUpdateProduct: (productId: string, updates: Partial<InventoryItem>) => Promise<void>;
 }
 
-export function EditProductDialog({ open, onOpenChange, product }: EditProductDialogProps) {
-  const { updateProduct } = useInventory();
+export function EditProductDialog({ open, onOpenChange, product, onUpdateProduct }: EditProductDialogProps) {
+  
   
   // Initialize form data with product data or defaults
   const getInitialFormData = () => {
@@ -77,7 +78,7 @@ export function EditProductDialog({ open, onOpenChange, product }: EditProductDi
 
     setLoading(true);
     try {
-      await updateProduct(product.id, formData);
+      await onUpdateProduct(product.id, formData);
       onOpenChange(false);
     } finally {
       setLoading(false);

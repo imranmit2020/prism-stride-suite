@@ -79,6 +79,13 @@ export function EditProductDialog({ open, onOpenChange, product, onUpdateProduct
   };
 
   const categories = [
+    "Electronics",
+    "Clothing", 
+    "Groceries",
+    "Toys",
+    "Furniture",
+    "Sports",
+    "Books",
     "Beverages",
     "Food",
     "Pastries",
@@ -88,6 +95,11 @@ export function EditProductDialog({ open, onOpenChange, product, onUpdateProduct
   ];
 
   const suppliers = [
+    "Supplier A",
+    "Supplier B", 
+    "Supplier C",
+    "Supplier D",
+    "Supplier E",
     "Premium Coffee Co.",
     "French Bakery Supply",
     "Fresh Foods Ltd",

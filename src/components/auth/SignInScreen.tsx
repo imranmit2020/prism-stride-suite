@@ -7,7 +7,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import bizstackLogo from "@/assets/bizstack-logo.webp";
 
 interface SignInScreenProps {
   onSignIn: (email: string, password: string) => void;
@@ -61,7 +60,7 @@ export function SignInScreen({ onSignIn, onSwitchToSignUp }: SignInScreenProps) 
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center mb-4">
-            <img src={bizstackLogo} alt="BizStack Logo" className="h-16 w-16 object-contain" />
+            <img src="/src/assets/bizstack-logo.webp" alt="BizStack Logo" className="h-16 w-16 object-contain" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
           <p className="text-muted-foreground">

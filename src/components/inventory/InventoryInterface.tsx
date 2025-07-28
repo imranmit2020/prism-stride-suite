@@ -1,5 +1,16 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Package, 
+  BarChart3, 
+  TrendingUp, 
+  MapPin, 
+  Brain, 
+  Shield, 
+  Clock, 
+  RefreshCw, 
+  Download 
+} from "lucide-react";
 import { InventoryOverview } from "./InventoryOverview";
 import { InventoryTable, InventoryItem } from "./InventoryTable";
 import { SmartReorder } from "./SmartReorder";
@@ -77,21 +88,66 @@ export function InventoryInterface() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 space-y-8 animate-fade-in">
+      {/* Beautiful Header Section */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 p-8 border shadow-lg">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="relative z-10">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 rounded-xl bg-primary/10 backdrop-blur-sm">
+              <Package className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Inventory Management
+              </h1>
+              <p className="text-muted-foreground text-lg">Intelligent stock control with AI-powered insights</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="flex flex-wrap h-auto items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground w-full">
-          <TabsTrigger value="overview" className="px-3 py-2 text-xs font-medium">Overview</TabsTrigger>
-          <TabsTrigger value="products" className="px-3 py-2 text-xs font-medium">Products</TabsTrigger>
-          <TabsTrigger value="tracking" className="px-3 py-2 text-xs font-medium">Inventory Tracking</TabsTrigger>
-          <TabsTrigger value="locations" className="px-3 py-2 text-xs font-medium">Location Tracking</TabsTrigger>
-          <TabsTrigger value="ai-demand" className="px-3 py-2 text-xs font-medium">Demand AI</TabsTrigger>
-          <TabsTrigger value="ai-theft" className="px-3 py-2 text-xs font-medium">Theft AI</TabsTrigger>
-          <TabsTrigger value="ai-shelf" className="px-3 py-2 text-xs font-medium">Shelf AI</TabsTrigger>
-          <TabsTrigger value="reorders" className="px-3 py-2 text-xs font-medium">Reorders</TabsTrigger>
-          <TabsTrigger value="import-export" className="px-3 py-2 text-xs font-medium">Import/Export</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-9 h-auto bg-card/50 backdrop-blur-sm border rounded-xl p-2 shadow-lg">
+          <TabsTrigger value="overview" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <BarChart3 className="h-4 w-4" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="products" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <Package className="h-4 w-4" />
+            Products
+          </TabsTrigger>
+          <TabsTrigger value="tracking" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <TrendingUp className="h-4 w-4" />
+            Tracking
+          </TabsTrigger>
+          <TabsTrigger value="locations" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <MapPin className="h-4 w-4" />
+            Locations
+          </TabsTrigger>
+          <TabsTrigger value="ai-demand" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <Brain className="h-4 w-4" />
+            Demand AI
+          </TabsTrigger>
+          <TabsTrigger value="ai-theft" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <Shield className="h-4 w-4" />
+            Theft AI
+          </TabsTrigger>
+          <TabsTrigger value="ai-shelf" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <Clock className="h-4 w-4" />
+            Shelf AI
+          </TabsTrigger>
+          <TabsTrigger value="reorders" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <RefreshCw className="h-4 w-4" />
+            Reorders
+          </TabsTrigger>
+          <TabsTrigger value="import-export" className="flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/5">
+            <Download className="h-4 w-4" />
+            Import/Export
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-6">
+        <TabsContent value="overview" className="space-y-6 animate-fade-in">
           <InventoryOverview 
             inventory={inventory}
             getInventoryStats={getInventoryStats}
@@ -99,7 +155,7 @@ export function InventoryInterface() {
           />
         </TabsContent>
 
-        <TabsContent value="products" className="space-y-6">
+        <TabsContent value="products" className="space-y-6 animate-fade-in">
           <InventoryTable 
             inventory={inventory}
             loading={loading}
@@ -109,28 +165,28 @@ export function InventoryInterface() {
           />
         </TabsContent>
 
-        <TabsContent value="tracking" className="space-y-6">
+        <TabsContent value="tracking" className="space-y-6 animate-fade-in">
           <QuickInventoryActions />
           <InventoryTracking />
         </TabsContent>
 
-        <TabsContent value="locations" className="space-y-6">
+        <TabsContent value="locations" className="space-y-6 animate-fade-in">
           <LocationTracker />
         </TabsContent>
 
-        <TabsContent value="ai-demand" className="space-y-6">
+        <TabsContent value="ai-demand" className="space-y-6 animate-fade-in">
           <AIDemandProphet />
         </TabsContent>
 
-        <TabsContent value="ai-theft" className="space-y-6">
+        <TabsContent value="ai-theft" className="space-y-6 animate-fade-in">
           <AITheftDetectionOracle />
         </TabsContent>
 
-        <TabsContent value="ai-shelf" className="space-y-6">
+        <TabsContent value="ai-shelf" className="space-y-6 animate-fade-in">
           <AIShelfLifeOptimizer />
         </TabsContent>
 
-        <TabsContent value="reorders" className="space-y-6">
+        <TabsContent value="reorders" className="space-y-6 animate-fade-in">
           <SmartReorder 
             inventory={inventory}
             getReorderRecommendations={getReorderRecommendations}
@@ -139,7 +195,7 @@ export function InventoryInterface() {
           <AIInsights />
         </TabsContent>
 
-        <TabsContent value="import-export" className="space-y-6">
+        <TabsContent value="import-export" className="space-y-6 animate-fade-in">
           <ImportExportActions 
             inventory={inventory}
             onImportProducts={handleImportProducts}

@@ -15,7 +15,8 @@ import {
   TrendingDown,
   Package,
   Search,
-  MapPin
+  MapPin,
+  Brain
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -201,129 +202,166 @@ export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="overflow-hidden border-2 hover:border-primary/20 transition-all duration-300 shadow-lg">
+      <CardHeader className="bg-gradient-to-r from-primary/5 via-primary/3 to-secondary/5 border-b">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Package className="h-5 w-5" />
-            Inventory Management
+          <CardTitle className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Package className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Product Inventory
+              </span>
+              <p className="text-sm text-muted-foreground font-normal">Manage your product catalog</p>
+            </div>
           </CardTitle>
-          <Button onClick={onAddProduct}>
+          <Button onClick={onAddProduct} className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
             <Plus className="h-4 w-4 mr-2" />
             Add Product
           </Button>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-4">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search products..."
+              placeholder="Search products, SKU, category..."
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-2 focus:border-primary/50 transition-all duration-300"
             />
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+            {filteredInventory.length} products
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>SKU</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Stock Status</TableHead>
-              <TableHead>Current Stock</TableHead>
-              <TableHead>AI Prediction</TableHead>
-              <TableHead>Unit Cost</TableHead>
-              <TableHead>Selling Price</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredInventory.map((item) => {
-              const status = getStockStatus(item);
-              return (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <div>
-                      <div className="font-medium">{item.name}</div>
-                      <div className="text-sm text-muted-foreground">{item.category}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-mono text-sm">{item.sku}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-blue-500" />
-                      <div>
-                        <div className="font-medium text-sm">{getLocationCode(item.location)}</div>
-                        {item.location && (
-                          <div className="text-xs text-muted-foreground">
-                            {item.location.warehouse}
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50 hover:bg-muted/70 transition-colors">
+                <TableHead className="font-semibold">Product</TableHead>
+                <TableHead className="font-semibold">SKU</TableHead>
+                <TableHead className="font-semibold">Location</TableHead>
+                <TableHead className="font-semibold">Stock Status</TableHead>
+                <TableHead className="font-semibold">Current Stock</TableHead>
+                <TableHead className="font-semibold">AI Prediction</TableHead>
+                <TableHead className="font-semibold">Unit Cost</TableHead>
+                <TableHead className="font-semibold">Selling Price</TableHead>
+                <TableHead className="font-semibold">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredInventory.map((item, index) => {
+                const status = getStockStatus(item);
+                return (
+                  <TableRow 
+                    key={item.id} 
+                    className="group hover:bg-primary/5 transition-all duration-300 border-b hover:border-primary/20 animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <TableCell className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 group-hover:from-primary/20 group-hover:to-secondary/20 transition-all duration-300">
+                          <Package className="h-4 w-4 text-primary" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-base">{item.name}</div>
+                          <div className="text-sm text-muted-foreground flex items-center gap-1">
+                            <div className="w-1 h-1 rounded-full bg-primary"></div>
+                            {item.category}
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-mono text-sm font-medium bg-muted/30 rounded-md px-2 py-1 mx-2">{item.sku}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-blue-500" />
+                        <div>
+                          <div className="font-medium text-sm bg-blue-50 dark:bg-blue-950 px-2 py-1 rounded-md">{getLocationCode(item.location)}</div>
+                          {item.location && (
+                            <div className="text-xs text-muted-foreground mt-1">
+                              {item.location.warehouse}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {getStockBadge(status)}
+                        {getTrendIcon(item.demand7Days, item.demand30Days)}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-2">
+                        <div className="text-lg font-bold">{item.currentStock} <span className="text-sm font-normal text-muted-foreground">units</span></div>
+                        <div className="text-xs text-muted-foreground space-y-1">
+                          <div className="flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-amber-500"></div>
+                            Min: {item.minStock}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-blue-500"></div>
+                            Reorder: {item.reorderPoint}
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-2 p-3 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950 dark:to-blue-950 rounded-lg">
+                        <div className="text-sm font-semibold flex items-center gap-2">
+                          <Brain className="h-3 w-3 text-purple-600" />
+                          {item.aiPrediction.nextWeekDemand} units/week
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {item.aiPrediction.confidence}% confidence
+                        </div>
+                        {status === "critical" && (
+                          <div className="flex items-center gap-1 text-xs text-destructive bg-destructive/10 p-2 rounded-md">
+                            <AlertCircle className="h-3 w-3" />
+                            {item.aiPrediction.recommendation}
                           </div>
                         )}
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {getStockBadge(status)}
-                      {getTrendIcon(item.demand7Days, item.demand30Days)}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-medium">{item.currentStock} units</div>
-                      <div className="text-xs text-muted-foreground">
-                        Min: {item.minStock} | Reorder: {item.reorderPoint}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="text-sm font-medium">
-                        {item.aiPrediction.nextWeekDemand} units/week
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {item.aiPrediction.confidence}% confidence
-                      </div>
-                      {status === "critical" && (
-                        <div className="flex items-center gap-1 text-xs text-destructive">
-                          <AlertCircle className="h-3 w-3" />
-                          {item.aiPrediction.recommendation}
-                        </div>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>{formatCurrency(item.unitCost)}</TableCell>
-                  <TableCell>{formatCurrency(item.sellingPrice)}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => onEditProduct(item)}>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem 
-                          className="text-destructive"
-                          onClick={() => onDeleteProduct(item)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-semibold text-emerald-600">{formatCurrency(item.unitCost)}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-semibold text-blue-600">{formatCurrency(item.sellingPrice)}</div>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-primary/10 transition-all duration-300">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 border-2 shadow-lg">
+                          <DropdownMenuItem onClick={() => onEditProduct(item)} className="hover:bg-primary/10 transition-colors">
+                            <Edit className="h-4 w-4 mr-2 text-blue-600" />
+                            Edit Product
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            className="text-destructive hover:bg-destructive/10 transition-colors"
+                            onClick={() => onDeleteProduct(item)}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete Product
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

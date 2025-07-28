@@ -1087,7 +1087,9 @@ export type Database = {
           capacity: number | null
           created_at: string
           id: string
+          latitude: number | null
           location: string | null
+          longitude: number | null
           manager: string | null
           name: string
           updated_at: string
@@ -1097,7 +1099,9 @@ export type Database = {
           capacity?: number | null
           created_at?: string
           id?: string
+          latitude?: number | null
           location?: string | null
+          longitude?: number | null
           manager?: string | null
           name: string
           updated_at?: string
@@ -1107,7 +1111,9 @@ export type Database = {
           capacity?: number | null
           created_at?: string
           id?: string
+          latitude?: number | null
           location?: string | null
+          longitude?: number | null
           manager?: string | null
           name?: string
           updated_at?: string

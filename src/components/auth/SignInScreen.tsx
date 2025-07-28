@@ -5,8 +5,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, Mail, Lock, Shield } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import bizstackLogo from "@/assets/bizstack-logo.webp";
 
 interface SignInScreenProps {
   onSignIn: (email: string, password: string) => void;
@@ -60,7 +61,7 @@ export function SignInScreen({ onSignIn, onSwitchToSignUp }: SignInScreenProps) 
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center mb-4">
-            <Shield className="h-12 w-12 text-primary" />
+            <img src={bizstackLogo} alt="BizStack Logo" className="h-16 w-16 object-contain" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
           <p className="text-muted-foreground">

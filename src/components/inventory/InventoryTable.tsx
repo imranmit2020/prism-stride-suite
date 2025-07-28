@@ -202,159 +202,181 @@ export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct
   };
 
   return (
-    <Card className="overflow-hidden border-2 hover:border-primary/20 transition-all duration-300 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-primary/5 via-primary/3 to-secondary/5 border-b">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Package className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Product Inventory
-              </span>
-              <p className="text-sm text-muted-foreground font-normal">Manage your product catalog</p>
-            </div>
-          </CardTitle>
-          <Button onClick={onAddProduct} className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Product
-          </Button>
+    <div className="p-6 md:p-8 space-y-8">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="space-y-2">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            Product Inventory
+          </h2>
+          <p className="text-muted-foreground/80 text-base md:text-lg font-medium">
+            Manage your product catalog with intelligent insights
+          </p>
         </div>
-        <div className="flex gap-4 mt-4">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products, SKU, category..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 border-2 focus:border-primary/50 transition-all duration-300"
-            />
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+        <Button 
+          onClick={onAddProduct} 
+          className="group bg-gradient-to-r from-primary via-primary/95 to-primary/90 hover:from-primary/90 hover:via-primary/85 hover:to-primary/80 text-primary-foreground shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 px-6 py-3 rounded-xl font-semibold"
+        >
+          <Plus className="h-5 w-5 mr-2 group-hover:rotate-90 transition-transform duration-300" />
+          Add Product
+        </Button>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground/60" />
+          <Input
+            placeholder="Search products, SKU, category, supplier..."
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="pl-12 pr-4 py-3 border-2 border-border/50 focus:border-primary/50 transition-all duration-300 rounded-xl bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md"
+          />
+        </div>
+        <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900 rounded-xl border border-emerald-200 dark:border-emerald-800 shadow-sm">
+          <div className="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 shadow-sm animate-pulse"></div>
+          <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
             {filteredInventory.length} products
-          </div>
+          </span>
         </div>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/70 transition-colors">
-                <TableHead className="font-semibold">Product</TableHead>
-                <TableHead className="font-semibold">SKU</TableHead>
-                <TableHead className="font-semibold">Location</TableHead>
-                <TableHead className="font-semibold">Stock Status</TableHead>
-                <TableHead className="font-semibold">Current Stock</TableHead>
-                <TableHead className="font-semibold">AI Prediction</TableHead>
-                <TableHead className="font-semibold">Unit Cost</TableHead>
-                <TableHead className="font-semibold">Selling Price</TableHead>
-                <TableHead className="font-semibold">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+      </div>
+
+      {/* Enhanced Table */}
+      <Card className="overflow-hidden border border-border/30 hover:border-primary/30 transition-all duration-500 shadow-2xl bg-gradient-to-br from-card/80 via-card/90 to-card/80 backdrop-blur-xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/3 via-transparent to-secondary/3"></div>
+        <CardContent className="p-0 relative z-10">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gradient-to-r from-muted/60 via-muted/80 to-muted/60 backdrop-blur-sm hover:from-muted/70 hover:via-muted/90 hover:to-muted/70 transition-all duration-300 border-b border-border/50">
+                  <TableHead className="font-bold text-foreground/90 py-5 px-6 text-sm uppercase tracking-wide">Product</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">SKU</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">Location</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">Status</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">Stock</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">AI Prediction</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">Unit Cost</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 text-sm uppercase tracking-wide">Selling Price</TableHead>
+                  <TableHead className="font-bold text-foreground/90 py-5 px-6 text-sm uppercase tracking-wide text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
             <TableBody>
               {filteredInventory.map((item, index) => {
                 const status = getStockStatus(item);
                 return (
                   <TableRow 
                     key={item.id} 
-                    className="group hover:bg-primary/5 transition-all duration-300 border-b hover:border-primary/20 animate-fade-in"
+                    className="group hover:bg-gradient-to-r hover:from-primary/8 hover:via-primary/5 hover:to-secondary/8 transition-all duration-500 border-b border-border/30 hover:border-primary/30 animate-fade-in hover:shadow-lg"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <TableCell className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 group-hover:from-primary/20 group-hover:to-secondary/20 transition-all duration-300">
-                          <Package className="h-4 w-4 text-primary" />
+                    <TableCell className="p-6">
+                      <div className="flex items-center gap-4">
+                        <div className="relative p-3 rounded-2xl bg-gradient-to-br from-primary/15 to-secondary/15 group-hover:from-primary/25 group-hover:to-secondary/25 transition-all duration-500 shadow-lg group-hover:shadow-xl group-hover:scale-110">
+                          <Package className="h-6 w-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
-                        <div>
-                          <div className="font-semibold text-base">{item.name}</div>
-                          <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            <div className="w-1 h-1 rounded-full bg-primary"></div>
+                        <div className="space-y-1">
+                          <div className="font-bold text-base group-hover:text-primary transition-colors duration-300">{item.name}</div>
+                          <div className="text-sm text-muted-foreground/80 flex items-center gap-2 font-medium">
+                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-secondary shadow-sm"></div>
                             {item.category}
                           </div>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="font-mono text-sm font-medium bg-muted/30 rounded-md px-2 py-1 mx-2">{item.sku}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-blue-500" />
-                        <div>
-                          <div className="font-medium text-sm bg-blue-50 dark:bg-blue-950 px-2 py-1 rounded-md">{getLocationCode(item.location)}</div>
+                    <TableCell className="font-mono text-sm font-bold bg-gradient-to-r from-muted/40 to-muted/60 rounded-xl px-3 py-2 mx-2 shadow-sm">{item.sku}</TableCell>
+                    <TableCell className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/15 to-cyan-500/15 shadow-sm">
+                          <MapPin className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="font-bold text-sm bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 px-3 py-2 rounded-xl border border-blue-200 dark:border-blue-800 shadow-sm">
+                            {getLocationCode(item.location)}
+                          </div>
                           {item.location && (
-                            <div className="text-xs text-muted-foreground mt-1">
+                            <div className="text-xs text-muted-foreground/80 font-medium">
                               {item.location.warehouse}
                             </div>
                           )}
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        {getStockBadge(status)}
-                        {getTrendIcon(item.demand7Days, item.demand30Days)}
+                    <TableCell className="p-6">
+                      <div className="flex items-center gap-3">
+                        <div className="transform group-hover:scale-110 transition-transform duration-300">
+                          {getStockBadge(status)}
+                        </div>
+                        <div className="transform group-hover:scale-110 transition-transform duration-300">
+                          {getTrendIcon(item.demand7Days, item.demand30Days)}
+                        </div>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="space-y-2">
-                        <div className="text-lg font-bold">{item.currentStock} <span className="text-sm font-normal text-muted-foreground">units</span></div>
-                        <div className="text-xs text-muted-foreground space-y-1">
-                          <div className="flex items-center gap-2">
-                            <div className="w-1 h-1 rounded-full bg-amber-500"></div>
-                            Min: {item.minStock}
+                    <TableCell className="p-6">
+                      <div className="space-y-3">
+                        <div className="text-xl font-black">
+                          {item.currentStock} 
+                          <span className="text-sm font-medium text-muted-foreground/70 ml-1">units</span>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-xs font-medium">
+                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm"></div>
+                            <span className="text-muted-foreground/80">Min: {item.minStock}</span>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-1 h-1 rounded-full bg-blue-500"></div>
-                            Reorder: {item.reorderPoint}
+                          <div className="flex items-center gap-2 text-xs font-medium">
+                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-sm"></div>
+                            <span className="text-muted-foreground/80">Reorder: {item.reorderPoint}</span>
                           </div>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="space-y-2 p-3 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950 dark:to-blue-950 rounded-lg">
-                        <div className="text-sm font-semibold flex items-center gap-2">
-                          <Brain className="h-3 w-3 text-purple-600" />
-                          {item.aiPrediction.nextWeekDemand} units/week
+                    <TableCell className="p-6">
+                      <div className="space-y-3 p-4 bg-gradient-to-br from-violet-50/80 via-purple-50/60 to-blue-50/80 dark:from-violet-950/80 dark:via-purple-950/60 dark:to-blue-950/80 rounded-2xl border border-violet-200/50 dark:border-violet-800/50 shadow-lg backdrop-blur-sm">
+                        <div className="text-sm font-bold flex items-center gap-2">
+                          <div className="p-1 rounded-lg bg-gradient-to-r from-violet-500 to-purple-500 shadow-sm">
+                            <Brain className="h-4 w-4 text-white" />
+                          </div>
+                          <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                            {item.aiPrediction.nextWeekDemand} units/week
+                          </span>
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground/80 font-medium flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
                           {item.aiPrediction.confidence}% confidence
                         </div>
                         {status === "critical" && (
-                          <div className="flex items-center gap-1 text-xs text-destructive bg-destructive/10 p-2 rounded-md">
-                            <AlertCircle className="h-3 w-3" />
-                            {item.aiPrediction.recommendation}
+                          <div className="flex items-center gap-2 text-xs text-destructive bg-gradient-to-r from-destructive/10 to-destructive/5 p-3 rounded-xl border border-destructive/20 shadow-sm">
+                            <AlertCircle className="h-4 w-4 animate-pulse" />
+                            <span className="font-medium">{item.aiPrediction.recommendation}</span>
                           </div>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="font-semibold text-emerald-600">{formatCurrency(item.unitCost)}</div>
+                    <TableCell className="p-6">
+                      <div className="font-black text-lg text-emerald-600">{formatCurrency(item.unitCost)}</div>
                     </TableCell>
-                    <TableCell>
-                      <div className="font-semibold text-blue-600">{formatCurrency(item.sellingPrice)}</div>
+                    <TableCell className="p-6">
+                      <div className="font-black text-lg text-blue-600">{formatCurrency(item.sellingPrice)}</div>
                     </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-primary/10 transition-all duration-300">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 border-2 shadow-lg">
-                          <DropdownMenuItem onClick={() => onEditProduct(item)} className="hover:bg-primary/10 transition-colors">
-                            <Edit className="h-4 w-4 mr-2 text-blue-600" />
-                            Edit Product
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="text-destructive hover:bg-destructive/10 transition-colors"
-                            onClick={() => onDeleteProduct(item)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Delete Product
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                    <TableCell className="p-6">
+                      <div className="flex items-center gap-2 justify-end">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onEditProduct(item)}
+                          className="group hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-all duration-300 hover:scale-110 hover:shadow-lg rounded-xl p-3 border-border/50"
+                        >
+                          <Edit className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onDeleteProduct(item)}
+                          className="group hover:bg-destructive/10 hover:border-destructive/30 hover:text-destructive transition-all duration-300 hover:scale-110 hover:shadow-lg rounded-xl p-3 border-border/50"
+                        >
+                          <Trash2 className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -364,5 +386,6 @@ export function InventoryTable({ inventory, loading, onAddProduct, onEditProduct
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 }

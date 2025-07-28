@@ -162,45 +162,44 @@ export function InventoryOverview({ inventory, getInventoryStats, getLowStockIte
   };
 
   return (
-    <div className="space-y-8">
+    <div className="p-6 md:p-8 space-y-10">
       {/* Enhanced Stats Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:gap-6 lg:gap-8 sm:grid-cols-2 xl:grid-cols-4">
         {inventoryStats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title} className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 animate-scale-in" style={{ animationDelay: `${index * 100}ms` }}>
-              <CardContent className="p-6 relative overflow-hidden">
-                {/* Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <Card key={stat.title} className="group relative overflow-hidden hover:shadow-2xl transition-all duration-500 border border-border/30 hover:border-primary/30 animate-scale-in transform hover:-translate-y-3 hover:scale-105" style={{ animationDelay: `${index * 100}ms` }}>
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-primary/3 to-secondary/8 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/15 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-secondary/15 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <CardContent className="p-6 md:p-8 relative z-10">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/15 to-secondary/15 group-hover:from-primary/25 group-hover:to-secondary/25 transition-all duration-500 shadow-lg group-hover:shadow-xl">
+                    <Icon className={`h-7 w-7 md:h-8 md:w-8 transition-all duration-500 group-hover:scale-110 ${
+                      stat.variant === "destructive" ? "text-destructive" : "text-primary"
+                    }`} />
+                  </div>
+                  <div className={`text-xs font-bold px-4 py-2 rounded-full border-2 transition-all duration-500 shadow-md ${
+                    stat.trend === "up" 
+                      ? "text-emerald-600 bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200 dark:text-emerald-400 dark:from-emerald-950 dark:to-emerald-900 dark:border-emerald-800" 
+                      : "text-rose-600 bg-gradient-to-r from-rose-50 to-rose-100 border-rose-200 dark:text-rose-400 dark:from-rose-950 dark:to-rose-900 dark:border-rose-800"
+                  }`}>
+                    {stat.change}
+                  </div>
+                </div>
                 
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 group-hover:from-primary/20 group-hover:to-secondary/20 transition-all duration-300">
-                      <Icon className={`h-6 w-6 transition-colors duration-300 ${
-                        stat.variant === "destructive" ? "text-destructive" : "text-primary"
-                      }`} />
-                    </div>
-                    <div className={`text-xs font-medium px-3 py-1 rounded-full border transition-all duration-300 ${
-                      stat.trend === "up" 
-                        ? "text-emerald-600 bg-emerald-50 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-800" 
-                        : "text-rose-600 bg-rose-50 border-rose-200 dark:text-rose-400 dark:bg-rose-950 dark:border-rose-800"
-                    }`}>
-                      {stat.change}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-muted-foreground">
-                      {stat.title}
-                    </p>
-                    <p className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
-                      {stat.value}
-                    </p>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <div className="w-1 h-1 rounded-full bg-primary"></div>
-                      {stat.description}
-                    </p>
-                  </div>
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-muted-foreground/90 uppercase tracking-wide">
+                    {stat.title}
+                  </p>
+                  <p className="text-3xl md:text-4xl font-black bg-gradient-to-r from-foreground via-foreground/95 to-foreground/85 bg-clip-text text-transparent group-hover:from-primary group-hover:via-primary/95 group-hover:to-secondary transition-all duration-500">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm text-muted-foreground/80 flex items-center gap-2 font-medium">
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-secondary shadow-sm"></div>
+                    {stat.description}
+                  </p>
                 </div>
               </CardContent>
             </Card>

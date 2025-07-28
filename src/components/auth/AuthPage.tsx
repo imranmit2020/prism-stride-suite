@@ -347,29 +347,14 @@ export function AuthPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-32 w-96 h-96 bg-gradient-to-tr from-indigo-400/20 to-cyan-600/20 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-violet-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse animation-delay-2000"></div>
-      </div>
-
-      {/* Floating geometric shapes */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-20 w-4 h-4 bg-blue-400/30 rounded-full animate-bounce animation-delay-500"></div>
-        <div className="absolute top-40 right-32 w-6 h-6 bg-purple-400/30 rounded-full animate-bounce animation-delay-1500"></div>
-        <div className="absolute bottom-32 left-16 w-3 h-3 bg-indigo-400/30 rounded-full animate-bounce animation-delay-2500"></div>
-        <div className="absolute bottom-20 right-20 w-5 h-5 bg-cyan-400/30 rounded-full animate-bounce animation-delay-3000"></div>
-      </div>
       
-      <div className="w-full max-w-lg relative z-10 animate-fade-in">
-        {/* Enhanced Header */}
+      <div className="w-full max-w-lg relative z-10">
+        {/* Logo and Header */}
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-6 mb-10">
+          <div className="flex items-center justify-center gap-6 mb-8">
             <div className="relative group">
-              {/* Glowing effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-2xl blur-lg opacity-60 group-hover:opacity-80 transition-opacity duration-500 animate-pulse"></div>
-              <div className="relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 group-hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-2xl blur-lg opacity-60"></div>
+              <div className="relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 p-6 rounded-2xl shadow-2xl hover:shadow-blue-500/20 transition-shadow duration-300">
                 <Building2 className="h-12 w-12 text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text" />
               </div>
             </div>
@@ -380,52 +365,38 @@ export function AuthPage() {
               <p className="text-sm font-semibold text-slate-600 dark:text-slate-300 tracking-wider uppercase">
                 Business & Personal Management
               </p>
-              <div className="w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 animate-pulse"></div>
+              <div className="w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2"></div>
             </div>
           </div>
-          {currentView === "reset" && (
-            <div className="max-w-md mx-auto">
-              <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
-                Secure your account with a new password
-              </p>
-            </div>
-          )}
+          
+          {/* Welcome Text */}
+          <div className="max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+              Welcome
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 text-base">
+              Sign in to your account or create a new one
+            </p>
+          </div>
         </div>
 
-        {/* Enhanced Beautiful Card */}
-        <Card className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-lg border border-white/20 dark:border-slate-700/30 shadow-2xl shadow-blue-500/10 dark:shadow-blue-500/20 overflow-hidden animate-scale-in">
+        {/* Card */}
+        <Card className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-lg border border-white/20 dark:border-slate-700/30 shadow-2xl shadow-blue-500/10 dark:shadow-blue-500/20 overflow-hidden hover:shadow-blue-500/20 dark:hover:shadow-blue-500/30 transition-shadow duration-300">
           {/* Gradient border effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 rounded-lg p-[1px]">
             <div className="bg-white/95 dark:bg-slate-800/95 h-full w-full rounded-lg"></div>
           </div>
-          {/* Animated top border */}
-          <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 via-purple-500 to-transparent animate-pulse"></div>
+          {/* Top border */}
+          <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500 via-purple-500 to-transparent"></div>
           {/* Glass effect overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
           
-          <CardHeader className="text-center pb-8 pt-8 px-8">
-            <div className="mx-auto w-16 h-1 bg-gradient-to-r from-primary/50 to-primary rounded-full mb-6"></div>
-            <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-              {currentView === "reset" ? "Reset Your Password" : 
-               currentView === "forgot" ? "Forgot Your Password?" : 
-               currentView === "signup" ? "Create Your Account" : "Welcome Back"}
-            </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400 text-base mt-3 leading-relaxed max-w-sm mx-auto">
-              {currentView === "reset" 
-                ? "Please enter a new secure password for your account" 
-                : currentView === "forgot"
-                ? "Enter your email address and we'll send you a secure reset link"
-                : currentView === "signup"
-                ? "Join BizStack to manage your business or personal operations"
-                : "Access your dashboard and manage your business or personal activities"
-              }
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="px-8 pb-8">
+          <CardContent className="relative p-8">
             {currentView === "reset" ? (
               <div className="space-y-8">
                 <div className="text-center space-y-4">
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Reset Your Password</h2>
+                  <p className="text-slate-600 dark:text-slate-400">Enter a new secure password for your account</p>
                   <div className="flex items-center justify-center">
                     <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-4 rounded-full">
                       <Shield className="h-8 w-8 text-green-600 dark:text-green-400" />
@@ -442,7 +413,7 @@ export function AuthPage() {
                         id="reset-password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your new password"
-                        className="pl-12 pr-12 h-12 bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600 focus:border-primary focus:bg-white dark:focus:bg-slate-700 transition-all duration-200 text-base rounded-lg"
+                        className="pl-12 pr-12 h-12 bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600 focus:border-primary focus:bg-white dark:focus:bg-slate-700 focus:shadow-primary/20 transition-all duration-200 text-base rounded-lg"
                         value={resetPasswordForm.password}
                         onChange={(e) => setResetPasswordForm(prev => ({ ...prev, password: e.target.value }))}
                         required
@@ -466,13 +437,12 @@ export function AuthPage() {
                   <div className="space-y-4">
                     <Label htmlFor="reset-confirm-password" className="text-sm font-semibold text-foreground">Confirm New Password</Label>
                     <div className="relative group">
-                      <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                       <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
                       <Input
                         id="reset-confirm-password"
                         type="password"
                         placeholder="Confirm your new password"
-                        className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                        className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 focus:shadow-primary/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                         value={resetPasswordForm.confirmPassword}
                         onChange={(e) => setResetPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
                         required
@@ -482,7 +452,7 @@ export function AuthPage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-14 bg-gradient-primary hover:shadow-xl hover:shadow-primary/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                    className="w-full h-14 bg-gradient-primary hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 text-base font-semibold rounded-xl" 
                     disabled={isLoading}
                   >
                     {isLoading ? (
@@ -499,6 +469,8 @@ export function AuthPage() {
             ) : currentView === "forgot" ? (
               <div className="space-y-8">
                 <div className="text-center space-y-4">
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Forgot Your Password?</h2>
+                  <p className="text-slate-600 dark:text-slate-400">Enter your email address and we'll send you a secure reset link</p>
                   <div className="flex items-center justify-center">
                     <div className="bg-gradient-accent p-4 rounded-full">
                       <Mail className="h-8 w-8 text-white" />
@@ -510,13 +482,12 @@ export function AuthPage() {
                   <div className="space-y-4">
                     <Label htmlFor="forgot-email" className="text-sm font-semibold text-foreground">Email Address</Label>
                     <div className="relative group">
-                      <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                       <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
                       <Input
                         id="forgot-email"
                         type="email"
                         placeholder="Enter your email address"
-                        className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                        className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 focus:shadow-accent/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                         value={forgotPasswordForm.email}
                         onChange={(e) => setForgotPasswordForm(prev => ({ ...prev, email: e.target.value }))}
                         required
@@ -527,7 +498,7 @@ export function AuthPage() {
                   <div className="space-y-4">
                     <Button 
                       type="submit" 
-                      className="w-full h-14 bg-gradient-accent hover:shadow-xl hover:shadow-accent/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                      className="w-full h-14 bg-gradient-accent hover:shadow-xl hover:shadow-accent/25 transition-all duration-300 text-base font-semibold rounded-xl" 
                       disabled={isLoading}
                     >
                       {isLoading ? (
@@ -544,7 +515,7 @@ export function AuthPage() {
                       type="button"
                       variant="ghost"
                       onClick={() => setCurrentView("login")}
-                      className="w-full h-12 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 rounded-lg border border-slate-200 dark:border-slate-600"
+                      className="w-full h-12 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 hover:shadow-slate-500/20 transition-all duration-200 rounded-lg border border-slate-200 dark:border-slate-600"
                     >
                       Back to Sign In
                     </Button>
@@ -556,17 +527,15 @@ export function AuthPage() {
                 <TabsList className="grid w-full grid-cols-2 h-16 bg-gradient-to-r from-white/80 via-slate-50/90 to-white/80 dark:from-slate-800/80 dark:via-slate-700/90 dark:to-slate-800/80 backdrop-blur-lg p-2 rounded-2xl border border-white/30 dark:border-slate-600/30 shadow-xl shadow-blue-500/10 dark:shadow-blue-500/20">
                   <TabsTrigger 
                     value="login" 
-                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/30 transition-all duration-500 rounded-xl hover:scale-[1.02] data-[state=active]:scale-[1.02] overflow-hidden"
+                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/30 transition-all duration-500 rounded-xl hover:shadow-blue-500/20 data-[state=active]:hover:shadow-blue-500/40 overflow-hidden"
                   >
                     <span className="relative z-10">Sign In</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="signup" 
-                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-purple-500/30 transition-all duration-500 rounded-xl hover:scale-[1.02] data-[state=active]:scale-[1.02] overflow-hidden"
+                    className="relative text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-purple-500/30 transition-all duration-500 rounded-xl hover:shadow-purple-500/20 data-[state=active]:hover:shadow-purple-500/40 overflow-hidden"
                   >
                     <span className="relative z-10">Create Account</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-indigo-400/20 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                   </TabsTrigger>
                 </TabsList>
               
@@ -575,13 +544,12 @@ export function AuthPage() {
                     <div className="space-y-4">
                       <Label htmlFor="login-email" className="text-sm font-semibold text-foreground">Email Address</Label>
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                         <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
                         <Input
                           id="login-email"
                           type="email"
                           placeholder="Enter your email"
-                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 focus:shadow-primary/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                           value={loginForm.email}
                           onChange={(e) => setLoginForm(prev => ({ ...prev, email: e.target.value }))}
                           required
@@ -592,13 +560,12 @@ export function AuthPage() {
                     <div className="space-y-4">
                       <Label htmlFor="login-password" className="text-sm font-semibold text-foreground">Password</Label>
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-primary rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                         <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300 z-10" />
                         <Input
                           id="login-password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
-                          className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-primary focus:bg-background/90 focus:shadow-primary/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                           value={loginForm.password}
                           onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
                           required
@@ -643,7 +610,7 @@ export function AuthPage() {
                     
                     <Button 
                       type="submit" 
-                      className="w-full h-14 bg-gradient-primary hover:shadow-xl hover:shadow-primary/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                      className="w-full h-14 bg-gradient-primary hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 text-base font-semibold rounded-xl" 
                       disabled={isLoading}
                     >
                       {isLoading ? (
@@ -663,13 +630,12 @@ export function AuthPage() {
                     <div className="space-y-4">
                       <Label htmlFor="signup-name" className="text-sm font-semibold text-foreground">Full Name</Label>
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                         <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
                         <Input
                           id="signup-name"
                           type="text"
                           placeholder="Enter your full name"
-                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 focus:shadow-accent/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                           value={signupForm.fullName}
                           onChange={(e) => setSignupForm(prev => ({ ...prev, fullName: e.target.value }))}
                           required
@@ -680,13 +646,12 @@ export function AuthPage() {
                     <div className="space-y-4">
                       <Label htmlFor="signup-email" className="text-sm font-semibold text-foreground">Email Address</Label>
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                         <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
                         <Input
                           id="signup-email"
                           type="email"
                           placeholder="Enter your email"
-                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 focus:shadow-accent/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                           value={signupForm.email}
                           onChange={(e) => setSignupForm(prev => ({ ...prev, email: e.target.value }))}
                           required
@@ -697,13 +662,12 @@ export function AuthPage() {
                     <div className="space-y-4">
                       <Label htmlFor="signup-password" className="text-sm font-semibold text-foreground">Password</Label>
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                         <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
                         <Input
                           id="signup-password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Create a password"
-                          className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          className="relative pl-12 pr-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 focus:shadow-accent/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                           value={signupForm.password}
                           onChange={(e) => setSignupForm(prev => ({ ...prev, password: e.target.value }))}
                           required
@@ -727,13 +691,12 @@ export function AuthPage() {
                     <div className="space-y-4">
                       <Label htmlFor="signup-confirm-password" className="text-sm font-semibold text-foreground">Confirm Password</Label>
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-accent rounded-xl opacity-0 group-focus-within:opacity-10 transition-opacity duration-300 blur-xl"></div>
                         <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300 z-10" />
                         <Input
                           id="signup-confirm-password"
                           type="password"
                           placeholder="Confirm your password"
-                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 transition-all duration-300 text-base rounded-xl shadow-sm"
+                          className="relative pl-12 h-14 bg-background/80 border-border/60 focus:border-accent focus:bg-background/90 focus:shadow-accent/20 transition-all duration-300 text-base rounded-xl shadow-sm"
                           value={signupForm.confirmPassword}
                           onChange={(e) => setSignupForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
                           required
@@ -755,9 +718,9 @@ export function AuthPage() {
                           <RadioGroupItem value="business" id="business" className="sr-only" />
                           <Label 
                             htmlFor="business" 
-                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-primary/50 ${
+                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-primary/50 hover:shadow-primary/20 ${
                               signupForm.preferredMode === "business" 
-                                ? "border-primary bg-primary/5 shadow-sm" 
+                                ? "border-primary bg-primary/5 shadow-sm shadow-primary/20" 
                                 : "border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/30"
                             }`}
                           >
@@ -770,9 +733,9 @@ export function AuthPage() {
                           <RadioGroupItem value="personal" id="personal" className="sr-only" />
                           <Label 
                             htmlFor="personal" 
-                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-primary/50 ${
+                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-primary/50 hover:shadow-primary/20 ${
                               signupForm.preferredMode === "personal" 
-                                ? "border-primary bg-primary/5 shadow-sm" 
+                                ? "border-primary bg-primary/5 shadow-sm shadow-primary/20" 
                                 : "border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/30"
                             }`}
                           >
@@ -786,7 +749,7 @@ export function AuthPage() {
                     
                     <Button 
                       type="submit" 
-                      className="w-full h-14 bg-gradient-accent hover:shadow-xl hover:shadow-accent/25 hover:scale-[1.02] transition-all duration-300 text-base font-semibold rounded-xl" 
+                      className="w-full h-14 bg-gradient-accent hover:shadow-xl hover:shadow-accent/25 transition-all duration-300 text-base font-semibold rounded-xl" 
                       disabled={isLoading}
                     >
                       {isLoading ? (

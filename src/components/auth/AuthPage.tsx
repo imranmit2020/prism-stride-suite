@@ -368,16 +368,6 @@ export function AuthPage() {
               <div className="w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2"></div>
             </div>
           </div>
-          
-          {/* Welcome Text */}
-          <div className="max-w-md mx-auto">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-              Welcome
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400 text-base">
-              Sign in to your account or create a new one
-            </p>
-          </div>
         </div>
 
         {/* Card */}
@@ -392,6 +382,15 @@ export function AuthPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
           
           <CardContent className="relative p-8">
+            {/* Welcome Text */}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                Welcome
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 text-base">
+                Sign in to your account or create a new one
+              </p>
+            </div>
             {currentView === "reset" ? (
               <div className="space-y-8">
                 <div className="text-center space-y-4">

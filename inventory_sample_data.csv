@@ -1,0 +1,51 @@
+Name,SKU,Category,Current Stock,Min Stock,Max Stock,Reorder Point,Unit Cost,Selling Price,Supplier,Last Restocked,7-Day Demand,30-Day Demand,AI Next Week Demand,AI Confidence,AI Recommendation
+Wireless Mouse,WM-001,Electronics,45,10,100,25,12.50,24.99,TechSupply Co,2024-01-15,8,32,9,0.85,Reorder Soon
+Office Chair,OC-101,Furniture,12,5,50,15,89.00,179.99,ComfortSeating Ltd,2024-01-10,2,8,2,0.92,Adequate Stock
+Coffee Maker,CM-201,Appliances,8,3,30,10,45.00,89.99,HomeAppliance Inc,2024-01-20,3,12,4,0.78,Monitor Closely
+Laptop Stand,LS-301,Electronics,25,8,60,20,18.75,39.99,TechSupply Co,2024-01-12,5,20,6,0.88,Reorder Soon
+Desk Lamp,DL-401,Lighting,18,6,40,15,22.50,49.99,LightWorks Ltd,2024-01-18,4,16,4,0.90,Adequate Stock
+Bluetooth Speaker,BS-501,Electronics,32,12,80,30,35.00,69.99,AudioTech Pro,2024-01-08,7,28,8,0.82,Reorder Soon
+Ergonomic Keyboard,EK-601,Electronics,15,5,50,18,55.00,109.99,TechSupply Co,2024-01-22,3,12,3,0.95,Adequate Stock
+Water Bottle,WB-701,Lifestyle,67,20,150,50,8.00,19.99,DrinkWare Plus,2024-01-16,12,48,14,0.87,Adequate Stock
+Phone Charger,PC-801,Electronics,89,25,200,75,6.50,14.99,MobileAccessories,2024-01-14,15,60,18,0.91,Adequate Stock
+Notebook Set,NS-901,Stationery,43,15,100,35,4.25,12.99,PaperWorks Co,2024-01-19,8,32,9,0.84,Adequate Stock
+Pen Collection,PC-011,Stationery,124,30,250,80,2.50,7.99,WritingSupplies,2024-01-11,20,80,23,0.89,Adequate Stock
+Monitor Stand,MS-111,Electronics,9,4,25,12,28.00,59.99,TechSupply Co,2024-01-17,2,8,3,0.93,Monitor Closely
+Desk Organizer,DO-211,Office,22,8,50,20,12.75,29.99,OfficeHelper,2024-01-21,4,16,5,0.86,Adequate Stock
+USB Hub,UH-311,Electronics,38,10,75,25,15.50,34.99,TechSupply Co,2024-01-13,6,24,7,0.88,Adequate Stock
+Plant Pot,PP-411,Gardening,16,5,40,15,8.50,24.99,GreenThumb Co,2024-01-09,3,12,4,0.81,Monitor Closely
+Sticky Notes,SN-511,Stationery,78,25,150,60,1.75,4.99,PaperWorks Co,2024-01-20,15,60,17,0.92,Adequate Stock
+Cable Management,CM-611,Electronics,29,10,60,25,7.25,18.99,TechSupply Co,2024-01-15,5,20,6,0.87,Adequate Stock
+Desk Mat,DM-711,Office,14,6,35,18,19.50,44.99,OfficeHelper,2024-01-12,3,12,3,0.94,Monitor Closely
+Webcam,WC-811,Electronics,7,3,20,10,78.00,149.99,TechSupply Co,2024-01-18,1,4,2,0.76,Critical - Reorder
+Headphones,HP-911,Electronics,21,8,50,20,42.50,84.99,AudioTech Pro,2024-01-16,4,16,5,0.90,Adequate Stock
+Stapler,ST-021,Office,35,12,70,30,9.75,22.99,OfficeHelper,2024-01-14,6,24,7,0.85,Adequate Stock
+Paper Clips,PCL-121,Stationery,156,50,300,120,0.85,2.99,PaperWorks Co,2024-01-10,25,100,29,0.91,Adequate Stock
+Wireless Charger,WCH-221,Electronics,18,6,40,15,22.00,49.99,TechSupply Co,2024-01-19,3,12,4,0.88,Adequate Stock
+File Folders,FF-321,Office,91,30,180,75,3.25,8.99,PaperWorks Co,2024-01-17,18,72,21,0.86,Adequate Stock
+Rubber Bands,RB-421,Stationery,203,60,400,150,1.25,3.49,OfficeHelper,2024-01-11,35,140,40,0.93,Adequate Stock
+Desk Calendar,DC-521,Office,26,8,50,20,6.50,16.99,PaperWorks Co,2024-01-21,4,16,5,0.89,Adequate Stock
+Power Bank,PB-621,Electronics,13,5,30,12,28.75,59.99,TechSupply Co,2024-01-13,2,8,3,0.82,Monitor Closely
+Whiteboard Markers,WM-721,Stationery,67,20,120,50,4.50,11.99,WritingSupplies,2024-01-15,12,48,14,0.87,Adequate Stock
+Trash Can,TC-821,Office,8,3,20,10,18.00,39.99,OfficeHelper,2024-01-20,1,4,2,0.95,Critical - Reorder
+Bookends,BE-921,Office,24,8,45,20,14.25,32.99,OfficeHelper,2024-01-12,4,16,5,0.84,Adequate Stock
+Tape Dispenser,TD-031,Office,19,6,40,15,11.50,26.99,OfficeHelper,2024-01-18,3,12,4,0.91,Adequate Stock
+Highlighters,HL-131,Stationery,58,18,110,45,3.75,9.99,WritingSupplies,2024-01-16,10,40,12,0.88,Adequate Stock
+Scissors,SC-231,Office,31,10,60,25,8.25,19.99,OfficeHelper,2024-01-14,5,20,6,0.86,Adequate Stock
+Picture Frame,PF-331,Office,17,5,35,15,12.00,28.99,OfficeHelper,2024-01-22,3,12,4,0.90,Adequate Stock
+Hand Sanitizer,HS-431,Health,92,25,180,70,3.50,8.99,HealthCare Plus,2024-01-19,16,64,19,0.85,Adequate Stock
+Tissue Box,TB-531,Health,47,15,90,35,2.25,5.99,HealthCare Plus,2024-01-17,8,32,9,0.92,Adequate Stock
+Clipboard,CB-631,Office,23,8,45,20,5.75,14.99,OfficeHelper,2024-01-11,4,16,5,0.87,Adequate Stock
+Hole Punch,HP-731,Office,11,4,25,12,16.50,36.99,OfficeHelper,2024-01-21,2,8,3,0.93,Monitor Closely
+Binder Clips,BC-831,Stationery,134,40,250,100,2.75,6.99,PaperWorks Co,2024-01-13,22,88,26,0.89,Adequate Stock
+Label Maker,LM-931,Electronics,6,2,15,8,48.00,99.99,TechSupply Co,2024-01-15,1,4,1,0.78,Critical - Reorder
+Shredder,SH-041,Electronics,4,2,12,6,125.00,249.99,OfficeHelper,2024-01-10,0,2,1,0.72,Critical - Reorder
+Desk Fan,DF-141,Appliances,15,5,30,12,32.50,64.99,ComfortAppliances,2024-01-20,3,12,3,0.94,Adequate Stock
+Calculator,CA-241,Electronics,28,9,55,22,18.25,39.99,TechSupply Co,2024-01-18,5,20,6,0.91,Adequate Stock
+Ruler Set,RS-341,Stationery,42,14,80,30,4.00,9.99,WritingSupplies,2024-01-16,7,28,8,0.86,Adequate Stock
+Correction Fluid,CF-441,Stationery,73,22,140,55,2.50,5.99,WritingSupplies,2024-01-12,13,52,15,0.88,Adequate Stock
+Document Tray,DT-541,Office,20,7,40,18,15.75,34.99,OfficeHelper,2024-01-14,3,12,4,0.85,Adequate Stock
+Paper Shredder Bags,PSB-641,Office,86,28,160,70,1.50,4.49,OfficeHelper,2024-01-19,15,60,17,0.90,Adequate Stock
+Envelope Pack,EP-741,Stationery,112,35,200,85,5.25,12.99,PaperWorks Co,2024-01-17,19,76,22,0.92,Adequate Stock
+Business Cards,BC-841,Printing,95,30,180,75,8.75,19.99,PrintWorks Co,2024-01-11,16,64,18,0.87,Adequate Stock
+Letter Opener,LO-941,Office,27,9,50,22,6.25,15.99,OfficeHelper,2024-01-21,4,16,5,0.89,Adequate Stock

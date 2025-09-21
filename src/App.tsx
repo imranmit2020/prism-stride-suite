@@ -7,6 +7,7 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProductTrackingInterface } from "./components/product-tracking/ProductTrackingInterface";
 import { AuthPage } from "./components/auth/AuthPage";
+import { AppLayout } from "./components/layout/AppLayout";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -27,7 +28,11 @@ const App = () => {
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<AuthPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="/product-tracking" element={<ProductTrackingInterface />} />
+                <Route path="/product-tracking" element={
+                  <AppLayout>
+                    <ProductTrackingInterface />
+                  </AppLayout>
+                } />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AuthProvider>

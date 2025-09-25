@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { Link, useLocation } from "react-router-dom";
 
 interface SidebarProps {
   activeModule?: string;
@@ -56,17 +57,22 @@ const homeMenuItems = [
 ];
 
 export function Sidebar({ 
-  activeModule, 
-  onModuleChange, 
   isHomeMode = false, 
-  onHomeModeChange,
-  activeTab, 
-  onTabChange 
+  onHomeModeChange
 }: SidebarProps) {
-  // Use new prop names or fall back to legacy ones
-  const currentActive = activeModule || activeTab || "dashboard";
-  const handleChange = onModuleChange || onTabChange || (() => {});
+  const location = useLocation();
+  const currentPath = location.pathname;
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
+  
+  const getPath = (itemId: string) => {
+    if (itemId === "dashboard") return "/";
+    return `/${itemId}`;
+  };
+  
+  const isActive = (itemId: string) => {
+    const itemPath = getPath(itemId);
+    return currentPath === itemPath;
+  };
   return (
     <aside className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm fixed left-0 top-0 z-40 overflow-hidden">
       {/* Logo/Brand */}
@@ -99,22 +105,25 @@ export function Sidebar({
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
-          const isActive = currentActive === item.id;
+          const itemIsActive = isActive(item.id);
+          const itemPath = getPath(item.id);
           
           return (
             <Button
               key={item.id}
-              variant={isActive ? "default" : "ghost"}
+              variant={itemIsActive ? "default" : "ghost"}
               className={cn(
                 "w-full justify-start gap-3 h-12 text-sm font-medium transition-all duration-200",
-                isActive 
+                itemIsActive 
                   ? "bg-primary text-primary-foreground shadow-md" 
                   : "text-muted-foreground hover:text-foreground hover:bg-accent"
               )}
-              onClick={() => handleChange(item.id)}
+              asChild
             >
-              <Icon className="h-5 w-5 flex-shrink-0" />
-              <span className="truncate">{item.label}</span>
+              <Link to={itemPath}>
+                <Icon className="h-5 w-5 flex-shrink-0" />
+                <span className="truncate">{item.label}</span>
+              </Link>
             </Button>
           );
         })}

@@ -5,10 +5,24 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { HomeModeProvider } from "@/contexts/HomeModeContext";
 import { ProductTrackingInterface } from "./components/product-tracking/ProductTrackingInterface";
 import { AuthPage } from "./components/auth/AuthPage";
 import { AppLayout } from "./components/layout/AppLayout";
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
+import Inventory from "./pages/Inventory";
+import Accounting from "./pages/Accounting";
+import Payroll from "./pages/Payroll";
+import Analytics from "./pages/Analytics";
+import Reports from "./pages/Reports";
+import Marketing from "./pages/Marketing";
+import CRM from "./pages/CRM";
+import SaaS from "./pages/SaaS";
+import Forms from "./pages/Forms";
+import UserManagement from "./pages/UserManagement";
+import Settings from "./pages/Settings";
+import POS from "./pages/POS";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,19 +69,113 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <AuthProvider>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<AuthPage />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="/product-tracking" element={
-                  <ProtectedRoute>
-                    <AppLayout>
-                      <ProductTrackingInterface />
-                    </AppLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <HomeModeProvider>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<AuthPage />} />
+                  
+                  {/* Protected Business/Personal Routes */}
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Dashboard />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/inventory" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Inventory />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/accounting" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Accounting />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/payroll" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Payroll />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/analytics" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Analytics />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/reports" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Reports />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/marketing" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Marketing />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/crm" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <CRM />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/saas" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <SaaS />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/forms" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Forms />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/user-management" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <UserManagement />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/settings" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Settings />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/pos" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <POS />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/product-tracking" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <ProductTrackingInterface />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </HomeModeProvider>
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>

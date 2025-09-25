@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { TenantBranding } from "./TenantBranding";
 import { useAuth } from "@/contexts/AuthContext";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Tenant {
@@ -16,19 +17,14 @@ interface Tenant {
 
 interface AppLayoutProps {
   children: React.ReactNode;
-  currentModule?: string;
-  onModuleChange?: (module: string) => void;
   isHomeMode?: boolean;
   onHomeModeChange?: (isHome: boolean) => void;
 }
 
 export function AppLayout({ 
-  children, 
-  currentModule, 
-  onModuleChange, 
-  isHomeMode = false, 
-  onHomeModeChange 
+  children
 }: AppLayoutProps) {
+  const { isHomeMode, setIsHomeMode } = useHomeMode();
   const { user, signOut } = useAuth();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [currentTenant, setCurrentTenant] = useState<Tenant>({
@@ -76,10 +72,8 @@ export function AppLayout({
       <TenantBranding tenant={currentTenant} />
       <div className="min-h-screen bg-background">
         <Sidebar 
-          onModuleChange={onModuleChange} 
-          activeModule={currentModule}
           isHomeMode={isHomeMode}
-          onHomeModeChange={onHomeModeChange}
+          onHomeModeChange={setIsHomeMode}
         />
         <div className="ml-64">
           <Header 

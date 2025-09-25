@@ -23,6 +23,8 @@ import Forms from "./pages/Forms";
 import UserManagement from "./pages/UserManagement";
 import Settings from "./pages/Settings";
 import POS from "./pages/POS";
+import Admin from "./pages/Admin";
+import SuperAdmin from "./pages/SuperAdmin";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -170,6 +172,20 @@ const App = () => {
                     <ProtectedRoute>
                       <AppLayout>
                         <ProductTrackingInterface />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <Admin />
+                      </AppLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/super-admin" element={
+                    <ProtectedRoute>
+                      <AppLayout>
+                        <SuperAdmin />
                       </AppLayout>
                     </ProtectedRoute>
                   } />

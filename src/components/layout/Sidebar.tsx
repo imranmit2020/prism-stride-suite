@@ -14,10 +14,21 @@ import {
   Wallet,
   Receipt,
   Shield,
-  Crown
+  Crown,
+  ChevronDown,
+  Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -26,6 +37,14 @@ interface SidebarProps {
   onModuleChange?: (module: string) => void;
   isHomeMode?: boolean;
   onHomeModeChange?: (isHome: boolean) => void;
+  currentUser?: {
+    name: string;
+    email: string;
+    avatar?: string;
+    role: string;
+    tenant: string;
+  };
+  onSignOut?: () => void;
   // Legacy props for backward compatibility
   activeTab?: string;
   onTabChange?: (tab: string) => void;
@@ -60,11 +79,23 @@ const homeMenuItems = [
 
 export function Sidebar({ 
   isHomeMode = false, 
-  onHomeModeChange
+  onHomeModeChange,
+  currentUser,
+  onSignOut
 }: SidebarProps) {
   const location = useLocation();
   const currentPath = location.pathname;
   const menuItems = isHomeMode ? homeMenuItems : businessMenuItems;
+
+  const mockUser = {
+    name: "John Smith",
+    email: "john@company.com",
+    avatar: "/placeholder.svg",
+    role: "Administrator",
+    tenant: "Acme Corporation"
+  };
+
+  const user = currentUser || mockUser;
   
   const getPath = (itemId: string) => {
     if (itemId === "dashboard") return "/";
@@ -77,6 +108,55 @@ export function Sidebar({
   };
   return (
     <aside className="h-screen w-64 bg-background border-l border-border flex flex-col shadow-sm fixed right-0 top-0 z-40 overflow-hidden">
+      {/* User Profile - Top Left */}
+      <div className="p-4 border-b border-border bg-card flex-shrink-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="w-full flex items-center justify-start space-x-3 p-3 h-auto">
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback>
+                  {user.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col text-left flex-1">
+                <span className="text-sm font-medium">{user.name}</span>
+                <span className="text-xs text-muted-foreground">{user.role}</span>
+              </div>
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-56">
+            <DropdownMenuLabel>
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium">{user.name}</p>
+                <p className="text-xs text-muted-foreground">{user.email}</p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              Profile Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Building className="mr-2 h-4 w-4" />
+              Organization Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Globe className="mr-2 h-4 w-4" />
+              Switch Tenant
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem 
+              className="text-destructive"
+              onClick={onSignOut}
+            >
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
       {/* Logo/Brand */}
       <div className="p-4 border-b border-border bg-card flex-shrink-0">
         <div className="flex items-center gap-3 mb-4">

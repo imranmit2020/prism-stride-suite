@@ -74,6 +74,14 @@ export function AppLayout({
         <Sidebar 
           isHomeMode={isHomeMode}
           onHomeModeChange={setIsHomeMode}
+          currentUser={userProfile ? {
+            name: userProfile.full_name || user?.email || "User",
+            email: userProfile.email || user?.email || "",
+            role: userProfile.role || "User",
+            tenant: currentTenant.name,
+            avatar: userProfile.avatar_url
+          } : undefined}
+          onSignOut={signOut}
         />
         <div className="mr-64">
           <Header 

@@ -1,11 +1,9 @@
 import { SaaSInterface } from "@/components/saas/SaaSInterface";
 import { PersonalGoalsInterface } from "@/components/personal-finance/PersonalGoalsInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface SaaSProps {
-  isHomeMode?: boolean;
-}
-
-export default function SaaS({ isHomeMode = false }: SaaSProps) {
+export default function SaaS() {
+  const { isHomeMode } = useHomeMode();
   if (isHomeMode) {
     return (
       <div className="space-y-6">

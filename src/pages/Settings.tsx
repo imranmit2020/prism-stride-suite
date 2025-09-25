@@ -1,11 +1,9 @@
 import { SettingsInterface } from "@/components/settings/SettingsInterface";
 import { HomeManagerSettings } from "@/components/settings/HomeManagerSettings";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface SettingsProps {
-  isHomeMode?: boolean;
-}
-
-export default function Settings({ isHomeMode = false }: SettingsProps) {
+export default function Settings() {
+  const { isHomeMode } = useHomeMode();
   return (
     <div className="space-y-6">
       <div>

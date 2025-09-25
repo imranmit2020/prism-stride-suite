@@ -1,10 +1,8 @@
 import { MarketingInterface } from "@/components/marketing/MarketingInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface MarketingProps {
-  isHomeMode?: boolean;
-}
-
-export default function Marketing({ isHomeMode = false }: MarketingProps) {
+export default function Marketing() {
+  const { isHomeMode } = useHomeMode();
   if (isHomeMode) {
     return (
       <div className="space-y-6">

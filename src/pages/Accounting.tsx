@@ -1,10 +1,8 @@
 import { AccountingInterface } from "@/components/accounting/AccountingInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface AccountingProps {
-  isHomeMode?: boolean;
-}
-
-export default function Accounting({ isHomeMode = false }: AccountingProps) {
+export default function Accounting() {
+  const { isHomeMode } = useHomeMode();
   return (
     <div className="space-y-6">
       <div>

@@ -1,11 +1,9 @@
 import { InventoryInterface } from "@/components/inventory/InventoryInterface";
 import { PersonalInventoryInterface } from "@/components/inventory/PersonalInventoryInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface InventoryProps {
-  isHomeMode?: boolean;
-}
-
-export default function Inventory({ isHomeMode = false }: InventoryProps) {
+export default function Inventory() {
+  const { isHomeMode } = useHomeMode();
   return (
     <div className="space-y-6">
       <div>

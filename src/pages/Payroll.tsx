@@ -1,11 +1,9 @@
 import { PayrollInterface } from "@/components/payroll/PayrollInterface";
 import { PersonalIncomeInterface } from "@/components/payroll/PersonalIncomeInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface PayrollProps {
-  isHomeMode?: boolean;
-}
-
-export default function Payroll({ isHomeMode = false }: PayrollProps) {
+export default function Payroll() {
+  const { isHomeMode } = useHomeMode();
   return (
     <div className="space-y-6">
       <div>

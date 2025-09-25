@@ -1,11 +1,9 @@
 import { AnalyticsInterface } from "@/components/analytics/AnalyticsInterface";
 import { PersonalFinanceAnalyticsInterface } from "@/components/personal-analytics/PersonalFinanceAnalyticsInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface AnalyticsProps {
-  isHomeMode?: boolean;
-}
-
-export default function Analytics({ isHomeMode = false }: AnalyticsProps) {
+export default function Analytics() {
+  const { isHomeMode } = useHomeMode();
   if (isHomeMode) {
     return <PersonalFinanceAnalyticsInterface />;
   }

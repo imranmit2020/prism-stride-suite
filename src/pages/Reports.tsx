@@ -1,11 +1,9 @@
 import { ReportsInterface } from "@/components/reports/ReportsInterface";
 import { PersonalReportsInterface } from "@/components/reports/PersonalReportsInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface ReportsProps {
-  isHomeMode?: boolean;
-}
-
-export default function Reports({ isHomeMode = false }: ReportsProps) {
+export default function Reports() {
+  const { isHomeMode } = useHomeMode();
   return (
     <div className="space-y-6">
       <div>

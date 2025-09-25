@@ -1,10 +1,8 @@
 import { CRMInterface } from "@/components/crm/CRMInterface";
+import { useHomeMode } from "@/contexts/HomeModeContext";
 
-interface CRMProps {
-  isHomeMode?: boolean;
-}
-
-export default function CRM({ isHomeMode = false }: CRMProps) {
+export default function CRM() {
+  const { isHomeMode } = useHomeMode();
   if (isHomeMode) {
     return (
       <div className="space-y-6">

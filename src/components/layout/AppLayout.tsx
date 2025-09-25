@@ -75,7 +75,7 @@ export function AppLayout({
           isHomeMode={isHomeMode}
           onHomeModeChange={setIsHomeMode}
         />
-        <div className="ml-64">
+        <div className="mr-64">
           <Header 
             onTenantChange={handleTenantChange}
             currentUser={userProfile ? {

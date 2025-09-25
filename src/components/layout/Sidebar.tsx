@@ -76,7 +76,7 @@ export function Sidebar({
     return currentPath === itemPath;
   };
   return (
-    <aside className="h-screen w-64 bg-background border-r border-border flex flex-col shadow-sm fixed left-0 top-0 z-40 overflow-hidden">
+    <aside className="h-screen w-64 bg-background border-l border-border flex flex-col shadow-sm fixed right-0 top-0 z-40 overflow-hidden">
       {/* Logo/Brand */}
       <div className="p-4 border-b border-border bg-card flex-shrink-0">
         <div className="flex items-center gap-3 mb-4">

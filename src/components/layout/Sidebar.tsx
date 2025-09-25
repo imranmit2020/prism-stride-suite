@@ -39,8 +39,6 @@ const businessMenuItems = [
   { id: "accounting", label: "Accounting", icon: Calculator },
   { id: "payroll", label: "Payroll", icon: Users },
   { id: "user-management", label: "User Management", icon: Users },
-  { id: "admin", label: "Admin Panel", icon: Shield },
-  { id: "super-admin", label: "Super Admin", icon: Crown },
   { id: "analytics", label: "Analytics", icon: TrendingUp },
   { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "marketing", label: "AI Marketing", icon: TrendingUp },

@@ -36,6 +36,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
+  // Skip authentication in development mode
+  if (import.meta.env.DEV) {
+    return <>{children}</>;
+  }
+
   useEffect(() => {
     if (!loading && !user) {
       navigate("/auth");

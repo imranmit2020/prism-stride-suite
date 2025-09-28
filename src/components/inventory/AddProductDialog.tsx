@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGlobalization } from "@/contexts/GlobalizationContext";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,14 +11,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { validationSchemas } from "@/lib/validation";
 import { InventoryItem } from "./InventoryTable";
 import { Sparkles, Wand2, TrendingUp, AlertCircle, MapPin } from "lucide-react";
+import type { z } from "zod";
 
 interface AddProductDialogProps {
   open: boolean;
@@ -109,22 +122,26 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
     supplier: ''
   });
   const [showAiSuggestions, setShowAiSuggestions] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    sku: "",
-    category: "",
-    currentStock: "",
-    minStock: "",
-    maxStock: "",
-    reorderPoint: "",
-    unitCost: "",
-    sellingPrice: "",
-    supplier: "",
-    warehouse: "",
-    zone: "",
-    aisle: "",
-    shelf: "",
-    bin: "",
+
+  const form = useForm<z.infer<typeof validationSchemas.inventoryProduct>>({
+    resolver: zodResolver(validationSchemas.inventoryProduct),
+    defaultValues: {
+      name: "",
+      sku: "",
+      category: "",
+      currentStock: 0,
+      minStock: 0,
+      maxStock: 100,
+      reorderPoint: 0,
+      unitCost: 0,
+      sellingPrice: 0,
+      supplier: "",
+      warehouse: "",
+      zone: "",
+      aisle: "",
+      shelf: "",
+      bin: "",
+    },
   });
 
   const categories = [
@@ -138,16 +155,18 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
 
   // AI analysis when product name changes
   useEffect(() => {
-    if (formData.name.length > 2) {
-      const category = aiCategorizeProduct(formData.name);
-      const sku = aiGenerateSKU(formData.name, category);
+    const name = form.watch("name");
+    if (name && name.length > 2) {
+      const category = aiCategorizeProduct(name);
+      const sku = aiGenerateSKU(name, category);
       const stockLevels = aiSuggestStockLevels(category);
       const supplier = aiSuggestSupplier(category);
       
+      const unitCost = form.watch("unitCost");
       setAiSuggestions({
         category,
         sku,
-        pricing: formData.unitCost ? aiSuggestPricing(parseFloat(formData.unitCost), category) : { suggested: 0, min: 0, max: 0, markup: 0 },
+        pricing: unitCost ? aiSuggestPricing(unitCost, category) : { suggested: 0, min: 0, max: 0, markup: 0 },
         stockLevels,
         supplier
       });
@@ -155,55 +174,42 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
     } else {
       setShowAiSuggestions(false);
     }
-  }, [formData.name, formData.unitCost]);
+  }, [form.watch("name"), form.watch("unitCost")]);
 
   // Update pricing suggestions when unit cost or category changes
   useEffect(() => {
-    if (formData.unitCost && formData.category) {
-      const cost = parseFloat(formData.unitCost);
-      if (cost > 0) {
-        const pricing = aiSuggestPricing(cost, formData.category);
-        setAiSuggestions(prev => ({ ...prev, pricing }));
-      }
+    const unitCost = form.watch("unitCost");
+    const category = form.watch("category");
+    if (unitCost && category && unitCost > 0) {
+      const pricing = aiSuggestPricing(unitCost, category);
+      setAiSuggestions(prev => ({ ...prev, pricing }));
     }
-  }, [formData.unitCost, formData.category]);
+  }, [form.watch("unitCost"), form.watch("category")]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate required fields
-    if (!formData.name || !formData.sku || !formData.category) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
-
+  const handleSubmit = (values: z.infer<typeof validationSchemas.inventoryProduct>) => {
     const newProduct: Omit<InventoryItem, 'id'> = {
-      name: formData.name,
-      sku: formData.sku,
-      category: formData.category,
-      currentStock: parseInt(formData.currentStock) || 0,
-      minStock: parseInt(formData.minStock) || 0,
-      maxStock: parseInt(formData.maxStock) || 100,
-      reorderPoint: parseInt(formData.reorderPoint) || 0,
-      unitCost: parseFloat(formData.unitCost) || 0,
-      sellingPrice: parseFloat(formData.sellingPrice) || 0,
-      supplier: formData.supplier || "Unknown",
+      name: values.name,
+      sku: values.sku,
+      category: values.category,
+      currentStock: values.currentStock,
+      minStock: values.minStock,
+      maxStock: values.maxStock,
+      reorderPoint: values.reorderPoint,
+      unitCost: values.unitCost,
+      sellingPrice: values.sellingPrice,
+      supplier: values.supplier || "Unknown",
       lastRestocked: new Date().toISOString().split('T')[0],
       demand7Days: 0,
       demand30Days: 0,
-      location: formData.warehouse && formData.zone ? {
-        warehouse: formData.warehouse,
-        zone: formData.zone,
-        aisle: formData.aisle,
-        shelf: formData.shelf,
-        bin: formData.bin,
+      location: values.warehouse && values.zone ? {
+        warehouse: values.warehouse,
+        zone: values.zone,
+        aisle: values.aisle,
+        shelf: values.shelf,
+        bin: values.bin,
       } : undefined,
       aiPrediction: {
-        nextWeekDemand: parseInt(formData.currentStock) || 0,
+        nextWeekDemand: values.currentStock,
         confidence: 75,
         recommendation: "New product - monitor initial performance"
       }
@@ -212,38 +218,18 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
     onAddProduct(newProduct);
     
     // Reset form
-    setFormData({
-      name: "",
-      sku: "",
-      category: "",
-      currentStock: "",
-      minStock: "",
-      maxStock: "",
-      reorderPoint: "",
-      unitCost: "",
-      sellingPrice: "",
-      supplier: "",
-      warehouse: "",
-      zone: "",
-      aisle: "",
-      shelf: "",
-      bin: "",
-    });
+    form.reset();
 
     toast({
       title: "Product Added",
-      description: `${formData.name} has been added to inventory`
+      description: `${values.name} has been added to inventory`
     });
 
     onOpenChange(false);
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
   const applyAiSuggestion = (field: string, value: string | number) => {
-    setFormData(prev => ({ ...prev, [field]: value.toString() }));
+    form.setValue(field as any, typeof value === 'string' ? value : value.toString());
     toast({
       title: "AI Suggestion Applied",
       description: `Applied AI suggestion for ${field}`
@@ -251,18 +237,15 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
   };
 
   const applyAllAiSuggestions = () => {
-    setFormData(prev => ({
-      ...prev,
-      category: aiSuggestions.category,
-      sku: aiSuggestions.sku,
-      minStock: aiSuggestions.stockLevels.min.toString(),
-      maxStock: aiSuggestions.stockLevels.max.toString(),
-      reorderPoint: aiSuggestions.stockLevels.reorder.toString(),
-      supplier: aiSuggestions.supplier,
-      ...(aiSuggestions.pricing.suggested > 0 && {
-        sellingPrice: aiSuggestions.pricing.suggested.toString()
-      })
-    }));
+    form.setValue("category", aiSuggestions.category);
+    form.setValue("sku", aiSuggestions.sku);
+    form.setValue("minStock", aiSuggestions.stockLevels.min);
+    form.setValue("maxStock", aiSuggestions.stockLevels.max);
+    form.setValue("reorderPoint", aiSuggestions.stockLevels.reorder);
+    form.setValue("supplier", aiSuggestions.supplier);
+    if (aiSuggestions.pricing.suggested > 0) {
+      form.setValue("sellingPrice", aiSuggestions.pricing.suggested);
+    }
     toast({
       title: "AI Suggestions Applied",
       description: "All AI suggestions have been applied to the form"
@@ -282,7 +265,8 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
           </DialogDescription>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           {/* AI Suggestions Panel */}
           {showAiSuggestions && (
             <Card className="border-primary/20 bg-primary/5">
@@ -404,119 +388,156 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
             </Card>
           )}
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Product Name *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-                placeholder="e.g., Coffee - Espresso Beans"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="sku">SKU *</Label>
-              <Input
-                id="sku"
-                value={formData.sku}
-                onChange={(e) => handleInputChange("sku", e.target.value)}
-                placeholder="e.g., COF-ESP-001"
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Name *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Coffee - Espresso Beans" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sku"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>SKU *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., COF-ESP-001" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="category">Category *</Label>
-              <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="supplier">Supplier</Label>
-              <Input
-                id="supplier"
-                value={formData.supplier}
-                onChange={(e) => handleInputChange("supplier", e.target.value)}
-                placeholder="e.g., Premium Coffee Co."
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category *</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="supplier"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Supplier</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Premium Coffee Co." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div className="grid grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="currentStock">Current Stock</Label>
-              <Input
-                id="currentStock"
-                type="number"
-                value={formData.currentStock}
-                onChange={(e) => handleInputChange("currentStock", e.target.value)}
-                placeholder="0"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="minStock">Min Stock</Label>
-              <Input
-                id="minStock"
-                type="number"
-                value={formData.minStock}
-                onChange={(e) => handleInputChange("minStock", e.target.value)}
-                placeholder="0"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="maxStock">Max Stock</Label>
-              <Input
-                id="maxStock"
-                type="number"
-                value={formData.maxStock}
-                onChange={(e) => handleInputChange("maxStock", e.target.value)}
-                placeholder="100"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="reorderPoint">Reorder Point</Label>
-              <Input
-                id="reorderPoint"
-                type="number"
-                value={formData.reorderPoint}
-                onChange={(e) => handleInputChange("reorderPoint", e.target.value)}
-                placeholder="0"
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="currentStock"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Current Stock</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="0" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="minStock"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Min Stock</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="0" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxStock"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Max Stock</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="100" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="reorderPoint"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Reorder Point</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="0" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="unitCost">Unit Cost ($)</Label>
-              <Input
-                id="unitCost"
-                type="number"
-                step="0.01"
-                value={formData.unitCost}
-                onChange={(e) => handleInputChange("unitCost", e.target.value)}
-                placeholder="0.00"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="sellingPrice">Selling Price ({currentCurrency.symbol})</Label>
-              <Input
-                id="sellingPrice"
-                type="number"
-                step="0.01"
-                value={formData.sellingPrice}
-                onChange={(e) => handleInputChange("sellingPrice", e.target.value)}
-                placeholder="0.00"
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="unitCost"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Unit Cost ($)</FormLabel>
+                  <FormControl>
+                    <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sellingPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Selling Price ({currentCurrency.symbol})</FormLabel>
+                  <FormControl>
+                    <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* Location Fields */}
@@ -527,58 +548,83 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="warehouse">Warehouse</Label>
-                <Select value={formData.warehouse} onValueChange={(value) => handleInputChange("warehouse", value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select warehouse" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Main Warehouse">Main Warehouse</SelectItem>
-                    <SelectItem value="Distribution Center">Distribution Center</SelectItem>
-                    <SelectItem value="Cold Storage">Cold Storage</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="zone">Zone</Label>
-                <Input
-                  id="zone"
-                  value={formData.zone}
-                  onChange={(e) => handleInputChange("zone", e.target.value)}
-                  placeholder="e.g., A, B, C"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="warehouse"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Warehouse</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select warehouse" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Main Warehouse">Main Warehouse</SelectItem>
+                        <SelectItem value="Distribution Center">Distribution Center</SelectItem>
+                        <SelectItem value="Cold Storage">Cold Storage</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="zone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Zone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., A, B, C" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             
             <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="aisle">Aisle</Label>
-                <Input
-                  id="aisle"
-                  value={formData.aisle}
-                  onChange={(e) => handleInputChange("aisle", e.target.value)}
-                  placeholder="e.g., 01, 02"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="shelf">Shelf</Label>
-                <Input
-                  id="shelf"
-                  value={formData.shelf}
-                  onChange={(e) => handleInputChange("shelf", e.target.value)}
-                  placeholder="e.g., 1, 2, 3"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bin">Bin</Label>
-                <Input
-                  id="bin"
-                  value={formData.bin}
-                  onChange={(e) => handleInputChange("bin", e.target.value)}
-                  placeholder="e.g., A, B, C"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="aisle"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Aisle</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., 01, 02" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="shelf"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Shelf</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., 1, 2, 3" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="bin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bin</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., A, B, C" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
 
@@ -589,6 +635,7 @@ export function AddProductDialog({ open, onOpenChange, onAddProduct }: AddProduc
             <Button type="submit">Add Product</Button>
           </DialogFooter>
         </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

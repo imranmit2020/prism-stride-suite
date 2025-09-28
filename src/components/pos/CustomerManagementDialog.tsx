@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,6 +10,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -16,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
+import { validationSchemas } from "@/lib/validation";
 import { 
   User, 
   Sparkles, 
@@ -31,6 +42,7 @@ import {
   Mic,
   MicOff
 } from "lucide-react";
+import type { z } from "zod";
 
 interface Customer {
   id: string;
@@ -54,7 +66,7 @@ interface CustomerManagementDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   customer?: Customer | null;
-  onSaveCustomer: (customer: Omit<Customer, 'id'>) => void;
+  onSaveCustomer: (customer: Omit<Customer, 'id' | 'lastVisit' | 'visitCount'>) => void;
 }
 
 // AI-powered customer insights
@@ -131,21 +143,23 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
   const [autoFillProgress, setAutoFillProgress] = useState(0);
   const [voiceField, setVoiceField] = useState<string>('');
   
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    dateOfBirth: '',
-    preferences: [] as string[],
-    loyaltyTier: 'Bronze',
-    totalSpent: 0,
-    visitCount: 0,
-    lastVisit: '',
-    notes: ''
+  const form = useForm<z.infer<typeof validationSchemas.customer>>({
+    resolver: zodResolver(validationSchemas.customer),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      dateOfBirth: '',
+      preferences: [],
+      loyaltyTier: 'Bronze',
+      totalSpent: 0,
+      visitCount: 0,
+      notes: ''
+    },
   });
 
   const loyaltyTiers = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'];
@@ -162,41 +176,42 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
 
   // AI auto-fill based on partial data
   useEffect(() => {
-    if (formData.email && formData.email.includes('@')) {
+    const email = form.watch("email");
+    if (email && email.includes('@')) {
       setAutoFillProgress(25);
-      const domain = formData.email.split('@')[1];
+      const domain = email.split('@')[1];
       if (domain === 'gmail.com' || domain === 'yahoo.com') {
         setAutoFillProgress(50);
         // AI suggestion for name based on email
-        const emailName = formData.email.split('@')[0];
-        if (!formData.name && emailName.includes('.')) {
+        const emailName = email.split('@')[0];
+        const currentName = form.watch("name");
+        if (!currentName && emailName.includes('.')) {
           const [first, last] = emailName.split('.');
           const suggestedName = `${first.charAt(0).toUpperCase() + first.slice(1)} ${last.charAt(0).toUpperCase() + last.slice(1)}`;
-          setFormData(prev => ({ ...prev, name: suggestedName }));
+          form.setValue("name", suggestedName);
           setAutoFillProgress(75);
         }
       }
     }
     
     // Generate insights when enough data is available
-    if (formData.name || formData.email || formData.city) {
-      const insights = generateCustomerInsights(formData);
+    const name = form.watch("name");
+    const city = form.watch("city");
+    const dateOfBirth = form.watch("dateOfBirth");
+    if (name || email || city) {
+      const insights = generateCustomerInsights({ name, email, city, dateOfBirth });
       setAiInsights(insights);
     }
-  }, [formData.email, formData.name, formData.city, formData.dateOfBirth]);
+  }, [form.watch("email"), form.watch("name"), form.watch("city"), form.watch("dateOfBirth")]);
 
   // Apply voice transcript to current field
   useEffect(() => {
     if (transcript && voiceField) {
-      setFormData(prev => ({ ...prev, [voiceField]: transcript }));
+      form.setValue(voiceField as any, transcript);
       setTranscript('');
       setVoiceField('');
     }
   }, [transcript, voiceField, setTranscript]);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   const handleVoiceInput = (field: string) => {
     setVoiceField(field);
@@ -204,35 +219,19 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
   };
 
   const handlePreferenceToggle = (preference: string) => {
-    setFormData(prev => ({
-      ...prev,
-      preferences: prev.preferences.includes(preference)
-        ? prev.preferences.filter(p => p !== preference)
-        : [...prev.preferences, preference]
-    }));
+    const currentPreferences = form.watch("preferences") || [];
+    const newPreferences = currentPreferences.includes(preference)
+      ? currentPreferences.filter(p => p !== preference)
+      : [...currentPreferences, preference];
+    form.setValue("preferences", newPreferences);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.name || !formData.email) {
-      toast({
-        title: "Validation Error",
-        description: "Name and email are required fields",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    onSaveCustomer({
-      ...formData,
-      lastVisit: new Date().toISOString().split('T')[0],
-      visitCount: (formData.visitCount || 0) + 1
-    });
+  const handleSubmit = (values: z.infer<typeof validationSchemas.customer>) => {
+    onSaveCustomer(values);
 
     toast({
       title: "Customer Saved",
-      description: `${formData.name} has been added to the customer database`
+      description: `${values.name} has been added to the customer database`
     });
 
     onOpenChange(false);
@@ -249,7 +248,8 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
       
       const data = mockData[zipCode];
       if (data) {
-        setFormData(prev => ({ ...prev, city: data.city, state: data.state }));
+        form.setValue("city", data.city);
+        form.setValue("state", data.state);
         toast({
           title: "Smart Lookup",
           description: "City and state auto-filled based on ZIP code"

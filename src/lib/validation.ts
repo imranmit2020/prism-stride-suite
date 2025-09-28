@@ -285,6 +285,20 @@ export const enhancedExpenseSchema = z.object({
   })
 });
 
+// CRM Lead Schema
+export const leadSchema = z.object({
+  name: nameSchema.transform(sanitizeInput),
+  email: emailSchema.optional(),
+  phone: z.string().trim().regex(phoneRegex, { message: "Please enter a valid phone number" }).optional().or(z.literal('')),
+  company: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  position: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  leadSource: z.enum(['website', 'social_media', 'referral', 'advertisement', 'cold_call', 'event', 'other']),
+  status: z.enum(['new', 'contacted', 'qualified', 'proposal', 'negotiation', 'closed_won', 'closed_lost']).default('new'),
+  estimatedValue: nonNegativeNumberSchema.optional(),
+  expectedCloseDate: z.string().optional(),
+  notes: z.string().trim().max(1000, { message: "Notes must be less than 1000 characters" }).optional().transform(val => val ? sanitizeInput(val) : ''),
+});
+
 // Export all schemas as a single object for easy access
 export const validationSchemas = {
   inventoryProduct: inventoryProductSchema,
@@ -299,7 +313,11 @@ export const validationSchemas = {
   investment: investmentSchema,
   savingsAccount: savingsAccountSchema,
   user: userSchema,
+  lead: leadSchema,
 };
+
+// Export types
+export type LeadFormData = z.infer<typeof leadSchema>;
 // Multi-country invoice validation schema
 export const enhancedInvoiceSchema = z.object({
   invoiceNumber: requiredStringSchema.max(50, { message: "Invoice number must be less than 50 characters" }).transform(sanitizeInput),

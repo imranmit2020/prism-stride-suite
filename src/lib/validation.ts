@@ -245,6 +245,46 @@ export const userSchema = z.object({
   department: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
 });
 
+// Multi-country expense validation schema with enhanced features
+export const enhancedExpenseSchema = z.object({
+  receipt: z.object({
+    receiptNumber: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    merchant: requiredStringSchema.max(200, { message: "Merchant name must be less than 200 characters" }).transform(sanitizeInput),
+    address: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    date: z.string().min(1, { message: "Date is required" }),
+    time: optionalStringSchema,
+    total: positiveNumberSchema,
+    tax: nonNegativeNumberSchema.default(0),
+    currency: z.enum(['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR', 'MXN', 'BRL', 'CNY', 'KRW', 'SGD', 'HKD', 'CHF', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK', 'HUF', 'RON', 'BGN', 'HRK', 'RSD', 'TRY', 'ILS', 'AED', 'SAR', 'QAR', 'KWD', 'BHD', 'OMR', 'JOD', 'LBP', 'EGP', 'MAD', 'TND', 'DZD', 'ZAR', 'NGN', 'KES', 'GHS', 'XOF', 'XAF', 'ETB', 'UGX', 'TZS', 'RWF', 'MWK', 'ZMW', 'BWP', 'SZL', 'LSL', 'NAD']).default('USD'),
+  }),
+  categorization: z.object({
+    primaryCategory: requiredStringSchema.transform(sanitizeInput),
+    subCategory: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    confidence: z.number().min(0).max(100).default(0),
+    suggestedGLCode: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    businessPurpose: requiredStringSchema.max(500, { message: "Business purpose must be less than 500 characters" }).transform(sanitizeInput),
+    isBusinessExpense: z.boolean().default(true),
+    taxDeductible: z.boolean().default(false),
+    projectCode: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  }),
+  employee: z.object({
+    name: requiredStringSchema.transform(sanitizeInput),
+    employeeId: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    department: requiredStringSchema.transform(sanitizeInput),
+    project: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    approver: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    costCenter: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  }),
+  compliance: z.object({
+    region: z.enum(['US', 'EU', 'UK', 'CA', 'AU', 'APAC', 'LATAM', 'MEA']).default('US'),
+    taxRate: nonNegativeNumberSchema.default(0),
+    requiresReceipt: z.boolean().default(true),
+    needsApproval: z.boolean().default(false),
+    policyViolations: z.array(z.string()).default([]),
+    complianceNotes: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  })
+});
+
 // Export all schemas as a single object for easy access
 export const validationSchemas = {
   inventoryProduct: inventoryProductSchema,
@@ -260,3 +300,45 @@ export const validationSchemas = {
   savingsAccount: savingsAccountSchema,
   user: userSchema,
 };
+// Multi-country invoice validation schema
+export const enhancedInvoiceSchema = z.object({
+  invoiceNumber: requiredStringSchema.max(50, { message: "Invoice number must be less than 50 characters" }).transform(sanitizeInput),
+  vendor: z.object({
+    name: requiredStringSchema.max(200, { message: "Vendor name must be less than 200 characters" }).transform(sanitizeInput),
+    email: emailSchema.transform(sanitizeInput),
+    phone: z.string().trim().regex(phoneRegex, { message: "Please enter a valid phone number" }).optional().or(z.literal('')),
+    address: requiredStringSchema.transform(sanitizeInput),
+    taxId: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    country: z.string().min(2, { message: "Country code required" }).max(3),
+    registrationNumber: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  }),
+  customer: z.object({
+    name: requiredStringSchema.max(200, { message: "Customer name must be less than 200 characters" }).transform(sanitizeInput),
+    email: emailSchema.transform(sanitizeInput),
+    address: requiredStringSchema.transform(sanitizeInput),
+    taxId: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+    country: z.string().min(2, { message: "Country code required" }).max(3),
+  }),
+  details: z.object({
+    issueDate: z.string().min(1, { message: "Issue date is required" }),
+    dueDate: z.string().min(1, { message: "Due date is required" }),
+    currency: z.enum(['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR', 'MXN', 'BRL', 'CNY', 'KRW', 'SGD', 'HKD', 'CHF', 'SEK', 'NOK', 'DKK', 'PLN', 'CZK', 'HUF', 'RON', 'BGN', 'HRK', 'RSD', 'TRY', 'ILS', 'AED', 'SAR', 'QAR', 'KWD', 'BHD', 'OMR', 'JOD', 'LBP', 'EGP', 'MAD', 'TND', 'DZD', 'ZAR', 'NGN', 'KES', 'GHS', 'XOF', 'XAF', 'ETB', 'UGX', 'TZS', 'RWF', 'MWK', 'ZMW', 'BWP', 'SZL', 'LSL', 'NAD']).default('USD'),
+    subtotal: nonNegativeNumberSchema,
+    taxRate: nonNegativeNumberSchema.default(0),
+    taxAmount: nonNegativeNumberSchema.default(0),
+    totalAmount: positiveNumberSchema,
+    notes: z.string().trim().max(1000, { message: "Notes must be less than 1000 characters" }).optional().transform(val => val ? sanitizeInput(val) : val),
+    paymentTerms: z.enum(['Net 15', 'Net 30', 'Net 45', 'Net 60', 'Due on Receipt', '2/10 Net 30', '1/10 Net 30']).default('Net 30'),
+    region: z.enum(['US', 'EU', 'UK', 'CA', 'AU', 'APAC', 'LATAM', 'MEA']).default('US'),
+  }),
+  lineItems: z.array(z.object({
+    description: requiredStringSchema.max(300, { message: "Description must be less than 300 characters" }).transform(sanitizeInput),
+    quantity: positiveNumberSchema,
+    unitPrice: nonNegativeNumberSchema,
+    amount: nonNegativeNumberSchema,
+    category: requiredStringSchema.transform(sanitizeInput),
+    taxRate: nonNegativeNumberSchema.default(0),
+    glCode: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
+  })).min(1, { message: "At least one line item is required" }),
+  status: z.enum(['draft', 'sent', 'paid', 'overdue', 'cancelled']).default('draft'),
+});

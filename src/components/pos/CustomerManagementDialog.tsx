@@ -19,7 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -211,7 +210,7 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
       setTranscript('');
       setVoiceField('');
     }
-  }, [transcript, voiceField, setTranscript]);
+  }, [transcript, voiceField, setTranscript, form]);
 
   const handleVoiceInput = (field: string) => {
     setVoiceField(field);
@@ -227,7 +226,24 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
   };
 
   const handleSubmit = (values: z.infer<typeof validationSchemas.customer>) => {
-    onSaveCustomer(values);
+    // Ensure required fields are present since validation passed
+    const customerData = {
+      name: values.name,
+      email: values.email,
+      phone: values.phone || '',
+      address: values.address || '',
+      city: values.city || '',
+      state: values.state || '',
+      zipCode: values.zipCode || '',
+      dateOfBirth: values.dateOfBirth || '',
+      preferences: values.preferences,
+      loyaltyTier: values.loyaltyTier,
+      totalSpent: values.totalSpent,
+      visitCount: values.visitCount,
+      notes: values.notes || ''
+    } as Omit<Customer, 'id' | 'lastVisit' | 'visitCount'>;
+
+    onSaveCustomer(customerData);
 
     toast({
       title: "Customer Saved",
@@ -272,272 +288,320 @@ export function CustomerManagementDialog({ open, onOpenChange, customer, onSaveC
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* AI Auto-fill Progress */}
-          {autoFillProgress > 0 && (
-            <Card className="border-primary/20 bg-primary/5">
-              <CardContent className="p-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Brain className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">AI Auto-fill Progress</span>
-                </div>
-                <Progress value={autoFillProgress} className="w-full" />
-              </CardContent>
-            </Card>
-          )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            {/* AI Auto-fill Progress */}
+            {autoFillProgress > 0 && (
+              <Card className="border-primary/20 bg-primary/5">
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Brain className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium">AI Auto-fill Progress</span>
+                  </div>
+                  <Progress value={autoFillProgress} className="w-full" />
+                </CardContent>
+              </Card>
+            )}
 
-          {/* Basic Information */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  placeholder="Enter full name"
-                />
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleVoiceInput('name')}
-                  disabled={isListening}
-                >
-                  {isListening && voiceField === 'name' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  placeholder="customer@example.com"
-                />
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleVoiceInput('email')}
-                  disabled={isListening}
-                >
-                  {isListening && voiceField === 'email' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  placeholder="(555) 123-4567"
-                />
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleVoiceInput('phone')}
-                  disabled={isListening}
-                >
-                  {isListening && voiceField === 'phone' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="dateOfBirth">Date of Birth</Label>
-              <Input
-                id="dateOfBirth"
-                type="date"
-                value={formData.dateOfBirth}
-                onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+            {/* Basic Information */}
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name *</FormLabel>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input placeholder="Enter full name" {...field} />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleVoiceInput('name')}
+                        disabled={isListening}
+                      >
+                        {isListening && voiceField === 'name' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address *</FormLabel>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input type="email" placeholder="customer@example.com" {...field} />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleVoiceInput('email')}
+                        disabled={isListening}
+                      >
+                        {isListening && voiceField === 'email' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
 
-          {/* Address with Smart Lookup */}
-          <div className="space-y-4">
-            <Label className="text-base font-medium">Address</Label>
-            <div className="grid grid-cols-1 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="address">Street Address</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="address"
-                    value={formData.address}
-                    onChange={(e) => handleInputChange("address", e.target.value)}
-                    placeholder="123 Main Street"
-                  />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input placeholder="(555) 123-4567" {...field} />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleVoiceInput('phone')}
+                        disabled={isListening}
+                      >
+                        {isListening && voiceField === 'phone' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dateOfBirth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date of Birth</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Address with Smart Lookup */}
+            <div className="space-y-4">
+              <FormLabel className="text-base font-medium">Address</FormLabel>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Street Address</FormLabel>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input placeholder="123 Main Street" {...field} />
+                      </FormControl>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleVoiceInput('address')}
+                        disabled={isListening}
+                      >
+                        {isListening && voiceField === 'address' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City</FormLabel>
+                      <FormControl>
+                        <Input placeholder="City" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>State</FormLabel>
+                      <FormControl>
+                        <Input placeholder="State" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="zipCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ZIP Code</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="12345" 
+                          {...field} 
+                          onChange={(e) => {
+                            field.onChange(e);
+                            smartAddressLookup(e.target.value);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Preferences */}
+            <div className="space-y-4">
+              <FormLabel className="text-base font-medium">Customer Preferences</FormLabel>
+              <div className="flex flex-wrap gap-2">
+                {commonPreferences.map((preference) => (
                   <Button
+                    key={preference}
                     type="button"
                     size="sm"
-                    variant="outline"
-                    onClick={() => handleVoiceInput('address')}
-                    disabled={isListening}
+                    variant={form.watch("preferences")?.includes(preference) ? "default" : "outline"}
+                    onClick={() => handlePreferenceToggle(preference)}
                   >
-                    {isListening && voiceField === 'address' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                    {preference}
                   </Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="city"
-                    value={formData.city}
-                    onChange={(e) => handleInputChange("city", e.target.value)}
-                    placeholder="City"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="state">State</Label>
-                  <Input
-                    id="state"
-                    value={formData.state}
-                    onChange={(e) => handleInputChange("state", e.target.value)}
-                    placeholder="State"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="zipCode">ZIP Code</Label>
-                  <Input
-                    id="zipCode"
-                    value={formData.zipCode}
-                    onChange={(e) => {
-                      handleInputChange("zipCode", e.target.value);
-                      smartAddressLookup(e.target.value);
-                    }}
-                    placeholder="12345"
-                  />
-                </div>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Preferences */}
-          <div className="space-y-4">
-            <Label className="text-base font-medium">Customer Preferences</Label>
-            <div className="flex flex-wrap gap-2">
-              {commonPreferences.map((preference) => (
-                <Button
-                  key={preference}
-                  type="button"
-                  size="sm"
-                  variant={formData.preferences.includes(preference) ? "default" : "outline"}
-                  onClick={() => handlePreferenceToggle(preference)}
-                >
-                  {preference}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Loyalty Information */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="loyaltyTier">Loyalty Tier</Label>
-              <Select value={formData.loyaltyTier} onValueChange={(value) => handleInputChange("loyaltyTier", value)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {loyaltyTiers.map((tier) => (
-                    <SelectItem key={tier} value={tier}>
-                      <div className="flex items-center gap-2">
-                        <Star className="h-4 w-4" />
-                        {tier}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="totalSpent">Total Spent ($)</Label>
-              <Input
-                id="totalSpent"
-                type="number"
-                step="0.01"
-                value={formData.totalSpent}
-                onChange={(e) => handleInputChange("totalSpent", e.target.value)}
-                placeholder="0.00"
+            {/* Loyalty Information */}
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="loyaltyTier"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Loyalty Tier</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {loyaltyTiers.map((tier) => (
+                          <SelectItem key={tier} value={tier}>
+                            <div className="flex items-center gap-2">
+                              <Star className="h-4 w-4" />
+                              {tier}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="totalSpent"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Total Spent ($)</FormLabel>
+                    <FormControl>
+                      <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
 
-          {/* Notes */}
-          <div className="space-y-2">
-            <Label htmlFor="notes">Additional Notes</Label>
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <Textarea
-                  id="notes"
-                  value={formData.notes}
-                  onChange={(e) => handleInputChange("notes", e.target.value)}
-                  placeholder="Any additional information about the customer..."
-                  rows={3}
-                />
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleVoiceInput('notes')}
-                  disabled={isListening}
-                >
-                  {isListening && voiceField === 'notes' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </Button>
-              </div>
-              {isListening && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="animate-pulse h-2 w-2 bg-red-500 rounded-full"></div>
-                  Listening for voice input...
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* AI Insights */}
-          {aiInsights.length > 0 && (
-            <Card className="border-blue-200 bg-blue-50">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Brain className="h-4 w-4 text-blue-600" />
-                  <span className="font-medium text-blue-900">AI Customer Insights</span>
-                </div>
-                <div className="space-y-2">
-                  {aiInsights.map((insight, index) => (
-                    <div key={index} className="flex items-start gap-2">
-                      <TrendingUp className="h-3 w-3 text-blue-600 mt-1 flex-shrink-0" />
-                      <div className="text-sm">
-                        <span className="text-blue-900">{insight.insight}</span>
-                        <Badge variant="secondary" className="ml-2 text-xs">
-                          {insight.confidence}% confidence
-                        </Badge>
-                      </div>
+            {/* Notes */}
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Additional Notes</FormLabel>
+                  <div className="flex gap-2">
+                    <FormControl>
+                      <Textarea
+                        placeholder="Any additional information about the customer..."
+                        rows={3}
+                        {...field}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleVoiceInput('notes')}
+                      disabled={isListening}
+                    >
+                      {isListening && voiceField === 'notes' ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  {isListening && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="animate-pulse h-2 w-2 bg-red-500 rounded-full"></div>
+                      Listening... Speak now
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">
-              {customer ? 'Update Customer' : 'Add Customer'}
-            </Button>
-          </DialogFooter>
-        </form>
+            {/* AI Insights Display */}
+            {aiInsights.length > 0 && (
+              <Card className="border-primary/20">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Brain className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-sm">AI Customer Insights</span>
+                  </div>
+                  <div className="space-y-2">
+                    {aiInsights.map((insight, index) => (
+                      <div key={index} className="flex items-start gap-2 text-sm">
+                        <Badge variant="secondary" className="text-xs">
+                          {insight.confidence}%
+                        </Badge>
+                        <span className="text-muted-foreground">{insight.insight}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">
+                {customer ? 'Update Customer' : 'Add Customer'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

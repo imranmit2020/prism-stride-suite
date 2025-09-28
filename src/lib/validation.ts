@@ -46,12 +46,12 @@ export const customerSchema = z.object({
   city: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
   state: optionalStringSchema?.transform(val => val ? sanitizeInput(val) : val),
   zipCode: z.string().trim().regex(/^\d{5}(-\d{4})?$/, { message: "Please enter a valid ZIP code" }).optional().or(z.literal('')),
-  dateOfBirth: z.string().trim().optional(),
+  dateOfBirth: z.string().trim().optional().or(z.literal('')),
   preferences: z.array(z.string()).default([]),
   loyaltyTier: z.string().default('Bronze'),
   totalSpent: nonNegativeNumberSchema.default(0),
   visitCount: nonNegativeNumberSchema.default(0),
-  notes: z.string().trim().max(1000, { message: "Notes must be less than 1000 characters" }).optional().transform(val => val ? sanitizeInput(val) : val),
+  notes: z.string().trim().max(1000, { message: "Notes must be less than 1000 characters" }).optional().or(z.literal('')).transform(val => val ? sanitizeInput(val) : ''),
 });
 
 // Employee Schema

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useGlobalization } from "@/contexts/GlobalizationContext";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +11,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -19,6 +28,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { validationSchemas } from "@/lib/validation";
 import { 
   User, 
   Brain, 
@@ -41,6 +51,7 @@ import {
   FileText,
   Globe
 } from "lucide-react";
+import type { z } from "zod";
 
 interface Employee {
   id: string;
@@ -209,54 +220,50 @@ export function EmployeeOnboardingDialog({ open, onOpenChange, employee, onSaveE
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [voiceField, setVoiceField] = useState<string>('');
 
-  const [formData, setFormData] = useState<Omit<Employee, 'id'>>({
-    personalInfo: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      dateOfBirth: '',
-      emergencyContact: {
-        name: '',
-        relationship: '',
-        phone: ''
+  const form = useForm<z.infer<typeof validationSchemas.employee>>({
+    resolver: zodResolver(validationSchemas.employee),
+    defaultValues: {
+      personalInfo: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        dateOfBirth: '',
+        emergencyContact: {
+          name: '',
+          relationship: '',
+          phone: ''
+        }
+      },
+      employment: {
+        employeeId: '',
+        department: '',
+        position: '',
+        manager: '',
+        startDate: '',
+        employmentType: 'full-time',
+        workLocation: 'office',
+        scheduleType: 'standard'
+      },
+      compensation: {
+        baseSalary: 0,
+        payFrequency: 'bi-weekly',
+        payType: 'salary',
+        currency: 'USD',
+        benefits: [],
+        bonusEligible: false
+      },
+      documents: {
+        hasI9: false,
+        hasW4: false,
+        hasDirectDeposit: false,
+        backgroundCheckComplete: false
       }
     },
-    employment: {
-      employeeId: '',
-      department: '',
-      position: '',
-      manager: '',
-      startDate: '',
-      employmentType: 'full-time',
-      workLocation: 'office',
-      scheduleType: 'standard'
-    },
-    compensation: {
-      baseSalary: 0,
-      payFrequency: 'bi-weekly',
-      payType: 'salary',
-      currency: 'USD',
-      benefits: [],
-      bonusEligible: false
-    },
-    documents: {
-      hasI9: false,
-      hasW4: false,
-      hasDirectDeposit: false,
-      backgroundCheckComplete: false
-    },
-    aiMetrics: {
-      marketSalaryRange: { min: 0, max: 0, median: 0 },
-      retentionRisk: 0,
-      performancePrediction: 0,
-      cultureFit: 0,
-      recommendations: []
-    }
   });
 
   const departments = ['Engineering', 'Sales', 'Marketing', 'Operations', 'HR', 'Finance', 'Customer Service'];
@@ -378,19 +385,26 @@ export function EmployeeOnboardingDialog({ open, onOpenChange, employee, onSaveE
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.personalInfo.firstName || !formData.personalInfo.lastName || !formData.personalInfo.email) {
-      toast({
-        title: "Validation Error",
-        description: "First name, last name, and email are required",
-        variant: "destructive"
-      });
-      return;
-    }
+  const handleSubmit = (values: z.infer<typeof validationSchemas.employee>) => {
+    // Add AI metrics to the validated data
+    const employeeData = {
+      ...values,
+      aiMetrics: {
+        marketSalaryRange: { min: 0, max: 0, median: 0 },
+        retentionRisk: 0,
+        performancePrediction: 0,
+        cultureFit: 0,
+        recommendations: []
+      }
+    };
 
-    onSaveEmployee(formData);
+    onSaveEmployee(employeeData);
+    
+    toast({
+      title: "Employee Added",
+      description: `${values.personalInfo.firstName} ${values.personalInfo.lastName} has been successfully onboarded`
+    });
+
     onOpenChange(false);
   };
 

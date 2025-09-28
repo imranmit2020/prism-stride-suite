@@ -14,6 +14,23 @@ import { useToast } from "@/hooks/use-toast";
 import { useValidatedForm } from "@/hooks/useValidatedForm";
 import { leadSchema, type LeadFormData } from "@/lib/validation";
 
+// Define proper Lead interface
+interface Lead {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  position?: string;
+  leadSource: 'website' | 'social_media' | 'referral' | 'advertisement' | 'cold_call' | 'event' | 'other';
+  status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'negotiation' | 'closed_won' | 'closed_lost';
+  estimatedValue?: number;
+  expectedCloseDate?: string;
+  notes?: string;
+  createdAt: string;
+  lastContact?: string;
+}
+
 export function LeadManagement() {
   const { formatCurrency } = useGlobalization();
   const { toast } = useToast();
@@ -23,7 +40,7 @@ export function LeadManagement() {
   const [showAddDialog, setShowAddDialog] = useState(false);
 
   // Mock data - in real implementation, this would come from API/database
-  const [leads, setLeads] = useState([
+  const [leads, setLeads] = useState<Lead[]>([
     {
       id: '1',
       name: 'Sarah Johnson',
@@ -31,8 +48,8 @@ export function LeadManagement() {
       phone: '+1-555-0123',
       company: 'Tech Solutions Inc',
       position: 'CTO',
-      leadSource: 'website' as const,
-      status: 'qualified' as const,
+      leadSource: 'website',
+      status: 'qualified',
       estimatedValue: 25000,
       expectedCloseDate: '2024-02-15',
       notes: 'Interested in enterprise solution',
@@ -46,8 +63,8 @@ export function LeadManagement() {
       phone: '+1-555-0456',
       company: 'Digital Marketing Pro',
       position: 'CEO',
-      leadSource: 'referral' as const,
-      status: 'proposal' as const,
+      leadSource: 'referral',
+      status: 'proposal',
       estimatedValue: 15000,
       expectedCloseDate: '2024-02-20',
       notes: 'Referred by existing client',
@@ -61,8 +78,8 @@ export function LeadManagement() {
       phone: '+1-555-0789',
       company: 'Global Enterprises',
       position: 'VP Marketing',
-      leadSource: 'social_media' as const,
-      status: 'negotiation' as const,
+      leadSource: 'social_media',
+      status: 'negotiation',
       estimatedValue: 45000,
       expectedCloseDate: '2024-02-10',
       notes: 'Large enterprise deal',
@@ -88,18 +105,18 @@ export function LeadManagement() {
     leadSchema,
     defaultValues,
     (data: LeadFormData) => {
-      const newLead = {
+      const newLead: Lead = {
         id: Date.now().toString(),
         name: data.name,
-        email: data.email || '',
-        phone: data.phone || '',
-        company: data.company || '',
-        position: data.position || '',
+        email: data.email || undefined,
+        phone: data.phone || undefined,
+        company: data.company || undefined,
+        position: data.position || undefined,
         leadSource: data.leadSource,
         status: data.status,
-        estimatedValue: data.estimatedValue || 0,
-        expectedCloseDate: data.expectedCloseDate || '',
-        notes: data.notes || '',
+        estimatedValue: data.estimatedValue || undefined,
+        expectedCloseDate: data.expectedCloseDate || undefined,
+        notes: data.notes || undefined,
         createdAt: new Date().toISOString().split('T')[0],
         lastContact: new Date().toISOString().split('T')[0]
       };
